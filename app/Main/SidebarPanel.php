@@ -12,12 +12,12 @@ class SidebarPanel
             'items' => [
                 [
                     'dashboards_crm_analytics' => [
-                        'title' => 'CRM Analytics',
+                        'title' => 'Analytics',
                         'route_name' => 'dashboard'
                     ],
                     'dashboards_orders' => [
-                        'title' => 'Orders',
-                        'route_name' => 'dashboard'
+                        'title' => 'Profile',
+                        'route_name' => 'profile.edit'
                     ],
                 ]
             ]

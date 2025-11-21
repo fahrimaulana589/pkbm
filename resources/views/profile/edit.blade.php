@@ -1,29 +1,16 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-profile-information-form')
-                </div>
-            </div>
-
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-password-form')
-                </div>
-            </div>
-
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.delete-user-form')
-                </div>
-            </div>
+<x-app-layout title="Profile" is-sidebar-open="true" is-header-blur="true">
+    <main class="main-content w-full px-[var(--margin-x)] pb-8">
+        <div class="flex items-center space-x-4 py-5 lg:py-6">
+          <h2
+            class="text-xl font-medium text-slate-800 dark:text-navy-50 lg:text-2xl"
+          >
+            Profile
+          </h2>
         </div>
-    </div>
+        <div class="grid grid-cols-1 gap-4 sm:gap-5 lg:gap-6">
+            @livewire('update-profile-information-form', ['user' => $user])
+            {{-- @include('profile.partials.update-password-form')
+            @include('profile.partials.delete-user-form') --}}
+        </div> 
+    </main>
 </x-app-layout>

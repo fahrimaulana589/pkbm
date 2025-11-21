@@ -17,7 +17,7 @@
 
     <!-- CSS & JS Assets -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
+    @livewireStyles
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -71,14 +71,10 @@
 -->
     <div id="x-teleport-target"></div>
 
-    <script>
-        window.addEventListener("DOMContentLoaded", () => Alpine.start());
-    </script>
-
     @isset($script)
         {{ $script }}
     @endisset
-
+    @livewireScriptConfig
 </body>
 
 </html>

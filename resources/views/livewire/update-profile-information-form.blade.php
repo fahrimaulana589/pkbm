@@ -1,3 +1,29 @@
+<?php
+
+use function Livewire\Volt\{state,rules,mount};
+
+state('user');
+state('name');
+state('email');
+
+mount(function ($user) {
+    $this->name = $user->name;
+    $this->email = $user->email;
+});
+
+rules(fn() => [
+    'name'  => 'required|string|max:255',
+    'email' => 'required|string|email|max:255|unique:users,email,' . $this->user->id,
+]);
+
+$submit = function () {
+    $this->validate();
+    $this->user->save();
+    $this->dispatch('profile-updated');
+};
+
+?>
+
 <div>
     <!-- Basic Input Text -->
     <div class="card px-4 pb-4 sm:px-5">
@@ -13,7 +39,7 @@
             <p>
             {{ __("Update your account's profile information and email address.") }}
             </p>
-            <form method="post" action="{{ route('profile.update') }}" class="mt-5 flex flex-col gap-4">
+            <form method="post" wire:submit.prevent="submit" class="mt-5 flex flex-col gap-4">
             @csrf
             @method('patch')
             <label class="block">
@@ -27,6 +53,7 @@
                 placeholder="Name"
                 type="text"
                 name="name"
+                wire:model="name"
                 value="{{ old('name') ?? $user->name }}"
                 />
                 @error('name')    
@@ -44,6 +71,7 @@
                 placeholder="Email"
                 type="text"
                 name="email"
+                wire:model="email"
                 value="{{ old('email') ?? $user->email }}"
                 />
                 @error('email')    
@@ -62,10 +90,9 @@
         </div>
     </div>
    
-    <div x-data="{showModal:false}"
-    @if (session('status') === 'profile-updated')
-        x-init="setTimeout(() => showModal = true, 1000)"
-    @endif
+    <div 
+        x-data="{showModal:false}"
+        x-on:profile-updated.window="showModal = true"
     >
     
     <template x-teleport="#x-teleport-target">
@@ -116,8 +143,7 @@
               Success Message
             </h2>
             <p class="mt-2">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Consequuntur dignissimos soluta totam?
+              Profile Updated Successfully.
             </p>
             <button
               @click="showModal = false"
@@ -131,3 +157,4 @@
     </template>
   </div>
 </div>
+
