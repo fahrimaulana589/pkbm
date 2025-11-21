@@ -56,9 +56,6 @@
         <!-- Mobile Searchbar -->
         <x-app-partials.mobile-searchbar></x-app-partials.mobile-searchbar>
 
-        <!-- Right Sidebar -->
-        <x-app-partials.right-sidebar></x-app-partials.right-sidebar>
-
         {{ $slot }}
 
     </div>
