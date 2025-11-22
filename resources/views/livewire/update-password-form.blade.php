@@ -1,28 +1,26 @@
 <?php
 
-use function Livewire\Volt\{state,rules,mount};
+use function Livewire\Volt\{state,rules};
 
 state('user');
-state('name');
-state('email');
-
-mount(function ($user) {
-    $this->name = $user->name;
-    $this->email = $user->email;
-});
+state('current_password');
+state('new_password');
+state('new_password_confirmation');
 
 rules(fn() => [
-    'name'  => 'required|string|max:255',
-    'email' => 'required|string|email|max:255|unique:users,email,' . $this->user->id,
+    'current_password' => 'required|string|current_password',
+    'new_password'              => 'required|string|min:8|confirmed',
+    'new_password_confirmation' => 'required|string|min:8',
 ]);
 
 $submit = function () {
     $this->validate();
-    $this->user->fill([
-        'name'  => $this->name,
-        'email' => $this->email,
-    ])->save();
-    $this->dispatch('profile-updated');
+
+    // Update the user's password
+    $this->user->password = bcrypt($this->new_password);
+    $this->user->save();
+
+    $this->dispatch('profile-updated-password');
 };
 
 ?>
@@ -34,50 +32,68 @@ $submit = function () {
             <h2
             class="font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 lg:text-base"
             >
-            {{ __('Profile Information') }}
+            {{ __('Update Password') }}
             </h2>
         </div>
 
         <div class="max-w-xl">
             <p>
-            {{ __("Update your account's profile information and email address.") }}
+            {{ __("Ensure your account is using a long, random password to stay secure.") }}
             </p>
             <form method="post" wire:submit.prevent="submit" class="mt-5 flex flex-col gap-4">
             @csrf
             @method('patch')
             <label class="block">
-                <span>Name</span>
+                <span>Current Password</span>
                 <input
-                @error('name')
+                @error('current_password')
                 class="form-input mt-1.5 w-full rounded-lg border border-error bg-transparent px-3 py-2 placeholder:text-slate-400/70"                   
                 @else
                 class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"                    
                 @enderror
-                placeholder="Name"
-                type="text"
-                name="name"
-                wire:model="name"
-                value="{{ old('name') ?? $user->name }}"
+                placeholder="Current Password"
+                type="password"
+                name="current_password"
+                wire:model="current_password"
+                value="{{ old('current_password') ?? $user->current_password }}"
                 />
-                @error('name')    
+                @error('current_password')    
                 <span class="text-tiny+ text-error">{{ $message }}</span>
                 @enderror
             </label>
             <label class="block">
-                <span>Email</span>
+                <span>New Password</span>
                 <input
-                @error('email')
+                @error('new_password')
                 class="form-input mt-1.5 w-full rounded-lg border border-error bg-transparent px-3 py-2 placeholder:text-slate-400/70"                   
                 @else
                 class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"                    
                 @enderror
-                placeholder="Email"
-                type="text"
-                name="email"
-                wire:model="email"
-                value="{{ old('email') ?? $user->email }}"
+                placeholder="New Password"
+                type="password"
+                name="new_password"
+                wire:model="new_password"
+                value="{{ old('new_password') ?? $user->new_password }}"
                 />
-                @error('email')    
+                @error('new_password')    
+                <span class="text-tiny+ text-error">{{ $message }}</span>
+                @enderror
+            </label>
+            <label class="block">
+                <span>Confirm New Password</span>
+                <input
+                @error('new_password_confirmation')
+                class="form-input mt-1.5 w-full rounded-lg border border-error bg-transparent px-3 py-2 placeholder:text-slate-400/70"                   
+                @else
+                class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"                    
+                @enderror
+                placeholder="Confirm New Password"
+                type="password"
+                name="new_password_confirmation"
+                wire:model="new_password_confirmation"
+                value="{{ old('new_password_confirmation') ?? $user->new_password_confirmation }}"
+                />
+                @error('new_password_confirmation')    
                 <span class="text-tiny+ text-error">{{ $message }}</span>
                 @enderror
             </label>
@@ -95,7 +111,7 @@ $submit = function () {
    
     <div 
         x-data="{showModal:false}"
-        x-on:profile-updated.window="showModal = true"
+        x-on:profile-updated-password.window="showModal = true"
     >
     
     <template x-teleport="#x-teleport-target">
@@ -143,10 +159,10 @@ $submit = function () {
 
           <div class="mt-4">
             <h2 class="text-2xl text-slate-700 dark:text-navy-100">
-              Profile Updated Successfully
+              Password Updated Successfully
             </h2>
             <p class="mt-2">
-              Your profile information has been updated.
+              Your password has been updated.
             </p>
             <button
               @click="showModal = false"
@@ -160,4 +176,3 @@ $submit = function () {
     </template>
     </div>
 </div>
-

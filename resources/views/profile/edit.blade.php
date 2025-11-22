@@ -9,8 +9,8 @@
         </div>
         <div class="grid grid-cols-1 gap-4 sm:gap-5 lg:gap-6">
             @livewire('update-profile-information-form', ['user' => $user])
-            {{-- @include('profile.partials.update-password-form')
-            @include('profile.partials.delete-user-form') --}}
+            @livewire('update-password-form', ['user' => $user])
+            @livewire('delete-user-form',['user'=>$user])
         </div> 
     </main>
 </x-app-layout>

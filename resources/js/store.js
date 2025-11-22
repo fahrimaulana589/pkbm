@@ -44,7 +44,6 @@ export default {
         // Triggered as the final step of any page navigation...
     
         // Also triggered on page-load instead of "DOMContentLoaded"...
-        console.log('livewire:navigated called');    
         const _dm = Alpine.store('darkMode');
         const _origDark = _dm.dark;
         _dm.dark = function (...args) {
