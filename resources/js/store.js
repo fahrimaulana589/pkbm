@@ -6,29 +6,66 @@ export default {
   isRightSidebarExpanded: false,
 
   init() {
-    this.isDarkModeEnabled = Alpine.$persist(false).as("_x_darkMode_on");
-
+    
     this.isSidebarExpanded =
       document.querySelector(".sidebar") &&
       document.body.classList.contains("is-sidebar-open") &&
       Alpine.store("breakpoints").xlAndUp;
+    
+    Alpine.store('darkMode', {
+        on: Alpine.$persist(true).as('darkMode_on'),
+        toggle() {
+          this.on = ! this.on
+        },
+        dark(){
+          this.on = true
+        },
+        bright(){
+          this.on = false
+        }
+    });
+    Alpine.store('monochrome', {
+        on: Alpine.$persist(true).as('monochrome_on'),
+        toggle() {
+          this.on = ! this.on
+        },
+        dark(){
+          this.on = true
+        },
+        bright(){
+          this.on = false
+        }
+    });
+
+    this.isDarkModeEnabled = Alpine.store('darkMode').on;
+    this.isMonochromeModeEnabled = Alpine.store('monochrome').on;
 
     Alpine.effect(() => {
-      this.isDarkModeEnabled
-        ? document.documentElement.classList.add("dark")
-        : document.documentElement.classList.remove("dark");
+      if(this.isDarkModeEnabled){
+        document.body.classList.add("dark");
+        Alpine.store('darkMode').dark();
+      } else {
+        document.body.classList.remove("dark");
+        Alpine.store('darkMode').bright();
+      }
     });
 
     Alpine.effect(() => {
-      this.isMonochromeModeEnabled
-        ? document.body.classList.add("is-monochrome")
-        : document.body.classList.remove("is-monochrome");
+      if(this.isMonochromeModeEnabled){
+        document.body.classList.add("is-monochrome");
+        Alpine.store('monochrome').dark();
+      } else {
+        document.body.classList.remove("is-monochrome");
+        Alpine.store('monochrome').bright();
+      }
     });
 
     Alpine.effect(() => {
-      this.isSidebarExpanded
-        ? document.body.classList.add("is-sidebar-open")
-        : document.body.classList.remove("is-sidebar-open");
+      if(this.isSidebarExpanded){
+        document.body.classList.add("is-sidebar-open");
+      } else {
+        document.body.classList.remove("is-sidebar-open");
+      }
     });
 
     Alpine.effect(() => {
