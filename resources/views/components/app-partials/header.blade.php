@@ -361,7 +361,7 @@
                 </template>
 
                 <!-- Dark Mode Toggle -->
-                <button @click="$store.global.isDarkModeEnabled = !$store.global.isDarkModeEnabled"
+                <button @click="$store.global.isDarkModeEnabled = !$store.global.isDarkModeEnabled;$store.darkMode.toggle()"
                     class="btn size-8 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
                     <svg x-show="$store.global.isDarkModeEnabled"
                         x-transition:enter="transition-transform duration-200 ease-out absolute origin-top"
@@ -380,7 +380,7 @@
                     </svg>
                 </button> 
                 <!-- Monochrome Mode Toggle -->
-                <button @click="$store.global.isMonochromeModeEnabled = !$store.global.isMonochromeModeEnabled"
+                <button @click="$store.global.isMonochromeModeEnabled = !$store.global.isMonochromeModeEnabled;$store.monochrome.toggle()"
                     class="btn size-8 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
                     <i
                         class="fa-solid fa-palette bg-gradient-to-r from-sky-400 to-blue-600 bg-clip-text text-lg font-semibold text-transparent"></i>
