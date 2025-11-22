@@ -40,6 +40,33 @@ export default {
     this.isDarkModeEnabled = Alpine.store('darkMode').on;
     this.isMonochromeModeEnabled = Alpine.store('monochrome').on;
 
+    document.addEventListener('livewire:navigated', () => {
+        // Triggered as the final step of any page navigation...
+    
+        // Also triggered on page-load instead of "DOMContentLoaded"...
+        console.log('livewire:navigated called');    
+        const _dm = Alpine.store('darkMode');
+        const _origDark = _dm.dark;
+        _dm.dark = function (...args) {
+          // restore immediately so future calls aren't delayed
+          _dm.dark = _origDark;
+        };
+        const _mm = Alpine.store('monochrome');
+        const _origMono = _mm.dark;
+        _mm.dark = function (...args) {
+          // restore immediately so future calls aren't delayed
+          _mm.dark = _origMono;
+        };
+
+        const preloader = document.querySelector(".app-preloader");
+        if (preloader) {
+          setTimeout(() => {
+            preloader.classList.add("animate-[cubic-bezier(0.4,0,0.2,1)_fade-out_500ms_forwards]");
+            setTimeout(() => preloader.remove(), 1000);
+          }, 150);
+        }
+    })
+
     Alpine.effect(() => {
       if(this.isDarkModeEnabled){
         document.body.classList.add("dark");

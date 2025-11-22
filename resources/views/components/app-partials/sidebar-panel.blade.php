@@ -59,6 +59,7 @@
                         @else
                             <li @if ($menu['route_name'] === $pageName) x-init="$el.scrollIntoView({block:'center'});" @endif>
                                 <a href="{{ route($menu['route_name']) }}"
+                                    wire:navigate
                                     class="flex text-xs+ py-2  tracking-wide outline-none transition-colors duration-300 ease-in-out {{ $menu['route_name'] === $pageName ? 'text-primary dark:text-accent-light font-medium' : 'text-slate-600  hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50' }}">
                                     {{ $menu['title'] }}
                                 </a>
