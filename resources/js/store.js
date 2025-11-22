@@ -58,6 +58,11 @@ export default {
           _mm.dark = _origMono;
         };
 
+        this.isSidebarExpanded =
+          document.querySelector(".sidebar") &&
+          document.body.classList.contains("is-sidebar-open") &&
+          Alpine.store("breakpoints").xlAndUp;
+
         const preloader = document.querySelector(".app-preloader");
         if (preloader) {
           setTimeout(() => {
