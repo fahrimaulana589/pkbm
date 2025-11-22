@@ -18,7 +18,10 @@ rules(fn() => [
 
 $submit = function () {
     $this->validate();
-    $this->user->save();
+    $this->user->fill([
+        'name'  => $this->name,
+        'email' => $this->email,
+    ])->save();
     $this->dispatch('profile-updated');
 };
 
