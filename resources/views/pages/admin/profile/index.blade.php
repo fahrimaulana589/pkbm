@@ -1,8 +1,8 @@
 <?php
-use function Laravel\Folio\{name,render,middleware};
+use function Laravel\Folio\{name,render};
 use Illuminate\View\View;
 
-name('profile.edit');
+name('admin.profile');
 
 render(function (View $view) {
     $user = auth()->user();

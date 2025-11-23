@@ -1,26 +1,47 @@
 <?php
 
-use function Livewire\Volt\{state,rules};
+use function Livewire\Volt\{state,rules,mount};
+use App\Models\Setting;
 
-state('user');
-state('current_password');
-state('new_password');
-state('new_password_confirmation');
+state('email_server');
+state('email_port');
+state('email_username');
+state('email_password');
 
 rules(fn() => [
-    'current_password' => 'required|string|current_password',
-    'new_password'              => 'required|string|min:8|confirmed',
-    'new_password_confirmation' => 'required|string|min:8',
+    'email_server' => 'required|string',
+    'email_port' => 'required|integer',
+    'email_username' => 'required|string',
+    'email_password' => 'required|string',
 ]);
+
+mount(function () {
+    $settings = Setting::find(1);
+    if ($settings) {
+        $this->email_server = $settings->email_server;
+        $this->email_port = $settings->email_port;
+        $this->email_username = $settings->email_username;
+        $this->email_password = $settings->email_password;
+        // Note: For security reasons, you might not want to load the password directly
+    }
+});
 
 $submit = function () {
     $this->validate();
 
-    // Update the user's password
-    $this->user->password = bcrypt($this->new_password);
-    $this->user->save();
+    // Update the email server settings
+    // (Implementation depends on how settings are stored in your application)
+    Setting::updateOrCreate(
+        ['id' => 1],
+        [
+            'email_server' => $this->email_server,
+            'email_port' => $this->email_port,
+            'email_username' => $this->email_username,
+            'email_password' => $this->email_password,
+        ]
+    );
 
-    $this->dispatch('profile-updated-password');
+    $this->dispatch('email-server-updated');
 };
 
 ?>
@@ -32,68 +53,86 @@ $submit = function () {
             <h2
             class="font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 lg:text-base"
             >
-            {{ __('Update Password') }}
+            {{ __('Update Email Server') }}
             </h2>
         </div>
 
         <div class="max-w-xl">
             <p>
-            {{ __("Ensure your account is using a long, random password to stay secure.") }}
+            {{ __("Ensure your email server settings are correct to stay connected.") }}
             </p>
             <form method="post" wire:submit.prevent="submit" class="mt-5 flex flex-col gap-4">
             @csrf
             @method('patch')
             <label class="block">
-                <span>Current Password</span>
+                <span>Email Server</span>
                 <input
-                @error('current_password')
+                @error('email_server')
                 class="form-input mt-1.5 w-full rounded-lg border border-error bg-transparent px-3 py-2 placeholder:text-slate-400/70"                   
                 @else
                 class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"                    
                 @enderror
-                placeholder="Current Password"
-                type="password"
-                name="current_password"
-                wire:model="current_password"
-                value="{{ old('current_password') }}"
+                placeholder="Email Server"
+                type="text"
+                name="email_server"
+                wire:model="email_server"
+                value="{{ old('email_server')}}"
                 />
-                @error('current_password')    
+                @error('email_server')    
                 <span class="text-tiny+ text-error">{{ $message }}</span>
                 @enderror
             </label>
             <label class="block">
-                <span>New Password</span>
+                <span>Email Port</span>
                 <input
-                @error('new_password')
+                @error('email_port')
                 class="form-input mt-1.5 w-full rounded-lg border border-error bg-transparent px-3 py-2 placeholder:text-slate-400/70"                   
                 @else
                 class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"                    
                 @enderror
-                placeholder="New Password"
-                type="password"
-                name="new_password"
-                wire:model="new_password"
-                value="{{ old('new_password') }}"
+                placeholder="Email Port"
+                type="text"
+                name="email_port"
+                wire:model="email_port"
+                value="{{ old('email_port')}}"
                 />
-                @error('new_password')    
+                @error('email_port')    
                 <span class="text-tiny+ text-error">{{ $message }}</span>
                 @enderror
             </label>
             <label class="block">
-                <span>Confirm New Password</span>
+                <span>Email Username</span>
                 <input
-                @error('new_password_confirmation')
+                @error('email_username')
                 class="form-input mt-1.5 w-full rounded-lg border border-error bg-transparent px-3 py-2 placeholder:text-slate-400/70"                   
                 @else
                 class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"                    
                 @enderror
-                placeholder="Confirm New Password"
-                type="password"
-                name="new_password_confirmation"
-                wire:model="new_password_confirmation"
-                value="{{ old('new_password_confirmation') }}"
+                placeholder="Email Username"
+                type="text"
+                name="email_username"
+                wire:model="email_username"
+                value="{{ old('email_username')}}"
                 />
-                @error('new_password_confirmation')    
+                @error('email_username')    
+                <span class="text-tiny+ text-error">{{ $message }}</span>
+                @enderror
+            </label>
+            <label class="block">
+                <span>Email Password</span>
+                <input
+                @error('email_password')
+                class="form-input mt-1.5 w-full rounded-lg border border-error bg-transparent px-3 py-2 placeholder:text-slate-400/70"                   
+                @else
+                class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"                    
+                @enderror
+                placeholder="Email Password"
+                type="text"
+                name="email_password"
+                wire:model="email_password"
+                value="{{ old('email_password')}}"
+                />
+                @error('email_password')    
                 <span class="text-tiny+ text-error">{{ $message }}</span>
                 @enderror
             </label>
@@ -111,7 +150,7 @@ $submit = function () {
    
     <div 
         x-data="{showModal:false}"
-        x-on:profile-updated-password.window="showModal = true"
+        x-on:email-server-updated.window="showModal = true"
     >
     
     <template x-teleport="#x-teleport-target">
@@ -159,10 +198,10 @@ $submit = function () {
 
           <div class="mt-4">
             <h2 class="text-2xl text-slate-700 dark:text-navy-100">
-              Password Updated Successfully
+              Email Server Updated Successfully
             </h2>
             <p class="mt-2">
-              Your password has been updated.
+              Your email server settings have been updated.
             </p>
             <button
               @click="showModal = false"

@@ -1,7 +1,7 @@
 <?php
-use function Laravel\Folio\{name,middleware};
+use function Laravel\Folio\{name};
  
-name('dashboard');
+name('admin.dashboard');
 
 ?>
 <x-app-layout title="Dashboard" is-sidebar-open="true" is-header-blur="true">

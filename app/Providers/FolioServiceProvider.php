@@ -24,10 +24,10 @@ class FolioServiceProvider extends ServiceProvider
             'login/*' => [
                 'guest'
             ],
-            'dashboard/*' => [
+            'admin/*' => [
                 'auth'
             ],
-            'profile/*' => [
+            'setting/*' => [
                 'auth'
             ],
         ]);

@@ -13,11 +13,26 @@ class SidebarPanel
                 [
                     'dashboards_crm_analytics' => [
                         'title' => 'Analytics',
-                        'route_name' => 'dashboard'
+                        'route_name' => 'admin.dashboard'
                     ],
                     'dashboards_orders' => [
                         'title' => 'Profile',
-                        'route_name' => 'profile.edit'
+                        'route_name' => 'admin.profile'
+                    ],
+                ]
+            ]
+        ];
+    }
+
+    public static function settings()
+    {
+        return [
+            'title' => 'Settings',
+            'items' => [
+                [
+                    'setting_email_server' => [
+                        'title' => 'Email Server',
+                        'route_name' => 'setting.email-server'
                     ],
                 ]
             ]
@@ -25,6 +40,6 @@ class SidebarPanel
     }
 
     public static function all(){
-        return [self::dashboards()];
+        return [self::dashboards(), self::settings()];
     }
 }

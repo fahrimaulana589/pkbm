@@ -17,10 +17,13 @@ class SidebarComposer
     {
         if (!is_null(request()->route())) {
             $pageName = request()->route()->getName();
-            $routePrefix = explode('/', $pageName)[0] ?? '';
+            $routePrefix = explode('.', $pageName)[0] ?? '';
             switch ($routePrefix) {
-                case 'dashboards':
+                case 'admin':
                     $view->with('sidebarMenu', SidebarPanel::dashboards());
+                    break;
+                case 'setting':
+                    $view->with('sidebarMenu', SidebarPanel::settings());
                     break;
                 default:
                     $view->with('sidebarMenu', SidebarPanel::dashboards());
