@@ -1,3 +1,9 @@
+<?php
+use function Laravel\Folio\{name,middleware};
+
+name('login');
+
+?>
 <x-guest-layout title="login">
     <div class="fixed top-0 hidden p-6 lg:block lg:px-12">
         <a href="#" class="flex items-center space-x-2">

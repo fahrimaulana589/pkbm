@@ -1,29 +1,72 @@
 <?php
 
 use function Livewire\Volt\{state, rules};
-use App\Http\Requests\Auth\LoginRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Auth\Events\Lockout;
+
 state('email');
 state('password');
+state('remember', false);
+
+rules(fn() => [
+    'email'    => 'required|string|email',
+    'password' => 'required|string',
+]);
 
 $submit = function () {
-     $data = [
-        'email' => $this->email,
-        'password' => $this->password,
-        'remember' => false
-    ];
-
-    // Jalankan validasi LoginRequest
-    $request = LoginRequest::create('/', 'POST', $data);
-
-    $validator = validator($request->all(), (new LoginRequest)->rules());
-    $validator->validate();
-
-    // Jalankan authenticate() dari LoginRequest
-    (new LoginRequest())->merge($data)->authenticate();
+    $this->validate();
+    
+    $this->authenticate();
 
     // Login berhasil → redirect
     return $this->redirectRoute('dashboard', [], navigate: true);
 };
+
+$authenticate = function ()
+{
+    $this->ensureIsNotRateLimited();
+
+    if (! Auth::attempt([
+        'email' => $this->email,
+        'password' => $this->password,
+    ], (bool) $this->remember)) {
+
+        RateLimiter::hit($this->throttleKey());
+
+        throw ValidationException::withMessages([
+            'email' => trans('auth.failed'),
+        ]);
+    }
+
+    RateLimiter::clear($this->throttleKey());
+};
+
+
+$ensureIsNotRateLimited = function ()
+{
+    if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+        return;
+    }
+
+    event(new Lockout($this));
+
+    $seconds = RateLimiter::availableIn($this->throttleKey());
+
+    throw ValidationException::withMessages([
+        'email' => trans('auth.throttle', [
+            'seconds' => $seconds,
+            'minutes' => ceil($seconds / 60),
+        ]),
+    ]);
+};
+
+$throttleKey = function (): string
+{
+    return Str::transliterate(Str::lower($this->email).'|'.request()->ip());
+}
 
 ?>
 
