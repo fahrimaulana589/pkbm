@@ -1,10 +1,11 @@
-<?php
-use function Laravel\Folio\{name,middleware};
+<?php 
+use function Laravel\Folio\{name};
 
-name('login');
+name('password.reset');
 
 ?>
-<x-guest-layout title="login">
+
+<x-guest-layout title="forgot password">
     <div class="fixed top-0 hidden p-6 lg:block lg:px-12">
         <a href="#" class="flex items-center space-x-2">
             <img class="size-12" src="{{ asset('images/app-logo.svg') }}" alt="logo" />
@@ -21,5 +22,6 @@ name('login');
                 src="{{ asset('images/illustrations/dashboard-check-dark.svg') }}" alt="image" />
         </div>
     </div>
-    <livewire:formlogin />
+    @livewire('form-reset-password',['token'=>$token])
 </x-guest-layout>
+

@@ -41,8 +41,6 @@ $submit = function () {
             {{ __("Ensure your account is using a long, random password to stay secure.") }}
             </p>
             <form method="post" wire:submit.prevent="submit" class="mt-5 flex flex-col gap-4">
-            @csrf
-            @method('patch')
             <label class="block">
                 <span>Current Password</span>
                 <input

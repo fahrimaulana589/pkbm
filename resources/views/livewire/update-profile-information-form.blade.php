@@ -43,8 +43,6 @@ $submit = function () {
             {{ __("Update your account's profile information and email address.") }}
             </p>
             <form method="post" wire:submit.prevent="submit" class="mt-5 flex flex-col gap-4">
-            @csrf
-            @method('patch')
             <label class="block">
                 <span>Name</span>
                 <input

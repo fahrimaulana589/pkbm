@@ -35,8 +35,6 @@ $delete = function () {
             {{ __("Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.") }}
             </p>
             <form method="post" wire:submit.prevent="confim" class="mt-5 flex flex-col gap-4">
-            @csrf
-            
             <div>
             <button
                 class="btn bg-red-100 font-medium text-slate-800 hover:bg-red-200 focus:bg-red-200 active:bg-red-200/80 dark:bg-red-600 dark:text-navy-50 dark:hover:bg-red-500 dark:focus:bg-red-500 dark:active:bg-red-450/90"

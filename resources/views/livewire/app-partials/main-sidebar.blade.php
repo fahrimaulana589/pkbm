@@ -100,7 +100,7 @@ $changeRoutePrefix = function ($newPrefix) {
                                     </div>
                                 </div>
                             </a>
-                            @livewire('userlogout')
+                            @livewire('user-logout')
                         </div>
                     </div>
                 </div>

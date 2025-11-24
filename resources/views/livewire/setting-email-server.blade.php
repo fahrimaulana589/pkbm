@@ -62,8 +62,6 @@ $submit = function () {
             {{ __("Ensure your email server settings are correct to stay connected.") }}
             </p>
             <form method="post" wire:submit.prevent="submit" class="mt-5 flex flex-col gap-4">
-            @csrf
-            @method('patch')
             <label class="block">
                 <span>Email Server</span>
                 <input
