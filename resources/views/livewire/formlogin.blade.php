@@ -9,7 +9,7 @@ use Illuminate\Auth\Events\Lockout;
 
 state('email');
 state('password');
-state('remember', false);
+state('remember');
 
 rules(fn() => [
     'email'    => 'required|string|email',
@@ -22,7 +22,7 @@ $submit = function () {
     $this->authenticate();
 
     // Login berhasil → redirect
-    return $this->redirectRoute('dashboard', [], navigate: true);
+    return $this->redirectRoute('admin.dashboard', [], navigate: true);
 };
 
 $authenticate = function ()
@@ -124,6 +124,19 @@ $throttleKey = function (): string
                 @error('password')
                     <span class="text-tiny+ text-error">{{ $message }}</span>
                 @enderror
+            </div>
+
+            <div class="mt-4 flex items-center justify-between space-x-2">
+                <label class="inline-flex items-center space-x-2">
+                    <input
+                        wire:model="remember"
+                        class="form-checkbox is-outline size-5 rounded border-slate-400/70 bg-slate-100 before:bg-primary checked:border-primary hover:border-primary focus:border-primary dark:border-navy-500 dark:bg-navy-900 dark:before:bg-accent dark:checked:border-accent dark:hover:border-accent dark:focus:border-accent"
+                        type="checkbox" />
+                    <span class="line-clamp-1">Remember me</span>
+                </label>
+                <a href="#"
+                    class="text-xs text-slate-400 transition-colors line-clamp-1 hover:text-slate-800 focus:text-slate-800 dark:text-navy-300 dark:hover:text-navy-100 dark:focus:text-navy-100">Forgot
+                    Password?</a>
             </div>
 
             <button type="submit"

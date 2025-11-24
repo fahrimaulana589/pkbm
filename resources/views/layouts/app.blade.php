@@ -44,17 +44,20 @@
         <!-- Sidebar -->
         <div class="sidebar print:hidden">
             <!-- Main Sidebar -->
-            <x-app-partials.main-sidebar></x-app-partials.main-sidebar>
+            @livewire('app-partials.main-sidebar', ['routePrefix' => $routePrefix])
 
             <!-- Sidebar Panel -->
-            <x-app-partials.sidebar-panel></x-app-partials.sidebar-panel>
+            @livewire('app-partials.sidebar-panel',[
+                'sidebarMenu' => $sidebarMenu,
+                'pageName' => $pageName,
+                'allSidebarItems' => $allSidebarItems,
+            ])
         </div>
 
         <!-- App Header -->
-        <x-app-partials.header></x-app-partials.header>
-
+        @livewire('app-partials.header')
         <!-- Mobile Searchbar -->
-        <x-app-partials.mobile-searchbar></x-app-partials.mobile-searchbar>
+        @livewire('app-partials.mobile-searchbar')
 
         {{ $slot }}
 

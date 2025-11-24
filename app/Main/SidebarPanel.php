@@ -40,6 +40,6 @@ class SidebarPanel
     }
 
     public static function all(){
-        return [self::dashboards(), self::settings()];
+        return ['admin' => self::dashboards(), 'setting' => self::settings()];
     }
 }
