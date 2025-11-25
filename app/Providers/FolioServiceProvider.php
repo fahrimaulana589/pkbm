@@ -25,10 +25,10 @@ class FolioServiceProvider extends ServiceProvider
                 'guest'
             ],
             'admin/*' => [
-                'auth'
+                'verified','auth'
             ],
             'setting/*' => [
-                'auth'
+                'verified','auth'
             ],
         ]);
     }

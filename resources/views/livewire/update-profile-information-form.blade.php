@@ -5,10 +5,13 @@ use function Livewire\Volt\{state,rules,mount};
 state('user');
 state('name');
 state('email');
+state('is_must_verified', false);
 
 mount(function ($user) {
     $this->name = $user->name;
     $this->email = $user->email;
+
+    $user = auth()->user();
 });
 
 rules(fn() => [
@@ -18,11 +21,23 @@ rules(fn() => [
 
 $submit = function () {
     $this->validate();
-    $this->user->fill([
-        'name'  => $this->name,
-        'email' => $this->email,
-    ])->save();
-    $this->dispatch('profile-updated');
+
+    if ($this->email !== $this->user->email) {
+      $this->is_must_verified = true;
+      // Here you can add logic to send a verification email if needed
+      $this->addError('email', 'You need to verify your new email address.');
+    }else{
+      $this->user->fill([
+              'name'  => $this->name,
+              'email' => $this->email,
+          ])->save();
+          $this->dispatch('profile-updated');
+    }
+};
+
+$verification_email = function () {
+    // Logic to send verification email
+    
 };
 
 ?>
@@ -80,11 +95,19 @@ $submit = function () {
                 @enderror
             </label>
             <div>
-            <button
+              <button
+                  class="btn bg-slate-150 font-medium text-slate-800 hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200/80 dark:bg-navy-500 dark:text-navy-50 dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90"
+                  >
+                  Save
+              </button>
+              @if ($this->is_must_verified)
+              <button 
+                wire:click="verification_email"
                 class="btn bg-slate-150 font-medium text-slate-800 hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200/80 dark:bg-navy-500 dark:text-navy-50 dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90"
                 >
-                Save
-            </button>
+                Verification email sent
+              </button>
+              @endif
             </div>
             
             </form>

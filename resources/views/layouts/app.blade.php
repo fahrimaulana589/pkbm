@@ -36,7 +36,7 @@
 
     <!-- App preloader-->
     @persist('loader')
-    <x-app-preloader></x-app-preloader>
+    @livewire('components.app-preloader')
     @endpersist
 
     <!-- Page Wrapper -->
