@@ -15,7 +15,7 @@ render(function (View $view) {
         event(new Verified($user));
     }
 
-    return $view->with();    
+    return $view;    
 });
 ?>
 <x-guest-layout>
@@ -27,10 +27,6 @@ render(function (View $view) {
                     <h2 class="text-2xl font-semibold text-slate-600 dark:text-navy-100">
                         Selamat datang
                     </h2>
-                    <p class="text-slate-400 dark:text-navy-300">
-                           {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
-    
-                    </p>
                 </div>
             </div>
             @livewire('verification-success')
