@@ -1,0 +1,11 @@
+{
+    "mcpServers": {
+        "laravel-boost": {
+            "command": "/home/fahri/.config/herd-lite/bin/php",
+            "args": [
+                "/home/fahri/Documents/project/sekolah/artisan",
+                "boost:mcp"
+            ]
+        }
+    }
+}
