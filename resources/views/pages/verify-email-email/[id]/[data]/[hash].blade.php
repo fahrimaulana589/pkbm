@@ -4,18 +4,20 @@ use Illuminate\View\View;
 use Illuminate\Auth\Events\Verified;
 use App\Models\User;
 
-name('verification.verify');
+name('verification.verify.new-email');
 middleware(['signed','throttle:6,1']);
 
 render(function (View $view) {
 
     $user = User::findOrFail($view->id);
+    $user->email = $view->data;
+    $user->save();
 
     if ($user->markEmailAsVerified()) {
         event(new Verified($user));
     }
 
-    return $view->with();    
+    return $view->with;    
 });
 ?>
 <x-guest-layout>
@@ -27,15 +29,9 @@ render(function (View $view) {
                     <h2 class="text-2xl font-semibold text-slate-600 dark:text-navy-100">
                         Selamat datang
                     </h2>
-                    <p class="text-slate-400 dark:text-navy-300">
-                           {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
-    
-                    </p>
                 </div>
             </div>
             @livewire('verification-success')
         </div>
     </main>
 </x-guest-layout>
-
-

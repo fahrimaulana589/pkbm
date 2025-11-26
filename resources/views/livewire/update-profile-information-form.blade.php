@@ -5,13 +5,17 @@ use function Livewire\Volt\{state,rules,mount};
 state('user');
 state('name');
 state('email');
-state('is_must_verified', false);
+state('is_must_verified');
+state('is_new_email_verified');
+state('count',1);
 
 mount(function ($user) {
     $this->name = $user->name;
     $this->email = $user->email;
+    $this->is_must_verified = false;
+    $this->is_new_email_verified = true;
 
-    $user = auth()->user();
+    $this->user = auth()->user();
 });
 
 rules(fn() => [
@@ -22,8 +26,9 @@ rules(fn() => [
 $submit = function () {
     $this->validate();
 
-    if ($this->email !== $this->user->email) {
+    if (($this->email !== $this->user->email)) {
       $this->is_must_verified = true;
+      $this->is_new_email_verified = false;
       // Here you can add logic to send a verification email if needed
       $this->addError('email', 'You need to verify your new email address.');
     }else{
@@ -36,8 +41,38 @@ $submit = function () {
 };
 
 $verification_email = function () {
-    // Logic to send verification email
-    
+  
+  $temp_user = clone $this->user;
+
+  $url = URL::temporarySignedRoute(
+      'verification.verify.new-email',
+      now()->addMinutes(60),
+      [
+        'id' => $this->user->id,
+        'data' => $this->email,
+        'hash' => sha1($this->email)
+      ]
+  );
+
+  $notification = new class($url) extends \Illuminate\Auth\Notifications\VerifyEmail {
+    private $url;
+    public function __construct($url) { $this->url = $url; }
+    protected function verificationUrl($notifiable) { return $this->url; }
+  };
+
+  \Illuminate\Support\Facades\Notification::send($temp_user, $notification);
+
+  $this->resetErrorBag('email');
+  $this->addError('email', 'Verification email sent to your new address.');
+};
+
+$is_email_verified = function () {
+  if(!$this->is_new_email_verified && auth()->user()->email == $this->email){
+    $this->is_new_email_verified = true;
+    $this->is_must_verified = false;
+    $this->resetErrorBag();
+    $this->dispatch('profile-updated');
+  }
 };
 
 ?>
@@ -45,6 +80,10 @@ $verification_email = function () {
 <div>
     <!-- Basic Input Text -->
     <div class="card px-4 pb-4 sm:px-5">
+        <div wire:poll.1s="is_email_verified">
+          
+        </div>
+    
         <div class="my-3 flex h-8 items-center justify-between">
             <h2
             class="font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 lg:text-base"
@@ -101,12 +140,12 @@ $verification_email = function () {
                   Save
               </button>
               @if ($this->is_must_verified)
-              <button 
+              <a 
                 wire:click="verification_email"
                 class="btn bg-slate-150 font-medium text-slate-800 hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200/80 dark:bg-navy-500 dark:text-navy-50 dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90"
                 >
                 Verification email sent
-              </button>
+              </a>
               @endif
             </div>
             
