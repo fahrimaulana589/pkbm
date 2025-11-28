@@ -15,6 +15,16 @@ class SidebarPanel
                         'title' => 'Analytics',
                         'route_name' => 'admin.dashboard'
                     ],
+                ],
+                [
+                    'announcement' => [
+                        'title' => 'Pengumuman',
+                        'route_name' => 'admin.pengumuman'
+                    ],
+                    'guru' => [
+                        'title' => 'Guru',
+                        'route_name' => 'admin.guru'
+                    ],
                     'dashboards_orders' => [
                         'title' => 'Profile',
                         'route_name' => 'admin.profile'
