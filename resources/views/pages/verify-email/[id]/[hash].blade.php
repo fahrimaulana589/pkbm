@@ -11,7 +11,11 @@ render(function (View $view) {
 
     $user = User::findOrFail($view->id);
 
-    if ($user->markEmailAsVerified()) {
+    if (! hash_equals((string) $view->hash, sha1($user->getEmailForVerification()))) {
+        abort(403);
+    }
+
+    if (! $user->hasVerifiedEmail() && $user->markEmailAsVerified()) {
         event(new Verified($user));
     }
 

@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
+use Livewire\Livewire;
 use Tests\TestCase;
 
 class PasswordResetTest extends TestCase
@@ -25,26 +26,23 @@ class PasswordResetTest extends TestCase
 
         $user = User::factory()->create();
 
-        $this->post('/forgot-password', ['email' => $user->email]);
+        Livewire::test('form-forgot-password')
+            ->set('email', $user->email)
+            ->call('submit')
+            ->assertHasNoErrors()
+            ->assertDispatched('password-reset-link-sent');
 
         Notification::assertSentTo($user, ResetPassword::class);
     }
 
     public function test_reset_password_screen_can_be_rendered(): void
     {
-        Notification::fake();
-
         $user = User::factory()->create();
+        $token = 'valid-token';
 
-        $this->post('/forgot-password', ['email' => $user->email]);
+        $response = $this->get('/reset-password/'.$token);
 
-        Notification::assertSentTo($user, ResetPassword::class, function ($notification) {
-            $response = $this->get('/reset-password/'.$notification->token);
-
-            $response->assertStatus(200);
-
-            return true;
-        });
+        $response->assertStatus(200);
     }
 
     public function test_password_can_be_reset_with_valid_token(): void
@@ -53,21 +51,19 @@ class PasswordResetTest extends TestCase
 
         $user = User::factory()->create();
 
-        $this->post('/forgot-password', ['email' => $user->email]);
+        $token = app('auth.password.broker')->createToken($user);
 
-        Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
-            $response = $this->post('/reset-password', [
-                'token' => $notification->token,
-                'email' => $user->email,
-                'password' => 'password',
-                'password_confirmation' => 'password',
-            ]);
+        Livewire::test('form-reset-password', ['token' => $token])
+            ->set('email', $user->email)
+            ->set('password', 'password')
+            ->set('password_confirmation', 'password')
+            ->call('submit')
+            ->assertHasNoErrors()
+            ->assertRedirect(route('login'));
 
-            $response
-                ->assertSessionHasNoErrors()
-                ->assertRedirect(route('login'));
-
-            return true;
-        });
+        $this->assertTrue(auth()->guard()->attempt([
+            'email' => $user->email,
+            'password' => 'password',
+        ]));
     }
 }

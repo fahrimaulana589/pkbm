@@ -18,9 +18,11 @@ mount(function ($user) {
     $this->user = auth()->user();
 });
 
+use Illuminate\Validation\Rule;
+
 rules(fn() => [
-    'name'  => 'required|string|max:255',
-    'email' => 'required|string|lowercase|email|max:255|unique:users,email,' . $this->user->id,
+    'name'  => ['required', 'string', 'max:255'],
+    'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique('users')->ignore($this->user->id)],
 ]);
 
 $submit = function () {
