@@ -41,6 +41,14 @@ class SidebarPanel
                         'title' => 'Rombel',
                         'route_name' => 'admin.rombel.index'
                     ],
+                    'jadwal' => [
+                        'title' => 'Jadwal Belajar',
+                        'route_name' => 'admin.jadwal.index'
+                    ],
+                    'sertifikat' => [
+                        'title' => 'Sertifikat',
+                        'route_name' => 'admin.sertifikat.index'
+                    ],
                 ]
             ]
         ];
