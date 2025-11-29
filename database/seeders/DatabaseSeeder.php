@@ -17,11 +17,11 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
         $this->call(AnnouncementSeeder::class);
+        $this->call(TutorSeeder::class);
 
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
-            'email_verified_at' => null,
         ]);
     }
 }

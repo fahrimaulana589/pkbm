@@ -21,6 +21,10 @@ class SidebarPanel
                         'title' => 'Pengumuman',
                         'route_name' => 'admin.pengumuman'
                     ],
+                    'tutor' => [
+                        'title' => 'Tutor',
+                        'route_name' => 'admin.tutor.index'
+                    ],
                 ]
             ]
         ];
