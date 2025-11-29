@@ -17,7 +17,7 @@ name('admin.pengumuman.edit');
             </div>
             <ul class="hidden flex-wrap items-center space-x-2 sm:flex">
                 <li class="flex items-center space-x-2">
-                    <a class="text-primary transition-colors hover:text-primary-focus dark:text-accent-light dark:hover:text-accent"
+                    <a wire:navigate class="text-primary transition-colors hover:text-primary-focus dark:text-accent-light dark:hover:text-accent"
                         href="{{ route('admin.pengumuman') }}">Pengumuman</a>
                     <svg x-ignore xmlns="http://www.w3.org/2000/svg" class="size-4" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
