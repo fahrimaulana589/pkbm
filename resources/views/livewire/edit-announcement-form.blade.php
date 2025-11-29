@@ -172,45 +172,40 @@ $save = function () {
                             </template>
                         </div>
                     @endif
-                    <label class="block">
+                    <x-input-label>
                         <span>Judul</span>
-                        <input wire:model="judul"
-                            @error('judul')
-                            class="form-input mt-1.5 w-full rounded-lg border border-error bg-transparent px-3 py-2 placeholder:text-slate-400/70"
-                            @else
-                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                            @enderror
-                            placeholder="Masukkan judul pengumuman" type="text" />
-                        @error('judul') <span class="text-tiny+ text-error">{{ $message }}</span> @enderror
-                    </label>
-                    <label class="block">
+                        <x-text-input wire:model="judul" 
+                            placeholder="Masukkan judul pengumuman" 
+                            type="text" 
+                            :error="$errors->has('judul')" />
+                        <x-input-error :messages="$errors->get('judul')" />
+                    </x-input-label>
+
+                    <x-input-label>
                         <span>Isi Pengumuman</span>
-                        <textarea wire:model="isi" rows="6"
-                            @error('isi')
-                            class="form-textarea mt-1.5 w-full rounded-lg border border-error bg-transparent p-2.5 placeholder:text-slate-400/70"
-                            @else
-                            class="form-textarea mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                            @enderror
-                            placeholder="Tulis isi pengumuman disini..."></textarea>
-                        @error('isi') <span class="text-tiny+ text-error">{{ $message }}</span> @enderror
-                    </label>
+                        <x-textarea-input wire:model="isi" rows="6"
+                            placeholder="Tulis isi pengumuman disini..." 
+                            :error="$errors->has('isi')">
+                        </x-textarea-input>
+                        <x-input-error :messages="$errors->get('isi')" />
+                    </x-input-label>
 
                     {{-- Thumbnail Upload --}}
-                    <label class="block">
+                    <x-input-label>
                         <span>Thumbnail (Opsional)</span>
                         @if($existing_thumbnail)
                             <div class="mb-2">
                                 <img src="{{ asset('storage/' . $existing_thumbnail) }}" alt="Thumbnail" class="h-20 w-auto rounded border border-slate-200 object-cover dark:border-navy-500">
                             </div>
                         @endif
-                        <input wire:model="new_thumbnail" type="file" accept="image/*"
-                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" />
-                        @error('new_thumbnail') <span class="text-tiny+ text-error">{{ $message }}</span> @enderror
+                        <x-text-input wire:model="new_thumbnail" type="file" accept="image/*" 
+                            :error="$errors->has('new_thumbnail')" />
+                        <x-input-error :messages="$errors->get('new_thumbnail')" />
                         <span class="text-xs text-slate-400">Max 2MB. Format: JPG, PNG, JPEG.</span>
-                    </label>
+                    </x-input-label>
 
                     {{-- Lampiran File Upload --}}
-                    <label class="block">
+                    <x-input-label>
                         <span>Lampiran File (Opsional)</span>
                         @if($existing_lampiran_file)
                             <div class="mb-2 flex items-center space-x-2">
@@ -220,11 +215,11 @@ $save = function () {
                                 <a href="{{ asset('storage/' . $existing_lampiran_file) }}" target="_blank" class="text-primary hover:underline dark:text-accent-light">Lihat Lampiran Saat Ini</a>
                             </div>
                         @endif
-                        <input wire:model="new_lampiran_file" type="file"
-                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" />
-                        @error('new_lampiran_file') <span class="text-tiny+ text-error">{{ $message }}</span> @enderror
+                        <x-text-input wire:model="new_lampiran_file" type="file" 
+                            :error="$errors->has('new_lampiran_file')" />
+                        <x-input-error :messages="$errors->get('new_lampiran_file')" />
                         <span class="text-xs text-slate-400">Max 10MB.</span>
-                    </label>
+                    </x-input-label>
                 </div>
             </div>
         </div>
@@ -238,165 +233,72 @@ $save = function () {
             </div>
             <div class="max-w-xl">
                 <div class="mt-5 flex flex-col gap-4">
-                    <label class="block">
+                    <x-input-label>
                         <span>Kategori</span>
-                        <select wire:model="kategori"
-                            @error('kategori')
-                            class="form-select mt-1.5 w-full rounded-lg border border-error bg-transparent px-3 py-2"
-                            @else
-                            class="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                            @enderror>
+                        <x-select-input wire:model="kategori" :error="$errors->has('kategori')">
                             <option value="Umum">Umum</option>
                             <option value="Akademik">Akademik</option>
                             <option value="Kesiswaan">Kesiswaan</option>
                             <option value="Kepegawaian">Kepegawaian</option>
                             <option value="Kegiatan">Kegiatan</option>
                             <option value="Darurat">Darurat</option>
-                        </select>
-                        @error('kategori') <span class="text-tiny+ text-error">{{ $message }}</span> @enderror
-                    </label>
+                        </x-select-input>
+                        <x-input-error :messages="$errors->get('kategori')" />
+                    </x-input-label>
 
-                    <label class="block">
+                    <x-input-label>
                         <span>Prioritas</span>
-                        <select wire:model="prioritas"
-                            @error('prioritas')
-                            class="form-select mt-1.5 w-full rounded-lg border border-error bg-transparent px-3 py-2"
-                            @else
-                            class="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                            @enderror>
+                        <x-select-input wire:model="prioritas" :error="$errors->has('prioritas')">
                             <option value="Normal">Normal</option>
                             <option value="Penting">Penting</option>
                             <option value="Tinggi">Tinggi</option>
-                        </select>
-                        @error('prioritas') <span class="text-tiny+ text-error">{{ $message }}</span> @enderror
-                    </label>
+                        </x-select-input>
+                        <x-input-error :messages="$errors->get('prioritas')" />
+                    </x-input-label>
 
-                    <label class="block">
+                    <x-input-label>
                         <span>Status</span>
-                        <select wire:model="status"
-                            @error('status')
-                            class="form-select mt-1.5 w-full rounded-lg border border-error bg-transparent px-3 py-2"
-                            @else
-                            class="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                            @enderror>
+                        <x-select-input wire:model="status" :error="$errors->has('status')">
                             <option value="draft">Draft</option>
                             <option value="dipublikasikan">Dipublikasikan</option>
                             <option value="terjadwal">Terjadwal</option>
                             <option value="kadaluarsa">Kadaluarsa</option>
-                        </select>
-                        @error('status') <span class="text-tiny+ text-error">{{ $message }}</span> @enderror
-                    </label>
+                        </x-select-input>
+                        <x-input-error :messages="$errors->get('status')" />
+                    </x-input-label>
 
-                    <label class="block">
+                    <x-input-label>
                         <span>Tanggal Publikasi</span>
-                        <input wire:model="published_at"
-                            @error('published_at')
-                            class="form-input mt-1.5 w-full rounded-lg border border-error bg-transparent px-3 py-2 placeholder:text-slate-400/70"
-                            @else
-                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                            @enderror
-                            type="datetime-local" />
-                        @error('published_at') <span class="text-tiny+ text-error">{{ $message }}</span> @enderror
-                    </label>
+                        <x-text-input wire:model="published_at" type="datetime-local" 
+                            :error="$errors->has('published_at')" />
+                        <x-input-error :messages="$errors->get('published_at')" />
+                    </x-input-label>
 
-                    <label class="block">
+                    <x-input-label>
                         <span>Tanggal Mulai</span>
-                        <input wire:model="start_date"
-                            @error('start_date')
-                            class="form-input mt-1.5 w-full rounded-lg border border-error bg-transparent px-3 py-2 placeholder:text-slate-400/70"
-                            @else
-                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                            @enderror
-                            type="date" />
-                        @error('start_date') <span class="text-tiny+ text-error">{{ $message }}</span> @enderror
-                    </label>
+                        <x-text-input wire:model="start_date" type="date" 
+                            :error="$errors->has('start_date')" />
+                        <x-input-error :messages="$errors->get('start_date')" />
+                    </x-input-label>
 
-                    <label class="block">
+                    <x-input-label>
                         <span>Tanggal Akhir</span>
-                        <input wire:model="end_date"
-                            @error('end_date')
-                            class="form-input mt-1.5 w-full rounded-lg border border-error bg-transparent px-3 py-2 placeholder:text-slate-400/70"
-                            @else
-                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                            @enderror
-                            type="date" />
-                        @error('end_date') <span class="text-tiny+ text-error">{{ $message }}</span> @enderror
-                    </label>
+                        <x-text-input wire:model="end_date" type="date" 
+                            :error="$errors->has('end_date')" />
+                        <x-input-error :messages="$errors->get('end_date')" />
+                    </x-input-label>
                 </div>
                 <div class="mt-5">
-                    <button wire:click="save"
-                        class="btn bg-slate-150 font-medium text-slate-800 hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200/80 dark:bg-navy-500 dark:text-navy-50 dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90">
+                    <x-primary-button wire:click="save">
                         Simpan Perubahan
-                    </button>
+                    </x-primary-button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div 
-        x-data="{showModal:false}"
-        x-on:announcement-updated.window="showModal = true"
-    >
-    
-    <template x-teleport="#x-teleport-target">
-      <div
-        class="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5"
-        x-show="showModal"
-        role="dialog"
-        @keydown.window.escape="showModal = false"
-      >
-        <div
-          class="absolute inset-0 bg-slate-900/60 transition-opacity duration-300"
-          @click="showModal = false"
-          x-show="showModal"
-          x-transition:enter="ease-out"
-          x-transition:enter-start="opacity-0"
-          x-transition:enter-end="opacity-100"
-          x-transition:leave="ease-in"
-          x-transition:leave-start="opacity-100"
-          x-transition:leave-end="opacity-0"
-        ></div>
-        <div
-          class="relative max-w-lg rounded-lg bg-white px-4 py-10 text-center transition-opacity duration-300 dark:bg-navy-700 sm:px-5"
-          x-show="showModal"
-          x-transition:enter="ease-out"
-          x-transition:enter-start="opacity-0"
-          x-transition:enter-end="opacity-100"
-          x-transition:leave="ease-in"
-          x-transition:leave-start="opacity-100"
-          x-transition:leave-end="opacity-0"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="inline size-28 text-success"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-            ></path>
-          </svg>
-
-          <div class="mt-4">
-            <h2 class="text-2xl text-slate-700 dark:text-navy-100">
-              Pengumuman berhasil dihapus
-            </h2>
-            <p class="mt-2">
-              Pengumuman ini telah dihapus.
-            </p>
-            <button
-              @click="showModal = false"
-              class="btn mt-6 bg-success font-medium text-white hover:bg-success-focus focus:bg-success-focus active:bg-success-focus/90"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      </div>
-    </template>
-    </div>
+    <x-success-modal 
+        trigger="announcement-updated" 
+        message="Pengumuman berhasil diperbarui." 
+    />
 </div>
