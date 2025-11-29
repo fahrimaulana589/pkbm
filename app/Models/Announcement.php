@@ -43,4 +43,16 @@ class Announcement extends Model
     {
         return $this->belongsTo(User::class, 'penulis_id');
     }
+
+    protected static function booted(): void
+    {
+        static::deleting(function (Announcement $announcement) {
+            if ($announcement->lampiran_file) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($announcement->lampiran_file);
+            }
+            if ($announcement->thumbnail) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($announcement->thumbnail);
+            }
+        });
+    }
 }

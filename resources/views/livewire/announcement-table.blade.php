@@ -1,10 +1,11 @@
 <?php
 
 use App\Models\Announcement;
-use function Livewire\Volt\{state, computed, mount, rules, validate};
+use function Livewire\Volt\{state, computed, mount, rules, validate, on};
 
 $pengumumans = Announcement::with('penulis')->orderBy('created_at', 'desc')->get();
 state('pengumumans', $pengumumans);
+state('id', null);
 
 $getStatusBadge = fn($status) => match($status) {
     'dipublikasikan' => '<div class="badge rounded-full bg-success/10 text-success dark:bg-success/15">Dipublikasikan</div>',
@@ -15,6 +16,18 @@ $getStatusBadge = fn($status) => match($status) {
 };
 
 $getDateDisplay = fn($date) => !$date ? '-' : \Carbon\Carbon::parse($date)->format('d M Y');
+
+$confim = function ($id) {
+    // Here you can implement password confirmation logic if needed
+    $this->id = $id;
+    $this->dispatch('delete-announcement-confirmation');
+};
+
+$delete = function () {
+    Announcement::find($this->id)->delete();
+    $this->pengumumans = Announcement::with('penulis')->orderBy('created_at', 'desc')->get();   
+    $this->dispatch('delete-announcement-confirmated');
+};
 
 ?>
 
@@ -41,6 +54,16 @@ $getDateDisplay = fn($date) => !$date ? '-' : \Carbon\Carbon::parse($date)->form
         /* Sembunyikan scrollbar native tapi tetap bisa discroll */
         .is-scrollbar-hidden::-webkit-scrollbar { display: none; }
         .is-scrollbar-hidden { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Fix Popper/Dropdown Layout Shift */
+        .popper-root {
+            position: absolute;
+            z-index: 100;
+            visibility: hidden;
+        }
+        .popper-root.show {
+            visibility: visible;
+        }
     </style>
 
     <div class="flex items-center space-x-4 py-5 lg:py-6">
@@ -98,8 +121,7 @@ $getDateDisplay = fn($date) => !$date ? '-' : \Carbon\Carbon::parse($date)->form
                         <div x-ref="popperRoot" class="popper-root" :class="isShowPopper && 'show'">
                             <div class="popper-box rounded-md border border-slate-150 bg-white py-1.5 font-inter dark:border-navy-500 dark:bg-navy-700">
                                 <ul>
-                                <li><a href="#" class="flex h-8 items-center px-3 pr-8 font-medium tracking-wide outline-hidden transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Tambah Baru</a></li>
-                                <li><a href="#" class="flex h-8 items-center px-3 pr-8 font-medium tracking-wide outline-hidden transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Export</a></li>
+                                <li><a href="{{ route('admin.pengumuman.create') }}" class="flex h-8 items-center px-3 pr-8 font-medium tracking-wide outline-hidden transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Tambah Baru</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -282,9 +304,8 @@ $getDateDisplay = fn($date) => !$date ? '-' : \Carbon\Carbon::parse($date)->form
                                 <div x-ref="popperRoot" class="popper-root" :class="isShowPopper && 'show'">
                                     <div class="popper-box rounded-md border border-slate-150 bg-white py-1.5 font-inter dark:border-navy-500 dark:bg-navy-700">
                                     <ul>
-                                        <li><a href="#" class="flex h-8 items-center px-3 pr-8 font-medium tracking-wide outline-hidden transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Edit</a></li>
-                                        <li><a href="#" class="flex h-8 items-center px-3 pr-8 font-medium tracking-wide outline-hidden transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Lihat Detail</a></li>
-                                        <li><a href="#" class="flex h-8 items-center px-3 pr-8 font-medium tracking-wide outline-hidden text-error transition-all hover:bg-slate-100 focus:bg-slate-100 dark:hover:bg-navy-600 dark:focus:bg-navy-600">Hapus</a></li>
+                                        <li><a href="{{ route('admin.pengumuman.edit', ['id' => $pengumuman->id]) }}" class="flex h-8 items-center px-3 pr-8 font-medium tracking-wide outline-hidden transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Edit</a></li>
+                                        <li><button @click="isShowPopper = false" wire:click="confim({{$pengumuman->id}})" class="flex h-8 w-full items-center px-3 pr-8 font-medium tracking-wide outline-hidden text-error transition-all hover:bg-slate-100 focus:bg-slate-100 dark:hover:bg-navy-600 dark:focus:bg-navy-600">Hapus</button></li>
                                     </ul>
                                     </div>
                                 </div>
@@ -302,4 +323,212 @@ $getDateDisplay = fn($date) => !$date ? '-' : \Carbon\Carbon::parse($date)->form
             </div>
         </div> 
     </div>
+
+    <div 
+        x-data="{showModal:false}"
+        x-on:delete-announcement-confirmation.window="showModal = true"
+        x-on:delete-announcement-confirmated.window="showModal = false"
+    >
+    
+    <template x-teleport="#x-teleport-target">
+      <div
+        class="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5"
+        x-show="showModal"
+        role="dialog"
+        @keydown.window.escape="showModal = false"
+      >
+        <div
+          class="absolute inset-0 bg-slate-900/60 transition-opacity duration-300"
+          @click="showModal = false"
+          x-show="showModal"
+          x-transition:enter="ease-out"
+          x-transition:enter-start="opacity-0"
+          x-transition:enter-end="opacity-100"
+          x-transition:leave="ease-in"
+          x-transition:leave-start="opacity-100"
+          x-transition:leave-end="opacity-0"
+        ></div>
+        <div
+          class="relative max-w-md rounded-lg bg-white pt-10 pb-4 text-center transition-all duration-300 dark:bg-navy-700"
+          x-show="showModal"
+          x-transition:enter="easy-out"
+          x-transition:enter-start="opacity-0 [transform:translate3d(0,1rem,0)]"
+          x-transition:enter-end="opacity-100 [transform:translate3d(0,0,0)]"
+          x-transition:leave="easy-in"
+          x-transition:leave-start="opacity-100 [transform:translate3d(0,0,0)]"
+          x-transition:leave-end="opacity-0 [transform:translate3d(0,1rem,0)]"
+        >
+          <div class="avatar size-20">
+            <img
+              class="rounded-full"
+              src="images/200x200.png"
+              alt="avatar"
+            />
+            <div
+              class="absolute right-0 m-1 size-4 rounded-full border-2 border-white bg-primary dark:border-navy-700 dark:bg-accent"
+            ></div>
+          </div>
+          <div class="mt-4 px-4 sm:px-12">
+            <h3 class="text-lg text-slate-800 dark:text-navy-50">
+              Konfirmasi Penghapusan
+            </h3>
+            <p class="mt-1 text-slate-500 dark:text-navy-200">
+              Pengumuman ini akan dihapus. Apakah Anda yakin ingin menghapus pengumuman ini?
+            </p>
+          </div>
+          <div class="my-4 mt-16 h-px bg-slate-200 dark:bg-navy-500"></div>
+
+          <div class="space-x-3">
+            <button
+              @click="showModal = false"
+              class="btn min-w-[7rem] rounded-full border border-slate-300 font-medium text-slate-800 hover:bg-slate-150 focus:bg-slate-150 active:bg-slate-150/80 dark:border-navy-450 dark:text-navy-50 dark:hover:bg-navy-500 dark:focus:bg-navy-500 dark:active:bg-navy-500/90"
+            >
+              Cancel
+            </button>
+            <button
+              wire:click="delete"
+              class="btn min-w-[7rem] rounded-full bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90"
+            >
+              Apply
+            </button>
+          </div>
+        </div>
+      </div>
+    </template>
+    </div>
+
+
+    <div 
+        x-data="{showModal:false}"
+        x-on:delete-announcement-confirmated.window="showModal = true"
+    >
+    
+    <template x-teleport="#x-teleport-target">
+      <div
+        class="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5"
+        x-show="showModal"
+        role="dialog"
+        @keydown.window.escape="showModal = false"
+      >
+        <div
+          class="absolute inset-0 bg-slate-900/60 transition-opacity duration-300"
+          @click="showModal = false"
+          x-show="showModal"
+          x-transition:enter="ease-out"
+          x-transition:enter-start="opacity-0"
+          x-transition:enter-end="opacity-100"
+          x-transition:leave="ease-in"
+          x-transition:leave-start="opacity-100"
+          x-transition:leave-end="opacity-0"
+        ></div>
+        <div
+          class="relative max-w-lg rounded-lg bg-white px-4 py-10 text-center transition-opacity duration-300 dark:bg-navy-700 sm:px-5"
+          x-show="showModal"
+          x-transition:enter="ease-out"
+          x-transition:enter-start="opacity-0"
+          x-transition:enter-end="opacity-100"
+          x-transition:leave="ease-in"
+          x-transition:leave-start="opacity-100"
+          x-transition:leave-end="opacity-0"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="inline size-28 text-success"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            ></path>
+          </svg>
+
+          <div class="mt-4">
+            <h2 class="text-2xl text-slate-700 dark:text-navy-100">
+              Pengumuman berhasil dihapus
+            </h2>
+            <p class="mt-2">
+              Pengumuman ini telah dihapus.
+            </p>
+            <button
+              @click="showModal = false"
+              class="btn mt-6 bg-success font-medium text-white hover:bg-success-focus focus:bg-success-focus active:bg-success-focus/90"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </template>
+    </div>
+
+    @if (session()->has('message'))
+        <div 
+            x-data="{showModal:true}"
+        >
+            <template x-teleport="#x-teleport-target">
+                <div
+                    class="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5"
+                    x-show="showModal"
+                    role="dialog"
+                    @keydown.window.escape="showModal = false"
+                >
+                    <div
+                        class="absolute inset-0 bg-slate-900/60 transition-opacity duration-300"
+                        @click="showModal = false"
+                        x-show="showModal"
+                        x-transition:enter="ease-out"
+                        x-transition:enter-start="opacity-0"
+                        x-transition:enter-end="opacity-100"
+                        x-transition:leave="ease-in"
+                        x-transition:leave-start="opacity-100"
+                        x-transition:leave-end="opacity-0"
+                    ></div>
+                    <div
+                        class="relative max-w-lg rounded-lg bg-white px-4 py-10 text-center transition-opacity duration-300 dark:bg-navy-700 sm:px-5"
+                        x-show="showModal"
+                        x-transition:enter="ease-out"
+                        x-transition:enter-start="opacity-0"
+                        x-transition:enter-end="opacity-100"
+                        x-transition:leave="ease-in"
+                        x-transition:leave-start="opacity-100"
+                        x-transition:leave-end="opacity-0"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="inline size-28 text-success"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                            ></path>
+                        </svg>
+
+                        <div class="mt-4">
+                            <h2 class="text-2xl text-slate-700 dark:text-navy-100">
+                            {{ session('status') }}
+                            </h2>
+                            <p class="mt-2">
+                            {{ session('message') }}
+                            </p>
+                            <button
+                            @click="showModal = false"
+                            class="btn mt-6 bg-success font-medium text-white hover:bg-success-focus focus:bg-success-focus active:bg-success-focus/90"
+                            >
+                            Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    @endif
 </div>

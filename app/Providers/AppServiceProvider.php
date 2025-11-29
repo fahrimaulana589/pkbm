@@ -20,14 +20,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $setting = Setting::find(1);
-        if ($setting) {
-            config([
-                'mail.mailers.smtp.host' => $setting->email_server,
-                'mail.mailers.smtp.port' => $setting->email_port,
-                'mail.mailers.smtp.username' => $setting->email_username,
-                'mail.mailers.smtp.password' => $setting->email_password,
-            ]);
+        try {
+            $setting = Setting::find(1);
+            if ($setting) {
+                config([
+                    'mail.mailers.smtp.host' => $setting->email_server,
+                    'mail.mailers.smtp.port' => $setting->email_port,
+                    'mail.mailers.smtp.username' => $setting->email_username,
+                    'mail.mailers.smtp.password' => $setting->email_password,
+                ]);
+            }
+        } catch (\Exception $e) {
+            // Ignore database errors during boot (e.g. migrations not run yet)
         }
     }
 }
