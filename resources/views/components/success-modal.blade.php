@@ -5,7 +5,7 @@
     @if($trigger)
         x-on:{{ $trigger }}.window="showModal = true; setTimeout(() => showModal = false, 3000)"
     @else
-        x-init="showModal = true; setTimeout(() => showModal = false, 3000)"
+        x-init="showModal = true"
     @endif
 >
     <template x-teleport="#x-teleport-target">

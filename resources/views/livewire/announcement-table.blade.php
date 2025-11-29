@@ -324,153 +324,25 @@ $delete = function () {
         </div> 
     </div>
 
-    <div 
-        x-data="{showModal:false}"
-        x-on:delete-announcement-confirmation.window="showModal = true"
-        x-on:delete-announcement-confirmated.window="showModal = false"
-    >
-    
-    <template x-teleport="#x-teleport-target">
-      <div
-        class="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5"
-        x-show="showModal"
-        role="dialog"
-        @keydown.window.escape="showModal = false"
-      >
-        <div
-          class="absolute inset-0 bg-slate-900/60 transition-opacity duration-300"
-          @click="showModal = false"
-          x-show="showModal"
-          x-transition:enter="ease-out"
-          x-transition:enter-start="opacity-0"
-          x-transition:enter-end="opacity-100"
-          x-transition:leave="ease-in"
-          x-transition:leave-start="opacity-100"
-          x-transition:leave-end="opacity-0"
-        ></div>
-        <div
-          class="relative max-w-md rounded-lg bg-white pt-10 pb-4 text-center transition-all duration-300 dark:bg-navy-700"
-          x-show="showModal"
-          x-transition:enter="easy-out"
-          x-transition:enter-start="opacity-0 [transform:translate3d(0,1rem,0)]"
-          x-transition:enter-end="opacity-100 [transform:translate3d(0,0,0)]"
-          x-transition:leave="easy-in"
-          x-transition:leave-start="opacity-100 [transform:translate3d(0,0,0)]"
-          x-transition:leave-end="opacity-0 [transform:translate3d(0,1rem,0)]"
-        >
-          <div class="avatar size-20">
-            <img
-              class="rounded-full"
-              src="images/200x200.png"
-              alt="avatar"
-            />
-            <div
-              class="absolute right-0 m-1 size-4 rounded-full border-2 border-white bg-primary dark:border-navy-700 dark:bg-accent"
-            ></div>
-          </div>
-          <div class="mt-4 px-4 sm:px-12">
-            <h3 class="text-lg text-slate-800 dark:text-navy-50">
-              Konfirmasi Penghapusan
-            </h3>
-            <p class="mt-1 text-slate-500 dark:text-navy-200">
-              Pengumuman ini akan dihapus. Apakah Anda yakin ingin menghapus pengumuman ini?
-            </p>
-          </div>
-          <div class="my-4 mt-16 h-px bg-slate-200 dark:bg-navy-500"></div>
+    <x-confirm-modal 
+        :trigger="'delete-announcement-confirmation'"
+        :title="'Konfirmasi Penghapusan'"
+        :message="'Pengumuman ini akan dihapus. Apakah Anda yakin ingin menghapus pengumuman ini?'" 
+        :action="'delete'"
+    />
 
-          <div class="space-x-3">
-            <button
-              @click="showModal = false"
-              class="btn min-w-[7rem] rounded-full border border-slate-300 font-medium text-slate-800 hover:bg-slate-150 focus:bg-slate-150 active:bg-slate-150/80 dark:border-navy-450 dark:text-navy-50 dark:hover:bg-navy-500 dark:focus:bg-navy-500 dark:active:bg-navy-500/90"
-            >
-              Cancel
-            </button>
-            <button
-              wire:click="delete"
-              class="btn min-w-[7rem] rounded-full bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90"
-            >
-              Apply
-            </button>
-          </div>
-        </div>
-      </div>
-    </template>
-    </div>
+    <x-success-modal 
+        :trigger="'delete-announcement-confirmated'"
+        :title="'Pengumuman berhasil dihapus'"
+        :message="'Pengumuman ini telah dihapus.'" 
+    />
 
-
-    <div 
-        x-data="{showModal:false}"
-        x-on:delete-announcement-confirmated.window="showModal = true"
-    >
-    
-    <template x-teleport="#x-teleport-target">
-      <div
-        class="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5"
-        x-show="showModal"
-        role="dialog"
-        @keydown.window.escape="showModal = false"
-      >
-        <div
-          class="absolute inset-0 bg-slate-900/60 transition-opacity duration-300"
-          @click="showModal = false"
-          x-show="showModal"
-          x-transition:enter="ease-out"
-          x-transition:enter-start="opacity-0"
-          x-transition:enter-end="opacity-100"
-          x-transition:leave="ease-in"
-          x-transition:leave-start="opacity-100"
-          x-transition:leave-end="opacity-0"
-        ></div>
-        <div
-          class="relative max-w-lg rounded-lg bg-white px-4 py-10 text-center transition-opacity duration-300 dark:bg-navy-700 sm:px-5"
-          x-show="showModal"
-          x-transition:enter="ease-out"
-          x-transition:enter-start="opacity-0"
-          x-transition:enter-end="opacity-100"
-          x-transition:leave="ease-in"
-          x-transition:leave-start="opacity-100"
-          x-transition:leave-end="opacity-0"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="inline size-28 text-success"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-            ></path>
-          </svg>
-
-          <div class="mt-4">
-            <h2 class="text-2xl text-slate-700 dark:text-navy-100">
-              Pengumuman berhasil dihapus
-            </h2>
-            <p class="mt-2">
-              Pengumuman ini telah dihapus.
-            </p>
-            <button
-              @click="showModal = false"
-              class="btn mt-6 bg-success font-medium text-white hover:bg-success-focus focus:bg-success-focus active:bg-success-focus/90"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      </div>
-    </template>
-    </div>
-
-        <!-- Success Modal for Create/General Messages -->
-        @if (session()->has('message'))
-            <x-success-modal 
-                :title="session('status') ?? 'Berhasil'"
-                :message="session('message')" 
-            />
-        @endif
-        <!-- Announcement Table -->
+    <!-- Success Modal for Create/General Messages -->
+    @if (session()->has('message'))
+        <x-success-modal 
+            :title="session('status') ?? 'Berhasil'"
+            :message="session('message')" 
+        />
+    @endif
+    <!-- Announcement Table -->
 </div>
