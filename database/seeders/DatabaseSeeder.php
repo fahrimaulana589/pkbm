@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
             TutorSeeder::class,
             ProgramSeeder::class,
             PkbmProfileSeeder::class,
+            StudentSeeder::class,
+            ClassGroupSeeder::class,
         ]);
 
         User::factory()->create([

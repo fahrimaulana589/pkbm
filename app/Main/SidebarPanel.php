@@ -33,6 +33,14 @@ class SidebarPanel
                         'title' => 'Profil PKBM',
                         'route_name' => 'admin.pkbm-profile.index'
                     ],
+                    'student' => [
+                        'title' => 'Warga Belajar',
+                        'route_name' => 'admin.student.index'
+                    ],
+                    'rombel' => [
+                        'title' => 'Rombel',
+                        'route_name' => 'admin.rombel.index'
+                    ],
                 ]
             ]
         ];

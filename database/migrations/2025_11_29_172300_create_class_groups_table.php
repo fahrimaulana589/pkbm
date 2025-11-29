@@ -1,0 +1,31 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('class_groups', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->foreignUuid('program_id')->constrained('programs')->onDelete('cascade');
+            $table->foreignUuid('tutor_id')->constrained('tutors')->onDelete('cascade');
+            $table->string('nama_rombel');
+            $table->string('periode');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('class_groups');
+    }
+};
