@@ -25,6 +25,14 @@ class SidebarPanel
                         'title' => 'Tutor',
                         'route_name' => 'admin.tutor.index'
                     ],
+                    'program' => [
+                        'title' => 'Program Pendidikan',
+                        'route_name' => 'admin.program.index'
+                    ],
+                    'pkbm-profile' => [
+                        'title' => 'Profil PKBM',
+                        'route_name' => 'admin.pkbm-profile.index'
+                    ],
                 ]
             ]
         ];
