@@ -40,7 +40,7 @@ rules([
     'deskripsi' => 'required|string',
     'tanggal' => 'required|date',
     'status' => 'required|in:aktif,arsip',
-    'new_photos.*' => 'image|max:10240',
+    'new_photos.*' => 'image|max:2048',
     'photo_captions.*' => 'nullable|string|max:255',
 ]);
 
@@ -101,16 +101,16 @@ $deletePhoto = function ($photoId) {
         uploading: false,
         progress: 0,
         addFiles(e) {
-            let selected = Array.from(e.target.files);
+            let selected = Array.from(e.files);
             selected.forEach(file => {
-                if (file.size > 10485760) { // 10MB
-                    alert('File ' + file.name + ' terlalu besar (>10MB).');
+                if (file.size > 2097152) { // 2MB
+                    alert('File ' + file.name + ' terlalu besar (>2MB).');
                     return;
                 }
                 file.preview = URL.createObjectURL(file);
                 this.files.push(file);
             });
-            e.target.value = '';
+            e.value = '';
         },
         removeFile(index) {
             URL.revokeObjectURL(this.files[index].preview);
@@ -168,13 +168,11 @@ $deletePhoto = function ($photoId) {
                         <h3 class="font-medium text-slate-700 dark:text-navy-100 mb-2">Foto Galeri</h3>
 
                         <!-- Existing Photos -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                        <div class="grid grid-cols-3">
                             @foreach ($existing_photos as $photo)
                                 <div class="relative group border rounded-lg p-2 dark:border-navy-500">
                                     <img src="{{ Storage::url($photo->file_path) }}"
                                         class="h-32 w-full object-cover rounded-lg mb-2">
-                                    <x-text-input wire:model="photo_captions.{{ $photo->id }}" placeholder="Caption..."
-                                        class="w-full text-sm" />
                                     <button wire:click="deletePhoto('{{ $photo->id }}')"
                                         class="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
                                         onclick="confirm('Hapus foto ini?') || event.stopImmediatePropagation()">
@@ -190,7 +188,7 @@ $deletePhoto = function ($photoId) {
 
                         <x-input-label>
                             <span>Tambah Foto Baru</span>
-                            <input type="file" multiple accept="image/*" @change="addFiles"
+                            <input type="file" multiple accept="image/*" @change="addFiles($event.target)"
                                 class="form-input w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" />
                             <x-input-error :messages="$errors->get('new_photos')" />
                             <x-input-error :messages="$errors->get('new_photos.*')" />
