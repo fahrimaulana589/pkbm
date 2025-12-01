@@ -38,12 +38,12 @@ mount(function ($id) {
     $this->selected_tags = $this->news->tags->pluck('id')->toArray();
 });
 
-rules([
+rules(fn() => [
     'kategori_id' => 'required|exists:news_categories,id',
     'judul' => 'required|string|max:255',
     'slug' => 'required|string|max:255', // Unique check manual
     'konten' => 'required|string',
-    'gambar' => 'nullable|image|max:2048',
+    'gambar' => [$this->existing_gambar ? 'nullable' : 'required', 'image', 'max:2048'],
     'status' => 'required|in:draft,published',
     'selected_tags' => 'array',
     'selected_tags.*' => 'exists:news_tags,id',
@@ -80,6 +80,11 @@ $save = function () {
         'gambar' => $gambarPath,
         'status' => $this->status,
     ]);
+
+    if ($this->gambar) {
+        $this->existing_gambar = $gambarPath;
+        $this->gambar = null;
+    }
 
     $this->news->tags()->sync($this->selected_tags);
 
@@ -152,6 +157,15 @@ $save = function () {
 
                     <x-input-label>
                         <span>Gambar Utama</span>
+                        @if($existing_gambar)
+                            <div class="grid grid-cols-3">
+                                <div
+                                    class="mt-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500 relative">
+                                    <img src="{{ asset('storage/' . $existing_gambar) }}" alt="Current"
+                                        class="h-48 w-full rounded-lg object-cover">
+                                </div>
+                            </div>
+                        @endif
                         <div class="relative">
                             <input type="file" wire:model="gambar" accept="image/*"
                                 class="form-input w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" />
@@ -161,24 +175,15 @@ $save = function () {
                                 </div>
                             </div>
                         </div>
+
                         <x-input-error :messages="$errors->get('gambar')" />
                         @if ($gambar && method_exists($gambar, 'temporaryUrl'))
-                            <div
-                                class="mt-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500 relative">
+                            <div class="grid grid-cols-3">
                                 <div
-                                    class="text-xs text-slate-500 absolute top-2 left-2 bg-white/80 dark:bg-navy-700/80 px-1 rounded">
-                                    Preview Baru</div>
-                                <img src="{{ $gambar->temporaryUrl() }}" alt="Preview"
-                                    class="h-48 w-full rounded-lg object-cover">
-                            </div>
-                        @elseif($existing_gambar)
-                            <div
-                                class="mt-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500 relative">
-                                <div
-                                    class="text-xs text-slate-500 absolute top-2 left-2 bg-white/80 dark:bg-navy-700/80 px-1 rounded">
-                                    Gambar Saat Ini</div>
-                                <img src="{{ asset('storage/' . $existing_gambar) }}" alt="Current"
-                                    class="h-48 w-full rounded-lg object-cover">
+                                    class="mt-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500 relative">
+                                    <img src="{{ $gambar->temporaryUrl() }}" alt="Preview"
+                                        class="h-48 w-full rounded-lg object-cover">
+                                </div>
                             </div>
                         @endif
                     </x-input-label>

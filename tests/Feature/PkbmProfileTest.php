@@ -34,11 +34,32 @@ class PkbmProfileTest extends TestCase
         $profile = PkbmProfile::create([
             'nama_pkbm' => 'Old Name',
             'npsn' => '12345678',
+            'alamat' => 'Jl. Lama',
+            'provinsi' => 'Jawa Barat',
+            'kota' => 'Bandung',
+            'kecamatan' => 'Coblong',
+            'desa' => 'Dago',
+            'telepon' => '08123456789',
+            'email' => 'old@example.com',
+            'kepala_pkbm' => 'Old Head',
+            'visi' => 'Old Vision',
+            'misi' => 'Old Mission',
+            'logo' => 'pkbm/logo/old.jpg',
         ]);
 
         Volt::test('pkbm-profile-form')
             ->set('nama_pkbm', 'New PKBM Name')
             ->set('npsn', '87654321')
+            ->set('alamat', 'Jl. Baru')
+            ->set('provinsi', 'Jawa Tengah')
+            ->set('kota', 'Semarang')
+            ->set('kecamatan', 'Banyumanik')
+            ->set('desa', 'Srondol')
+            ->set('telepon', '08987654321')
+            ->set('email', 'new@example.com')
+            ->set('kepala_pkbm', 'New Head')
+            ->set('visi', 'New Vision')
+            ->set('misi', 'New Mission')
             ->call('save')
             ->assertHasNoErrors()
             ->assertDispatched('profile-updated');
@@ -58,6 +79,17 @@ class PkbmProfileTest extends TestCase
 
         $profile = PkbmProfile::create([
             'nama_pkbm' => 'PKBM Test',
+            'npsn' => '12345678',
+            'alamat' => 'Jl. Test',
+            'provinsi' => 'Jawa Barat',
+            'kota' => 'Bandung',
+            'kecamatan' => 'Coblong',
+            'desa' => 'Dago',
+            'telepon' => '08123456789',
+            'email' => 'test@example.com',
+            'kepala_pkbm' => 'Test Head',
+            'visi' => 'Test Vision',
+            'misi' => 'Test Mission',
         ]);
 
         $file = UploadedFile::fake()->image('logo.png');

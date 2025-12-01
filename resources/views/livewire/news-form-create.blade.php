@@ -148,13 +148,15 @@ $save = function () {
                         </div>
                         <x-input-error :messages="$errors->get('gambar')" />
                         @if ($gambar && method_exists($gambar, 'temporaryUrl'))
-                            <div
-                                class="mt-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500 relative">
+                            <div class="grid grid-cols-3">
                                 <div
-                                    class="text-xs text-slate-500 absolute top-2 left-2 bg-white/80 dark:bg-navy-700/80 px-1 rounded">
+                                    class="mt-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500 relative">
+                                    <div
+                                        class="text-xs text-slate-500 absolute top-2 left-2 bg-white/80 dark:bg-navy-700/80 px-1 rounded">
                                     Preview</div>
                                 <img src="{{ $gambar->temporaryUrl() }}" alt="Preview"
                                     class="h-48 w-full rounded-lg object-cover">
+                                </div>
                             </div>
                         @endif
                     </x-input-label>

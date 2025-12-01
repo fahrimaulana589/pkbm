@@ -44,20 +44,20 @@ mount(function () {
     }
 });
 
-rules([
+rules(fn () => [
     'nama_pkbm' => 'required|string|max:255',
-    'npsn' => 'nullable|string|max:20',
-    'alamat' => 'nullable|string',
-    'provinsi' => 'nullable|string|max:100',
-    'kota' => 'nullable|string|max:100',
-    'kecamatan' => 'nullable|string|max:100',
-    'desa' => 'nullable|string|max:100',
-    'telepon' => 'nullable|string|max:20',
-    'email' => 'nullable|email|max:255',
-    'kepala_pkbm' => 'nullable|string|max:255',
-    'visi' => 'nullable|string',
-    'misi' => 'nullable|string',
-    'new_logo' => 'nullable|image|max:2048', // Max 2MB
+    'npsn' => 'required|string|max:20',
+    'alamat' => 'required|string',
+    'provinsi' => 'required|string|max:100',
+    'kota' => 'required|string|max:100',
+    'kecamatan' => 'required|string|max:100',
+    'desa' => 'required|string|max:100',
+    'telepon' => 'required|string|max:20',
+    'email' => 'required|email|max:255',
+    'kepala_pkbm' => 'required|string|max:255',
+    'visi' => 'required|string',
+    'misi' => 'required|string',
+    'new_logo' => [$this->existing_logo ? 'nullable' : 'required', 'image', 'max:2048'], // Max 2MB
 ]);
 
 $save = function () {
@@ -85,6 +85,7 @@ $save = function () {
     if ($this->new_logo) {
         $data['logo'] = $this->new_logo->store('pkbm/logo', 'public');
         $this->existing_logo = $data['logo'];
+        $this->new_logo = null;
     }
 
     if ($this->profile->exists) {
@@ -221,15 +222,16 @@ $save = function () {
                 </h2>
             </div>
             <div class="max-w-xl">
-                <div class="mt-5 flex flex-col gap-4">
+                <div class="flex flex-col gap-4">
                     <x-input-label>
                         <span>Upload Logo</span>
                         @if($existing_logo)
-                            <div
-                                class="mb-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500">
-                                <p class="text-xs text-slate-500 absolute top-2 left-2">Logo Saat Ini:</p>
-                                <img src="{{ asset('storage/' . $existing_logo) }}" alt="Logo PKBM"
-                                    class="h-32 w-auto object-contain">
+                            <div class="mt-2 grid grid-cols-3">
+                                <div
+                                    class="mb-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500">
+                                    <img src="{{ asset('storage/' . $existing_logo) }}" alt="Logo PKBM"
+                                        class="h-32 w-auto object-contain">
+                                </div>
                             </div>
                         @endif
                         <div class="relative">
@@ -244,16 +246,18 @@ $save = function () {
                         <x-input-error :messages="$errors->get('new_logo')" />
                         <span class="text-xs text-slate-400">Max 2MB. Format: PNG, JPG, JPEG.</span>
                         @if ($new_logo && method_exists($new_logo, 'temporaryUrl'))
-                            <div
-                                class="mt-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500">
-                                <p class="text-xs text-slate-500 absolute top-2 left-2">Preview Baru:</p>
-                                <img src="{{ $new_logo->temporaryUrl() }}" alt="Preview" class="h-32 w-auto object-contain">
+                            <div class="grid grid-cols-3">
+                                <div
+                                    class="mt-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500">
+                                    <img src="{{ $new_logo->temporaryUrl() }}" alt="Preview"
+                                        class="h-32 w-auto object-contain">
+                                </div>
                             </div>
                         @endif
                     </x-input-label>
                 </div>
                 <div class="mt-5">
-                    <x-primary-button wire:click="save" class="w-full justify-center">
+                    <x-primary-button wire:click="save">
                         Simpan Profil
                     </x-primary-button>
                 </div>

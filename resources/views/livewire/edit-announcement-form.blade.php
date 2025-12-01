@@ -168,13 +168,12 @@ $save = function () {
                     <x-input-label>
                         <span>Thumbnail (Opsional)</span>
                         @if($existing_thumbnail)
-                            <div
-                                class="mb-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500 relative">
+                            <div class="grid grid-cols-3">
                                 <div
-                                    class="text-xs text-slate-500 absolute top-2 left-2 bg-white/80 dark:bg-navy-700/80 px-1 rounded">
-                                    Thumbnail Saat Ini</div>
-                                <img src="{{ asset('storage/' . $existing_thumbnail) }}" alt="Thumbnail"
+                                    class="mb-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500 relative">
+                                   <img src="{{ asset('storage/' . $existing_thumbnail) }}" alt="Thumbnail"
                                     class="h-48 w-full rounded-lg object-cover">
+                                </div>
                             </div>
                         @endif
                         <div class="relative">
@@ -189,13 +188,12 @@ $save = function () {
                         <x-input-error :messages="$errors->get('new_thumbnail')" />
                         <span class="text-xs text-slate-400">Max 2MB. Format: JPG, PNG, JPEG.</span>
                         @if ($new_thumbnail && method_exists($new_thumbnail, 'temporaryUrl'))
-                            <div
-                                class="mt-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500 relative">
+                            <div class="grid grid-cols-3">
                                 <div
-                                    class="text-xs text-slate-500 absolute top-2 left-2 bg-white/80 dark:bg-navy-700/80 px-1 rounded">
-                                    Preview Baru</div>
-                                <img src="{{ $new_thumbnail->temporaryUrl() }}" alt="Preview"
+                                    class="mt-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500 relative">
+                                   <img src="{{ $new_thumbnail->temporaryUrl() }}" alt="Preview"
                                     class="h-48 w-full rounded-lg object-cover">
+                            </div>
                             </div>
                         @endif
                     </x-input-label>

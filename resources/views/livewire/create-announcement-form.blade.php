@@ -104,13 +104,12 @@ $save = function () {
                         <x-input-error :messages="$errors->get('thumbnail')" />
                         <span class="text-xs text-slate-400">Max 2MB. Format: JPG, PNG, JPEG.</span>
                         @if ($thumbnail && method_exists($thumbnail, 'temporaryUrl'))
+                            <div class="grid grid-cols-3">
                             <div
                                 class="mt-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500 relative">
-                                <div
-                                    class="text-xs text-slate-500 absolute top-2 left-2 bg-white/80 dark:bg-navy-700/80 px-1 rounded">
-                                    Preview</div>
                                 <img src="{{ $thumbnail->temporaryUrl() }}" alt="Preview"
                                     class="h-48 w-full rounded-lg object-cover">
+                            </div>
                             </div>
                         @endif
                     </x-input-label>

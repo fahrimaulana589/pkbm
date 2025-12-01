@@ -161,6 +161,17 @@ class FileManagementTest extends TestCase
 
         $profile = PkbmProfile::create([
             'nama_pkbm' => 'Test PKBM',
+            'npsn' => '12345678',
+            'alamat' => 'Jl. Test',
+            'provinsi' => 'Jawa Barat',
+            'kota' => 'Bandung',
+            'kecamatan' => 'Coblong',
+            'desa' => 'Dago',
+            'telepon' => '08123456789',
+            'email' => 'test@example.com',
+            'kepala_pkbm' => 'Test Head',
+            'visi' => 'Test Vision',
+            'misi' => 'Test Mission',
             'logo' => $path,
         ]);
 
@@ -179,6 +190,17 @@ class FileManagementTest extends TestCase
 
         $profile = PkbmProfile::create([
             'nama_pkbm' => 'Test PKBM',
+            'npsn' => '12345678',
+            'alamat' => 'Jl. Test',
+            'provinsi' => 'Jawa Barat',
+            'kota' => 'Bandung',
+            'kecamatan' => 'Coblong',
+            'desa' => 'Dago',
+            'telepon' => '08123456789',
+            'email' => 'test@example.com',
+            'kepala_pkbm' => 'Test Head',
+            'visi' => 'Test Vision',
+            'misi' => 'Test Mission',
             'logo' => $oldPath,
         ]);
 
@@ -238,6 +260,17 @@ class FileManagementTest extends TestCase
 
         $profile = PkbmProfile::create([
             'nama_pkbm' => 'Test PKBM',
+            'npsn' => '12345678',
+            'alamat' => 'Jl. Test',
+            'provinsi' => 'Jawa Barat',
+            'kota' => 'Bandung',
+            'kecamatan' => 'Coblong',
+            'desa' => 'Dago',
+            'telepon' => '08123456789',
+            'email' => 'test@example.com',
+            'kepala_pkbm' => 'Test Head',
+            'visi' => 'Test Vision',
+            'misi' => 'Test Mission',
             'logo' => $oldPath,
         ]);
 
@@ -248,5 +281,34 @@ class FileManagementTest extends TestCase
 
         Storage::disk('public')->assertMissing($oldPath);
         Storage::disk('public')->assertExists($newPath);
+    }
+    /** @test */
+    public function can_remove_temporary_photo_in_gallery_create()
+    {
+        $photo1 = UploadedFile::fake()->image('photo1.jpg');
+        $photo2 = UploadedFile::fake()->image('photo2.jpg');
+
+        Volt::test('gallery-form-create')
+            ->set('photos', [$photo1, $photo2])
+            ->call('removePhoto', 0)
+            ->assertCount('photos', 1);
+    }
+
+    /** @test */
+    public function old_news_image_is_preserved_when_updated_without_new_image()
+    {
+        $oldFile = UploadedFile::fake()->image('old.jpg');
+        $oldPath = $oldFile->store('news', 'public');
+
+        $news = News::factory()->create([
+            'gambar' => $oldPath,
+        ]);
+
+        Volt::test('news-form-edit', ['id' => $news->id])
+            ->set('judul', 'Updated Title')
+            ->call('save');
+
+        Storage::disk('public')->assertExists($oldPath);
+        $this->assertEquals($oldPath, $news->fresh()->gambar);
     }
 }
