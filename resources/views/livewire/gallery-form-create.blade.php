@@ -13,7 +13,7 @@ state([
     'deskripsi' => '',
     'tanggal' => date('Y-m-d'),
     'status' => 'aktif',
-    'photos' => [],
+    'newPhotos' => [],
 ]);
 
 rules([
@@ -22,7 +22,7 @@ rules([
     'deskripsi' => 'required|string',
     'tanggal' => 'required|date',
     'status' => 'required|in:aktif,arsip',
-    'photos.*' => 'image|max:2048', // 2MB Max per photo
+    'newPhotos.*' => 'image|max:2048', // 2MB Max per photo
 ]);
 
 $save = function () {
@@ -36,7 +36,7 @@ $save = function () {
         'status' => $this->status,
     ]);
 
-    foreach ($this->photos as $photo) {
+    foreach ($this->newPhotos as $photo) {
         $path = $photo->store('gallery/' . $gallery->id, 'public');
         GalleryPhoto::create([
             'gallery_id' => $gallery->id,
@@ -53,7 +53,50 @@ $save = function () {
 
 ?>
 
-<div class="grid grid-cols-12 gap-4 sm:gap-5 lg:gap-6">
+<div class="grid grid-cols-12 gap-4 sm:gap-5 lg:gap-6" x-data="{
+        files: [],
+        uploading: false,
+        progress: 0,
+        addFiles(e) {
+            let selected = Array.from(e.files);
+            selected.forEach(file => {
+                if (file.size > 2097152) { // 2MB
+                    alert('File ' + file.name + ' terlalu besar (>2MB).');
+                    return;
+                }
+                file.preview = URL.createObjectURL(file);
+                this.files.push(file);
+            });
+            e.value = '';
+        },
+        removeFile(index) {
+            URL.revokeObjectURL(this.files[index].preview);
+            this.files.splice(index, 1);
+        },
+        submitGallery() {
+            if (this.files.length === 0) {
+                @this.call('save');
+                return;
+            }
+
+            this.uploading = true;
+            @this.uploadMultiple(
+                'newPhotos',
+                this.files,
+                () => { // Success
+                    this.uploading = false;
+                    @this.call('save');
+                },
+                () => { // Error
+                    this.uploading = false;
+                    alert('Gagal mengupload foto. Silakan coba lagi.');
+                },
+                (event) => { // Progress
+                    this.progress = event.detail.progress;
+                }
+            );
+        }
+    }">
     <div class="col-span-12 lg:col-span-8">
         <div class="card px-4 pb-4 sm:px-5">
             <div class="my-3 flex h-8 items-center justify-between">
@@ -79,27 +122,40 @@ $save = function () {
 
                     <x-input-label>
                         <span>Foto Galeri</span>
-                        <div
-                            class="filepond fp-bordered fp-grid gap-2 [--fp-grid:2] dark:bg-navy-700">
-                            <input type="file" wire:model="photos" multiple accept="image/*"
+                        <div class="filepond fp-bordered fp-grid gap-2 [--fp-grid:2] dark:bg-navy-700">
+                            <input type="file" multiple accept="image/*" @change="addFiles($event.target)"
                                 class="form-input w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" />
                         </div>
-                        <x-input-error :messages="$errors->get('photos')" />
-                        <x-input-error :messages="$errors->get('photos.*')" />
-                        
-                        <div wire:loading wire:target="photos" class="mt-2 text-xs text-slate-500">Uploading...</div>
+                        <x-input-error :messages="$errors->get('newPhotos')" />
+                        @foreach($errors->get('newPhotos.*') as $messages)
+                            @foreach($messages as $message)
+                                <span class="text-tiny+ text-error">{{ $message }}</span>
+                            @endforeach
+                        @endforeach
 
-                        @if ($photos)
-                            <div class="mt-4 grid grid-cols-3 gap-4">
-                                @foreach ($photos as $photo)
-                                    @if(method_exists($photo, 'temporaryUrl'))
-                                        <div class="relative rounded-lg border border-slate-200 p-1 dark:border-navy-500">
-                                            <img src="{{ $photo->temporaryUrl() }}" class="h-24 w-full rounded-lg object-cover">
-                                        </div>
-                                    @endif
-                                @endforeach
-                            </div>
-                        @endif
+                        <!-- Progress Bar -->
+                        <div x-show="uploading" class="mt-2 w-full bg-slate-200 rounded-full h-2.5 dark:bg-navy-600">
+                            <div class="bg-primary h-2.5 rounded-full" :style="'width: ' + progress + '%'"></div>
+                        </div>
+                        <div x-show="uploading" class="text-xs text-slate-500 mt-1"
+                            x-text="'Uploading... ' + progress + '%'"></div>
+
+                        <!-- Previews -->
+                        <div class="mt-4 grid grid-cols-3 gap-4" x-show="files.length > 0">
+                            <template x-for="(file, index) in files" :key="index">
+                                <div class="relative group rounded-lg border border-slate-200 p-1 dark:border-navy-500">
+                                    <img :src="file.preview" class="h-24 w-full rounded-lg object-cover">
+                                    <button @click="removeFile(index)" type="button"
+                                        class="absolute top-0 right-0 m-1 bg-red-500 text-white p-1 rounded-full shadow-sm hover:bg-red-600 transition-colors duration-200 opacity-0 group-hover:opacity-100">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </template>
+                        </div>
                     </x-input-label>
                 </div>
             </div>
@@ -141,8 +197,9 @@ $save = function () {
 
                 </div>
                 <div class="mt-5">
-                    <x-primary-button wire:click="save">
-                        Simpan Galeri
+                    <x-primary-button @click="submitGallery" type="button" ::disabled="uploading">
+                        <span x-show="!uploading">Simpan Galeri</span>
+                        <span x-show="uploading">Menyimpan...</span>
                     </x-primary-button>
                 </div>
             </div>

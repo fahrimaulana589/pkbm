@@ -311,4 +311,48 @@ class FileManagementTest extends TestCase
         Storage::disk('public')->assertExists($oldPath);
         $this->assertEquals($oldPath, $news->fresh()->gambar);
     }
+
+    /** @test */
+    /** @test */
+    public function can_upload_multiple_photos_at_once()
+    {
+        Storage::fake('public');
+
+        $photos = [];
+        for ($i = 0; $i < 7; $i++) {
+            $photos[] = UploadedFile::fake()->create("photo_{$i}.jpg", 3000); // 3MB
+        }
+
+        Volt::test('gallery-form-create')
+            ->set('judul', 'Test Gallery')
+            ->set('kategori', 'kegiatan')
+            ->set('deskripsi', 'Test Description')
+            ->set('tanggal', '2024-01-01')
+            ->set('status', 'aktif')
+            ->set('newPhotos', $photos) // Simulate upload
+            ->call('save') // Call save directly
+            ->assertHasNoErrors();
+            
+        $this->assertEquals(7, GalleryPhoto::count());
+    }
+
+    /** @test */
+    public function partial_upload_success_with_invalid_files()
+    {
+        // This test is less relevant now as filtering happens client-side with Alpine.js.
+        // However, we can still test server-side validation if someone bypasses client-side.
+        
+        $validPhoto = UploadedFile::fake()->create('valid.jpg', 6000); // 6MB
+        $invalidPhoto = UploadedFile::fake()->create('invalid.jpg', 12000); // 12MB
+
+        Volt::test('gallery-form-create')
+            ->set('judul', 'Test Gallery')
+            ->set('kategori', 'kegiatan')
+            ->set('deskripsi', 'Test Description')
+            ->set('tanggal', '2024-01-01')
+            ->set('status', 'aktif')
+            ->set('newPhotos', [$validPhoto, $invalidPhoto])
+            ->call('save')
+            ->assertHasErrors(['newPhotos.1']); // Expect error on the second file
+    }
 }
