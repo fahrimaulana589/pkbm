@@ -25,6 +25,9 @@ class DatabaseSeeder extends Seeder
             ClassGroupSeeder::class,
             ScheduleSeeder::class,
             CertificateSeeder::class,
+            NewsCategorySeeder::class,
+            NewsTagSeeder::class,
+            NewsSeeder::class,
         ]);
 
         User::factory()->create([

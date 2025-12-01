@@ -49,8 +49,29 @@ class SidebarPanel
                         'title' => 'Sertifikat',
                         'route_name' => 'admin.sertifikat.index'
                     ],
+                    'berita' => [
+                        'title' => 'Berita & Artikel',
+                        'submenu' => [
+                            'kategori' => [
+                                'title' => 'Kategori Berita',
+                                'route_name' => 'admin.kategori-berita.index'
+                            ],
+                            'tag' => [
+                                'title' => 'Tag Berita',
+                                'route_name' => 'admin.tag-berita.index'
+                            ],
+                            'berita' => [
+                                'title' => 'Data Berita',
+                                'route_name' => 'admin.berita.index'
+                            ],
+                        ]
+                    ],
+                    'galeri' => [
+                        'title' => 'Galeri',
+                        'route_name' => 'admin.galeri.index'
+                    ]
                 ]
-            ]
+            ],
         ];
     }
 
