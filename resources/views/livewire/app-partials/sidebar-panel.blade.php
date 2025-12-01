@@ -1,5 +1,5 @@
 <?php
-use function Livewire\Volt\{state,on};
+use function Livewire\Volt\{state, on};
 
 state('sidebarMenu');
 state('pageName');
@@ -30,7 +30,8 @@ on([
         </div>
 
         <!-- Sidebar Panel Body -->
-        <div class="h-[calc(100%-4.5rem)] overflow-x-hidden pb-6" x-data="{ expandedItem: null }" x-init="$el._x_simplebar = new SimpleBar($el);">
+        <div class="h-[calc(100%-4.5rem)] overflow-x-hidden pb-6" x-data="{ expandedItem: null }"
+            x-init="$el._x_simplebar = new SimpleBar($el);">
             @foreach ($this->sidebarMenu['items'] as $key => $menuItems)
                 @if ($key > 0)
                     <div class="my-3 mx-4 h-px bg-slate-200 dark:bg-navy-500"></div>
@@ -40,29 +41,27 @@ on([
                         @if (isset($menu['submenu']))
                             <li x-data="accordionItem('{{ $keyMenu }}')">
                                 <a :class="expanded ? 'text-slate-800 font-semibold dark:text-navy-50' :
-                                    'text-slate-600 dark:text-navy-200'"
-                                    @click="expanded = !expanded"
+                                                'text-slate-600 dark:text-navy-200'" @click="expanded = !expanded"
                                     class="flex items-center justify-between py-2 text-xs+ tracking-wide  outline-none transition-[color,padding-left] duration-300 ease-in-out hover:text-slate-800  dark:hover:text-navy-50"
                                     href="javascript:void(0);">
                                     <span>{{ $menu['title'] }}</span>
                                     <svg :class="expanded && 'rotate-90'" xmlns="http://www.w3.org/2000/svg"
                                         class="size-4 text-slate-400 transition-transform ease-in-out" fill="none"
                                         viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 5l7 7-7 7"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                                        </path>
                                     </svg>
                                 </a>
                                 <ul x-collapse x-show="expanded">
                                     @foreach ($menu['submenu'] as $keyMenu => $submenu)
-                                        <li
-                                            @if ($submenu['route_name'] === $this->pageName) x-init="$el.scrollIntoView({block:'center'}); expanded = true" @endif>
-                                            <a href="{{ route($submenu['route_name']) }}"
+                                        <li @if ($submenu['route_name'] === $this->pageName)
+                                        x-init="$el.scrollIntoView({block:'center'}); expanded = true" @endif>
+                                            <a href="{{ route($submenu['route_name']) }}" wire:navigate
                                                 class="flex items-center justify-between p-2 text-xs+ tracking-wide
-                                                 outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4
-                                                 {{ $submenu['route_name'] === $this->pageName ? 'text-primary dark:text-accent-light font-medium' : 'text-slate-600 hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50' }}">
+                                                                 outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4
+                                                                 {{ $submenu['route_name'] === $this->pageName ? 'text-primary dark:text-accent-light font-medium' : 'text-slate-600 hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50' }}">
                                                 <div class="flex items-center space-x-2">
-                                                    <div
-                                                        class="size-1.5 rounded-full border border-current opacity-40">
+                                                    <div class="size-1.5 rounded-full border border-current opacity-40">
                                                     </div>
                                                     <span>{{ $submenu['title'] }}</span>
                                                 </div>
@@ -73,8 +72,7 @@ on([
                             </li>
                         @else
                             <li @if ($menu['route_name'] === $this->pageName) x-init="$el.scrollIntoView({block:'center'});" @endif>
-                                <a href="{{ route($menu['route_name']) }}"
-                                    wire:navigate
+                                <a href="{{ route($menu['route_name']) }}" wire:navigate
                                     class="flex text-xs+ py-2  tracking-wide outline-none transition-colors duration-300 ease-in-out {{ $menu['route_name'] === $this->pageName ? 'text-primary dark:text-accent-light font-medium' : 'text-slate-600  hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50' }}">
                                     {{ $menu['title'] }}
                                 </a>

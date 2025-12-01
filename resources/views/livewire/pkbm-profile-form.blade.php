@@ -230,14 +230,29 @@ $save = function () {
                         @if($existing_logo)
                             <div
                                 class="mb-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500">
+                                <p class="text-xs text-slate-500 absolute top-2 left-2">Logo Saat Ini:</p>
                                 <img src="{{ asset('storage/' . $existing_logo) }}" alt="Logo PKBM"
                                     class="h-32 w-auto object-contain">
                             </div>
                         @endif
-                        <x-text-input wire:model="new_logo" type="file" accept="image/*"
-                            :error="$errors->has('new_logo')" />
+                        <div class="relative">
+                            <x-text-input wire:model="new_logo" type="file" accept="image/*"
+                                :error="$errors->has('new_logo')" />
+                            <div wire:loading wire:target="new_logo" class="absolute right-3 top-2.5">
+                                <div
+                                    class="spinner size-5 animate-spin rounded-full border-2 border-primary border-t-transparent dark:border-accent-light dark:border-t-transparent">
+                                </div>
+                            </div>
+                        </div>
                         <x-input-error :messages="$errors->get('new_logo')" />
                         <span class="text-xs text-slate-400">Max 2MB. Format: PNG, JPG, JPEG.</span>
+                        @if ($new_logo && method_exists($new_logo, 'temporaryUrl'))
+                            <div
+                                class="mt-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500">
+                                <p class="text-xs text-slate-500 absolute top-2 left-2">Preview Baru:</p>
+                                <img src="{{ $new_logo->temporaryUrl() }}" alt="Preview" class="h-32 w-auto object-contain">
+                            </div>
+                        @endif
                     </x-input-label>
                 </div>
                 <div class="mt-5">

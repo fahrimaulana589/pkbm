@@ -76,17 +76,14 @@ $save = function () {
                 <div class="mt-5 flex flex-col gap-4">
                     <x-input-label>
                         <span>Judul</span>
-                        <x-text-input wire:model="judul" 
-                            placeholder="Masukkan judul pengumuman" 
-                            type="text" 
+                        <x-text-input wire:model="judul" placeholder="Masukkan judul pengumuman" type="text"
                             :error="$errors->has('judul')" />
                         <x-input-error :messages="$errors->get('judul')" />
                     </x-input-label>
 
                     <x-input-label>
                         <span>Isi Pengumuman</span>
-                        <x-textarea-input wire:model="isi" rows="6"
-                            placeholder="Tulis isi pengumuman disini..." 
+                        <x-textarea-input wire:model="isi" rows="6" placeholder="Tulis isi pengumuman disini..."
                             :error="$errors->has('isi')">
                         </x-textarea-input>
                         <x-input-error :messages="$errors->get('isi')" />
@@ -95,17 +92,33 @@ $save = function () {
                     {{-- Thumbnail Upload --}}
                     <x-input-label>
                         <span>Thumbnail (Opsional)</span>
-                        <x-text-input wire:model="thumbnail" type="file" accept="image/*" 
-                            :error="$errors->has('thumbnail')" />
+                        <div class="relative">
+                            <x-text-input wire:model="thumbnail" type="file" accept="image/*"
+                                :error="$errors->has('thumbnail')" />
+                            <div wire:loading wire:target="thumbnail" class="absolute right-3 top-2.5">
+                                <div
+                                    class="spinner size-5 animate-spin rounded-full border-2 border-primary border-t-transparent dark:border-accent-light dark:border-t-transparent">
+                                </div>
+                            </div>
+                        </div>
                         <x-input-error :messages="$errors->get('thumbnail')" />
                         <span class="text-xs text-slate-400">Max 2MB. Format: JPG, PNG, JPEG.</span>
+                        @if ($thumbnail && method_exists($thumbnail, 'temporaryUrl'))
+                            <div
+                                class="mt-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500 relative">
+                                <div
+                                    class="text-xs text-slate-500 absolute top-2 left-2 bg-white/80 dark:bg-navy-700/80 px-1 rounded">
+                                    Preview</div>
+                                <img src="{{ $thumbnail->temporaryUrl() }}" alt="Preview"
+                                    class="h-48 w-full rounded-lg object-cover">
+                            </div>
+                        @endif
                     </x-input-label>
 
                     {{-- Lampiran File Upload --}}
                     <x-input-label>
                         <span>Lampiran File (Opsional)</span>
-                        <x-text-input wire:model="lampiran_file" type="file" 
-                            :error="$errors->has('lampiran_file')" />
+                        <x-text-input wire:model="lampiran_file" type="file" :error="$errors->has('lampiran_file')" />
                         <x-input-error :messages="$errors->get('lampiran_file')" />
                         <span class="text-xs text-slate-400">Max 10MB.</span>
                     </x-input-label>
@@ -158,22 +171,20 @@ $save = function () {
 
                     <x-input-label>
                         <span>Tanggal Publikasi</span>
-                        <x-text-input wire:model="published_at" type="datetime-local" 
+                        <x-text-input wire:model="published_at" type="datetime-local"
                             :error="$errors->has('published_at')" />
                         <x-input-error :messages="$errors->get('published_at')" />
                     </x-input-label>
 
                     <x-input-label>
                         <span>Tanggal Mulai</span>
-                        <x-text-input wire:model="start_date" type="date" 
-                            :error="$errors->has('start_date')" />
+                        <x-text-input wire:model="start_date" type="date" :error="$errors->has('start_date')" />
                         <x-input-error :messages="$errors->get('start_date')" />
                     </x-input-label>
 
                     <x-input-label>
                         <span>Tanggal Akhir</span>
-                        <x-text-input wire:model="end_date" type="date" 
-                            :error="$errors->has('end_date')" />
+                        <x-text-input wire:model="end_date" type="date" :error="$errors->has('end_date')" />
                         <x-input-error :messages="$errors->get('end_date')" />
                     </x-input-label>
                 </div>

@@ -93,7 +93,7 @@ $save = function () {
                             <div class="mt-4 grid grid-cols-3 gap-4">
                                 @foreach ($photos as $photo)
                                     @if(method_exists($photo, 'temporaryUrl'))
-                                        <div class="relative">
+                                        <div class="relative rounded-lg border border-slate-200 p-1 dark:border-navy-500">
                                             <img src="{{ $photo->temporaryUrl() }}" class="h-24 w-full rounded-lg object-cover">
                                         </div>
                                     @endif

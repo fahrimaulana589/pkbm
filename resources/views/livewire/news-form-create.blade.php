@@ -137,13 +137,24 @@ $save = function () {
 
                     <x-input-label>
                         <span>Gambar Utama</span>
-                        <input type="file" wire:model="gambar"
-                            class="form-input w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" />
+                        <div class="relative">
+                            <input type="file" wire:model="gambar" accept="image/*"
+                                class="form-input w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" />
+                            <div wire:loading wire:target="gambar" class="absolute right-3 top-2.5">
+                                <div
+                                    class="spinner size-5 animate-spin rounded-full border-2 border-primary border-t-transparent dark:border-accent-light dark:border-t-transparent">
+                                </div>
+                            </div>
+                        </div>
                         <x-input-error :messages="$errors->get('gambar')" />
-                        @if ($gambar)
-                            <div class="mt-2">
+                        @if ($gambar && method_exists($gambar, 'temporaryUrl'))
+                            <div
+                                class="mt-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500 relative">
+                                <div
+                                    class="text-xs text-slate-500 absolute top-2 left-2 bg-white/80 dark:bg-navy-700/80 px-1 rounded">
+                                    Preview</div>
                                 <img src="{{ $gambar->temporaryUrl() }}" alt="Preview"
-                                    class="h-32 w-auto rounded-lg object-cover">
+                                    class="h-48 w-full rounded-lg object-cover">
                             </div>
                         @endif
                     </x-input-label>

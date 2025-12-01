@@ -17,25 +17,23 @@ class SidebarPanel
                     ],
                 ],
                 [
-                    'announcement' => [
-                        'title' => 'Pengumuman',
-                        'route_name' => 'admin.pengumuman'
+                    'pkbm-profile' => [
+                        'title' => 'Profil PKBM',
+                        'route_name' => 'admin.pkbm-profile.index'
                     ],
                     'tutor' => [
                         'title' => 'Tutor',
                         'route_name' => 'admin.tutor.index'
                     ],
-                    'program' => [
-                        'title' => 'Program Pendidikan',
-                        'route_name' => 'admin.program.index'
-                    ],
-                    'pkbm-profile' => [
-                        'title' => 'Profil PKBM',
-                        'route_name' => 'admin.pkbm-profile.index'
-                    ],
                     'student' => [
                         'title' => 'Warga Belajar',
                         'route_name' => 'admin.student.index'
+                    ],
+                ],
+                [
+                    'program' => [
+                        'title' => 'Program Pendidikan',
+                        'route_name' => 'admin.program.index'
                     ],
                     'rombel' => [
                         'title' => 'Rombel',
@@ -48,6 +46,12 @@ class SidebarPanel
                     'sertifikat' => [
                         'title' => 'Sertifikat',
                         'route_name' => 'admin.sertifikat.index'
+                    ],
+                ],
+                [
+                    'announcement' => [
+                        'title' => 'Pengumuman',
+                        'route_name' => 'admin.pengumuman'
                     ],
                     'berita' => [
                         'title' => 'Berita & Artikel',

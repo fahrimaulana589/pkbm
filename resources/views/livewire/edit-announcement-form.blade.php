@@ -34,18 +34,18 @@ mount(function ($id) {
     $this->start_date = $this->announcement->start_date ? $this->announcement->start_date->format('Y-m-d') : '';
     $this->end_date = $this->announcement->end_date ? $this->announcement->end_date->format('Y-m-d') : '';
     $this->published_at = $this->announcement->published_at ? $this->announcement->published_at->format('Y-m-d\TH:i') : '';
-    
+
     // Check if files physically exist
-    $this->existing_lampiran_file = ($this->announcement->lampiran_file && Storage::disk('public')->exists($this->announcement->lampiran_file)) 
-        ? $this->announcement->lampiran_file 
+    $this->existing_lampiran_file = ($this->announcement->lampiran_file && Storage::disk('public')->exists($this->announcement->lampiran_file))
+        ? $this->announcement->lampiran_file
         : null;
-        
-    $this->existing_thumbnail = ($this->announcement->thumbnail && Storage::disk('public')->exists($this->announcement->thumbnail)) 
-        ? $this->announcement->thumbnail 
+
+    $this->existing_thumbnail = ($this->announcement->thumbnail && Storage::disk('public')->exists($this->announcement->thumbnail))
+        ? $this->announcement->thumbnail
         : null;
 });
 
-rules(fn () => [
+rules(fn() => [
     'judul' => ['required', 'string', 'max:255', \Illuminate\Validation\Rule::unique('announcements', 'judul')->ignore($this->announcement->id)],
     'isi' => 'required|string',
     'kategori' => 'required|in:Umum,Akademik,Kesiswaan,Kepegawaian,Kegiatan,Darurat',
@@ -106,65 +106,36 @@ $save = function () {
                 </p>
                 <div class="mt-5 flex flex-col gap-4">
                     @if (session()->has('message'))
-                        <div 
-                            x-data="{showModal:true}"
-                            x-init="setTimeout(() => showModal = false, 3000)"
-                        >
+                        <div x-data="{showModal:true}" x-init="setTimeout(() => showModal = false, 3000)">
                             <template x-teleport="#x-teleport-target">
-                                <div
-                                    class="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5"
-                                    x-show="showModal"
-                                    role="dialog"
-                                    @keydown.window.escape="showModal = false"
-                                >
-                                    <div
-                                        class="absolute inset-0 bg-slate-900/60 transition-opacity duration-300"
-                                        @click="showModal = false"
-                                        x-show="showModal"
-                                        x-transition:enter="ease-out"
-                                        x-transition:enter-start="opacity-0"
-                                        x-transition:enter-end="opacity-100"
-                                        x-transition:leave="ease-in"
-                                        x-transition:leave-start="opacity-100"
-                                        x-transition:leave-end="opacity-0"
-                                    ></div>
-                                    <div
-                                        class="relative max-w-lg rounded-lg bg-white px-4 py-10 text-center transition-opacity duration-300 dark:bg-navy-700 sm:px-5"
-                                        x-show="showModal"
-                                        x-transition:enter="ease-out"
-                                        x-transition:enter-start="opacity-0"
-                                        x-transition:enter-end="opacity-100"
-                                        x-transition:leave="ease-in"
-                                        x-transition:leave-start="opacity-100"
-                                        x-transition:leave-end="opacity-0"
-                                    >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            class="inline size-28 text-success"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                        >
-                                            <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                                            ></path>
+                                <div class="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5"
+                                    x-show="showModal" role="dialog" @keydown.window.escape="showModal = false">
+                                    <div class="absolute inset-0 bg-slate-900/60 transition-opacity duration-300"
+                                        @click="showModal = false" x-show="showModal" x-transition:enter="ease-out"
+                                        x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                                        x-transition:leave="ease-in" x-transition:leave-start="opacity-100"
+                                        x-transition:leave-end="opacity-0"></div>
+                                    <div class="relative max-w-lg rounded-lg bg-white px-4 py-10 text-center transition-opacity duration-300 dark:bg-navy-700 sm:px-5"
+                                        x-show="showModal" x-transition:enter="ease-out"
+                                        x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                                        x-transition:leave="ease-in" x-transition:leave-start="opacity-100"
+                                        x-transition:leave-end="opacity-0">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="inline size-28 text-success"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                         </svg>
 
                                         <div class="mt-4">
                                             <h2 class="text-2xl text-slate-700 dark:text-navy-100">
-                                            Berhasil
+                                                Berhasil
                                             </h2>
                                             <p class="mt-2">
-                                            {{ session('message') }}
+                                                {{ session('message') }}
                                             </p>
-                                            <button
-                                            @click="showModal = false"
-                                            class="btn mt-6 bg-success font-medium text-white hover:bg-success-focus focus:bg-success-focus active:bg-success-focus/90"
-                                            >
-                                            Close
+                                            <button @click="showModal = false"
+                                                class="btn mt-6 bg-success font-medium text-white hover:bg-success-focus focus:bg-success-focus active:bg-success-focus/90">
+                                                Close
                                             </button>
                                         </div>
                                     </div>
@@ -174,17 +145,14 @@ $save = function () {
                     @endif
                     <x-input-label>
                         <span>Judul</span>
-                        <x-text-input wire:model="judul" 
-                            placeholder="Masukkan judul pengumuman" 
-                            type="text" 
+                        <x-text-input wire:model="judul" placeholder="Masukkan judul pengumuman" type="text"
                             :error="$errors->has('judul')" />
                         <x-input-error :messages="$errors->get('judul')" />
                     </x-input-label>
 
                     <x-input-label>
                         <span>Isi Pengumuman</span>
-                        <x-textarea-input wire:model="isi" rows="6"
-                            placeholder="Tulis isi pengumuman disini..." 
+                        <x-textarea-input wire:model="isi" rows="6" placeholder="Tulis isi pengumuman disini..."
                             :error="$errors->has('isi')">
                         </x-textarea-input>
                         <x-input-error :messages="$errors->get('isi')" />
@@ -194,14 +162,36 @@ $save = function () {
                     <x-input-label>
                         <span>Thumbnail (Opsional)</span>
                         @if($existing_thumbnail)
-                            <div class="mb-2">
-                                <img src="{{ asset('storage/' . $existing_thumbnail) }}" alt="Thumbnail" class="h-20 w-auto rounded border border-slate-200 object-cover dark:border-navy-500">
+                            <div
+                                class="mb-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500 relative">
+                                <div
+                                    class="text-xs text-slate-500 absolute top-2 left-2 bg-white/80 dark:bg-navy-700/80 px-1 rounded">
+                                    Thumbnail Saat Ini</div>
+                                <img src="{{ asset('storage/' . $existing_thumbnail) }}" alt="Thumbnail"
+                                    class="h-48 w-full rounded-lg object-cover">
                             </div>
                         @endif
-                        <x-text-input wire:model="new_thumbnail" type="file" accept="image/*" 
-                            :error="$errors->has('new_thumbnail')" />
+                        <div class="relative">
+                            <x-text-input wire:model="new_thumbnail" type="file" accept="image/*"
+                                :error="$errors->has('new_thumbnail')" />
+                            <div wire:loading wire:target="new_thumbnail" class="absolute right-3 top-2.5">
+                                <div
+                                    class="spinner size-5 animate-spin rounded-full border-2 border-primary border-t-transparent dark:border-accent-light dark:border-t-transparent">
+                                </div>
+                            </div>
+                        </div>
                         <x-input-error :messages="$errors->get('new_thumbnail')" />
                         <span class="text-xs text-slate-400">Max 2MB. Format: JPG, PNG, JPEG.</span>
+                        @if ($new_thumbnail && method_exists($new_thumbnail, 'temporaryUrl'))
+                            <div
+                                class="mt-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500 relative">
+                                <div
+                                    class="text-xs text-slate-500 absolute top-2 left-2 bg-white/80 dark:bg-navy-700/80 px-1 rounded">
+                                    Preview Baru</div>
+                                <img src="{{ $new_thumbnail->temporaryUrl() }}" alt="Preview"
+                                    class="h-48 w-full rounded-lg object-cover">
+                            </div>
+                        @endif
                     </x-input-label>
 
                     {{-- Lampiran File Upload --}}
@@ -209,13 +199,16 @@ $save = function () {
                         <span>Lampiran File (Opsional)</span>
                         @if($existing_lampiran_file)
                             <div class="mb-2 flex items-center space-x-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+                                <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-slate-500" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
                                 </svg>
-                                <a href="{{ asset('storage/' . $existing_lampiran_file) }}" target="_blank" class="text-primary hover:underline dark:text-accent-light">Lihat Lampiran Saat Ini</a>
+                                <a href="{{ asset('storage/' . $existing_lampiran_file) }}" target="_blank"
+                                    class="text-primary hover:underline dark:text-accent-light">Lihat Lampiran Saat Ini</a>
                             </div>
                         @endif
-                        <x-text-input wire:model="new_lampiran_file" type="file" 
+                        <x-text-input wire:model="new_lampiran_file" type="file"
                             :error="$errors->has('new_lampiran_file')" />
                         <x-input-error :messages="$errors->get('new_lampiran_file')" />
                         <span class="text-xs text-slate-400">Max 10MB.</span>
@@ -269,22 +262,20 @@ $save = function () {
 
                     <x-input-label>
                         <span>Tanggal Publikasi</span>
-                        <x-text-input wire:model="published_at" type="datetime-local" 
+                        <x-text-input wire:model="published_at" type="datetime-local"
                             :error="$errors->has('published_at')" />
                         <x-input-error :messages="$errors->get('published_at')" />
                     </x-input-label>
 
                     <x-input-label>
                         <span>Tanggal Mulai</span>
-                        <x-text-input wire:model="start_date" type="date" 
-                            :error="$errors->has('start_date')" />
+                        <x-text-input wire:model="start_date" type="date" :error="$errors->has('start_date')" />
                         <x-input-error :messages="$errors->get('start_date')" />
                     </x-input-label>
 
                     <x-input-label>
                         <span>Tanggal Akhir</span>
-                        <x-text-input wire:model="end_date" type="date" 
-                            :error="$errors->has('end_date')" />
+                        <x-text-input wire:model="end_date" type="date" :error="$errors->has('end_date')" />
                         <x-input-error :messages="$errors->get('end_date')" />
                     </x-input-label>
                 </div>
@@ -297,8 +288,5 @@ $save = function () {
         </div>
     </div>
 
-    <x-success-modal 
-        trigger="announcement-updated" 
-        message="Pengumuman berhasil diperbarui." 
-    />
+    <x-success-modal trigger="announcement-updated" message="Pengumuman berhasil diperbarui." />
 </div>
