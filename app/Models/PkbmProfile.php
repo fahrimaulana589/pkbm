@@ -25,4 +25,22 @@ class PkbmProfile extends Model
         'misi',
         'logo',
     ];
+
+    protected static function booted(): void
+    {
+        static::updating(function (PkbmProfile $profile) {
+            if ($profile->isDirty('logo')) {
+                $originalLogo = $profile->getOriginal('logo');
+                if ($originalLogo) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($originalLogo);
+                }
+            }
+        });
+
+        static::deleting(function (PkbmProfile $profile) {
+            if ($profile->logo) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($profile->logo);
+            }
+        });
+    }
 }

@@ -69,10 +69,6 @@ $save = function () {
 
     $gambarPath = $this->existing_gambar;
     if ($this->gambar) {
-        // Delete old image if exists
-        if ($this->existing_gambar && Storage::disk('public')->exists($this->existing_gambar)) {
-            Storage::disk('public')->delete($this->existing_gambar);
-        }
         $gambarPath = $this->gambar->store('news', 'public');
     }
 

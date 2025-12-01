@@ -46,6 +46,22 @@ class Announcement extends Model
 
     protected static function booted(): void
     {
+        static::updating(function (Announcement $announcement) {
+            if ($announcement->isDirty('lampiran_file')) {
+                $originalLampiran = $announcement->getOriginal('lampiran_file');
+                if ($originalLampiran) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($originalLampiran);
+                }
+            }
+
+            if ($announcement->isDirty('thumbnail')) {
+                $originalThumbnail = $announcement->getOriginal('thumbnail');
+                if ($originalThumbnail) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($originalThumbnail);
+                }
+            }
+        });
+
         static::deleting(function (Announcement $announcement) {
             if ($announcement->lampiran_file) {
                 \Illuminate\Support\Facades\Storage::disk('public')->delete($announcement->lampiran_file);

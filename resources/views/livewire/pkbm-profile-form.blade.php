@@ -83,9 +83,6 @@ $save = function () {
     ];
 
     if ($this->new_logo) {
-        if ($this->profile->logo) {
-            Storage::disk('public')->delete($this->profile->logo);
-        }
         $data['logo'] = $this->new_logo->store('pkbm/logo', 'public');
         $this->existing_logo = $data['logo'];
     }

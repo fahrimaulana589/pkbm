@@ -22,4 +22,22 @@ class GalleryPhoto extends Model
     {
         return $this->belongsTo(Gallery::class);
     }
+
+    protected static function booted(): void
+    {
+        static::updating(function (GalleryPhoto $photo) {
+            if ($photo->isDirty('file_path')) {
+                $originalPath = $photo->getOriginal('file_path');
+                if ($originalPath) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($originalPath);
+                }
+            }
+        });
+
+        static::deleting(function (GalleryPhoto $photo) {
+            if ($photo->file_path) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($photo->file_path);
+            }
+        });
+    }
 }

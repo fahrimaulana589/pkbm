@@ -27,4 +27,15 @@ class Gallery extends Model
     {
         return $this->hasMany(GalleryPhoto::class)->orderBy('urutan');
     }
+
+    protected static function booted(): void
+    {
+        static::deleting(function (Gallery $gallery) {
+            // Delete all associated photos
+            // The GalleryPhoto model's deleting event will handle the file deletion
+            foreach ($gallery->photos as $photo) {
+                $photo->delete();
+            }
+        });
+    }
 }

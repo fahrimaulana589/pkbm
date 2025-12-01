@@ -74,20 +74,26 @@ $save = function () {
     ];
 
     if ($this->new_lampiran_file) {
-        if ($this->announcement->lampiran_file) {
-            Storage::disk('public')->delete($this->announcement->lampiran_file);
-        }
         $data['lampiran_file'] = $this->new_lampiran_file->store('announcements/attachments', 'public');
     }
 
     if ($this->new_thumbnail) {
-        if ($this->announcement->thumbnail) {
-            Storage::disk('public')->delete($this->announcement->thumbnail);
-        }
         $data['thumbnail'] = $this->new_thumbnail->store('announcements/thumbnails', 'public');
     }
 
     $this->announcement->update($data);
+
+    // Refresh existing file paths for UI
+    if ($this->new_lampiran_file) {
+        $this->existing_lampiran_file = $data['lampiran_file'];
+        $this->new_lampiran_file = null;
+    }
+
+    if ($this->new_thumbnail) {
+        $this->existing_thumbnail = $data['thumbnail'];
+        $this->new_thumbnail = null;
+    }
+
     $this->dispatch('announcement-updated');
 };
 ?>

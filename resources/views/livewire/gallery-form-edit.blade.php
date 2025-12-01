@@ -87,9 +87,6 @@ $save = function () {
 $deletePhoto = function ($photoId) {
     $photo = GalleryPhoto::find($photoId);
     if ($photo) {
-        if (Storage::disk('public')->exists($photo->file_path)) {
-            Storage::disk('public')->delete($photo->file_path);
-        }
         $photo->delete();
 
         $this->existing_photos = $this->gallery->photos()->get();

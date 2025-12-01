@@ -1,0 +1,252 @@
+<?php
+
+namespace Tests\Feature;
+
+use App\Models\Announcement;
+use App\Models\Gallery;
+use App\Models\GalleryPhoto;
+use App\Models\News;
+use App\Models\PkbmProfile;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Livewire\Volt\Volt;
+use Tests\TestCase;
+
+class FileManagementTest extends TestCase
+{
+    use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        Storage::fake('public');
+        $this->actingAs(User::factory()->create());
+    }
+
+    /** @test */
+    public function news_image_is_deleted_when_news_is_deleted()
+    {
+        $file = UploadedFile::fake()->image('news.jpg');
+        $path = $file->store('news', 'public');
+
+        $news = News::factory()->create([
+            'gambar' => $path,
+        ]);
+
+        Storage::disk('public')->assertExists($path);
+
+        $news->delete();
+
+        Storage::disk('public')->assertMissing($path);
+    }
+
+    /** @test */
+    public function old_news_image_is_deleted_when_updated()
+    {
+        $oldFile = UploadedFile::fake()->image('old.jpg');
+        $oldPath = $oldFile->store('news', 'public');
+
+        $news = News::factory()->create([
+            'gambar' => $oldPath,
+        ]);
+
+        $newFile = UploadedFile::fake()->image('new.jpg');
+
+        Volt::test('news-form-edit', ['id' => $news->id])
+            ->set('gambar', $newFile)
+            ->call('save');
+
+        Storage::disk('public')->assertMissing($oldPath);
+        Storage::disk('public')->assertExists('news/' . $newFile->hashName());
+    }
+
+    /** @test */
+    public function announcement_files_are_deleted_when_announcement_is_deleted()
+    {
+        $thumbnail = UploadedFile::fake()->image('thumb.jpg');
+        $attachment = UploadedFile::fake()->create('doc.pdf');
+        
+        $thumbPath = $thumbnail->store('announcements/thumbnails', 'public');
+        $attachPath = $attachment->store('announcements/attachments', 'public');
+
+        $announcement = Announcement::factory()->create([
+            'thumbnail' => $thumbPath,
+            'lampiran_file' => $attachPath,
+        ]);
+
+        Storage::disk('public')->assertExists($thumbPath);
+        Storage::disk('public')->assertExists($attachPath);
+
+        $announcement->delete();
+
+        Storage::disk('public')->assertMissing($thumbPath);
+        Storage::disk('public')->assertMissing($attachPath);
+    }
+
+    /** @test */
+    public function old_announcement_files_are_deleted_when_updated()
+    {
+        $oldThumb = UploadedFile::fake()->image('old_thumb.jpg');
+        $oldThumbPath = $oldThumb->store('announcements/thumbnails', 'public');
+
+        $attachment = UploadedFile::fake()->create('doc.pdf');
+        $attachPath = $attachment->store('announcements/attachments', 'public');
+
+        $announcement = Announcement::factory()->create([
+            'thumbnail' => $oldThumbPath,
+            'lampiran_file' => $attachPath,
+            'published_at' => now(),
+            'start_date' => now(),
+            'end_date' => now()->addDays(7),
+        ]);
+
+        $newThumb = UploadedFile::fake()->image('new_thumb.jpg');
+
+        Volt::test('edit-announcement-form', ['id' => $announcement->id])
+            ->set('new_thumbnail', $newThumb)
+            ->call('save')
+            ->assertHasNoErrors();
+
+        Storage::disk('public')->assertMissing($oldThumbPath);
+        Storage::disk('public')->assertExists('announcements/thumbnails/' . $newThumb->hashName());
+    }
+
+    /** @test */
+    public function gallery_photos_files_are_deleted_when_gallery_is_deleted()
+    {
+        $file = UploadedFile::fake()->image('photo.jpg');
+        $path = $file->store('gallery/1', 'public');
+
+        $gallery = Gallery::factory()->create();
+        $photo = GalleryPhoto::factory()->create([
+            'gallery_id' => $gallery->id,
+            'file_path' => $path,
+        ]);
+
+        Storage::disk('public')->assertExists($path);
+
+        $gallery->delete();
+
+        $this->assertDatabaseMissing('galleries', ['id' => $gallery->id]);
+        $this->assertDatabaseMissing('gallery_photos', ['id' => $photo->id]);
+        Storage::disk('public')->assertMissing($path);
+    }
+
+    /** @test */
+    public function gallery_photo_file_is_deleted_when_photo_is_deleted_via_form()
+    {
+        $file = UploadedFile::fake()->image('photo.jpg');
+        $path = $file->store('gallery/1', 'public');
+
+        $gallery = Gallery::factory()->create();
+        $photo = GalleryPhoto::factory()->create([
+            'gallery_id' => $gallery->id,
+            'file_path' => $path,
+        ]);
+
+        Volt::test('gallery-form-edit', ['id' => $gallery->id])
+            ->call('deletePhoto', $photo->id);
+
+        $this->assertDatabaseMissing('gallery_photos', ['id' => $photo->id]);
+        Storage::disk('public')->assertMissing($path);
+    }
+
+    /** @test */
+    public function pkbm_logo_is_deleted_when_profile_is_deleted()
+    {
+        $file = UploadedFile::fake()->image('logo.jpg');
+        $path = $file->store('pkbm/logo', 'public');
+
+        $profile = PkbmProfile::create([
+            'nama_pkbm' => 'Test PKBM',
+            'logo' => $path,
+        ]);
+
+        Storage::disk('public')->assertExists($path);
+
+        $profile->delete();
+
+        Storage::disk('public')->assertMissing($path);
+    }
+
+    /** @test */
+    public function old_pkbm_logo_is_deleted_when_updated()
+    {
+        $oldFile = UploadedFile::fake()->image('old_logo.jpg');
+        $oldPath = $oldFile->store('pkbm/logo', 'public');
+
+        $profile = PkbmProfile::create([
+            'nama_pkbm' => 'Test PKBM',
+            'logo' => $oldPath,
+        ]);
+
+        $newFile = UploadedFile::fake()->image('new_logo.jpg');
+
+        Volt::test('pkbm-profile-form')
+            ->set('new_logo', $newFile)
+            ->call('save');
+
+        Storage::disk('public')->assertMissing($oldPath);
+        Storage::disk('public')->assertExists('pkbm/logo/' . $newFile->hashName());
+    }
+
+    /** @test */
+    public function news_image_is_deleted_when_model_is_updated_directly()
+    {
+        $oldFile = UploadedFile::fake()->image('old.jpg');
+        $oldPath = $oldFile->store('news', 'public');
+
+        $news = News::factory()->create([
+            'gambar' => $oldPath,
+        ]);
+
+        $newFile = UploadedFile::fake()->image('new.jpg');
+        $newPath = $newFile->store('news', 'public');
+
+        $news->update(['gambar' => $newPath]);
+
+        Storage::disk('public')->assertMissing($oldPath);
+        Storage::disk('public')->assertExists($newPath);
+    }
+
+    /** @test */
+    public function announcement_files_are_deleted_when_model_is_updated_directly()
+    {
+        $oldThumb = UploadedFile::fake()->image('old_thumb.jpg');
+        $oldThumbPath = $oldThumb->store('announcements/thumbnails', 'public');
+
+        $announcement = Announcement::factory()->create([
+            'thumbnail' => $oldThumbPath,
+        ]);
+
+        $newThumb = UploadedFile::fake()->image('new_thumb.jpg');
+        $newThumbPath = $newThumb->store('announcements/thumbnails', 'public');
+
+        $announcement->update(['thumbnail' => $newThumbPath]);
+
+        Storage::disk('public')->assertMissing($oldThumbPath);
+        Storage::disk('public')->assertExists($newThumbPath);
+    }
+
+    /** @test */
+    public function pkbm_logo_is_deleted_when_model_is_updated_directly()
+    {
+        $oldFile = UploadedFile::fake()->image('old_logo.jpg');
+        $oldPath = $oldFile->store('pkbm/logo', 'public');
+
+        $profile = PkbmProfile::create([
+            'nama_pkbm' => 'Test PKBM',
+            'logo' => $oldPath,
+        ]);
+
+        $newFile = UploadedFile::fake()->image('new_logo.jpg');
+        $newPath = $newFile->store('pkbm/logo', 'public');
+
+        $profile->update(['logo' => $newPath]);
+
+        Storage::disk('public')->assertMissing($oldPath);
+        Storage::disk('public')->assertExists($newPath);
+    }
+}
