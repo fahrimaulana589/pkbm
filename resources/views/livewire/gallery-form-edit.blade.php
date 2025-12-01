@@ -164,7 +164,7 @@ $deletePhoto = function ($photoId) {
                         <x-input-error :messages="$errors->get('deskripsi')" />
                     </x-input-label>
 
-                    <div class="mt-4">
+                    <div class="mt-2">  
                         <h3 class="font-medium text-slate-700 dark:text-navy-100 mb-2">Foto Galeri</h3>
 
                         <!-- Existing Photos -->
@@ -200,24 +200,24 @@ $deletePhoto = function ($photoId) {
                             </div>
                             <div x-show="uploading" class="text-xs text-slate-500 mt-1"
                                 x-text="'Uploading... ' + progress + '%'"></div>
-                        </x-input-label>
-                         <!-- Previews -->
-                            <div class="mt-4 grid grid-cols-3 gap-4" x-show="files.length > 0">
-                                <template x-for="(file, index) in files" :key="index">
-                                    <div
-                                        class="relative group rounded-lg border border-slate-200 p-1 dark:border-navy-500">
-                                        <img :src="file.preview" class="h-24 w-full rounded-lg object-cover">
-                                        <button @click="removeFile(index)" type="button"
-                                            class="absolute top-0 right-0 m-1 bg-red-500 text-white p-1 rounded-full shadow-sm hover:bg-red-600 transition-colors duration-200">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
-                                                viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </template>
+                        </x-input-label>                        
+                    </div>
+                    <!-- Previews -->
+                    <div class="grid grid-cols-3 gap-4" x-show="files.length > 0">
+                        <template x-for="(file, index) in files" :key="index">
+                            <div
+                                class="relative group rounded-lg border border-slate-200 p-1 dark:border-navy-500">
+                                <img :src="file.preview" class="h-24 w-full rounded-lg object-cover">
+                                <button @click="removeFile(index)" type="button"
+                                    class="absolute top-0 right-0 m-1 bg-red-500 text-white p-1 rounded-full shadow-sm hover:bg-red-600 transition-colors duration-200">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </button>
                             </div>
+                        </template>
                     </div>
                 </div>
             </div>
