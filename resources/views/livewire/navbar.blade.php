@@ -58,8 +58,9 @@ mount(function () {
                 <a href="/#tutor" class="{{ $navClass }} {{ $inactiveClass }}">Tutor</a>
                 <a href="/jadwal" wire:navigate
                     class="{{ $navClass }} {{ request()->routeIs('jadwal') ? $activeClass : $inactiveClass }}">Jadwal</a>
-                <a href="/#pengumuman" class="{{ $navClass }} {{ $inactiveClass }}">Pengumuman</a>
-                <a href="/#berita" class="{{ $navClass }} {{ $inactiveClass }}">Berita</a>
+                <a href="/#pengumuman" class=" {{ $navClass }} {{ $inactiveClass }}">Pengumuman</a>
+                <a href="/berita" wire:navigate
+                    class="{{ $navClass }} {{ request()->routeIs('berita.*') ? $activeClass : $inactiveClass }}">Berita</a>
                 <a href="/#galeri" class="{{ $navClass }} {{ $inactiveClass }}">Galeri</a>
             </div>
 
@@ -140,7 +141,8 @@ mount(function () {
             <a href="/jadwal" wire:navigate
                 class="{{ $mobileNavClass }} {{ request()->routeIs('jadwal') ? $mobileActiveClass : $mobileInactiveClass }}">Jadwal</a>
             <a href="/#pengumuman" class="{{ $mobileNavClass }} {{ $mobileInactiveClass }}">Pengumuman</a>
-            <a href="/#berita" class="{{ $mobileNavClass }} {{ $mobileInactiveClass }}">Berita</a>
+            <a href="/berita" wire:navigate
+                class="{{ $mobileNavClass }} {{ request()->routeIs('berita.*') ? $mobileActiveClass : $mobileInactiveClass }}">Berita</a>
             <a href="/#galeri" class="{{ $mobileNavClass }} {{ $mobileInactiveClass }}">Galeri</a>
             <div class="pt-4 mt-4 border-t border-slate-100 dark:border-navy-700">
                 <a href="/login"
