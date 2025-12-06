@@ -46,20 +46,21 @@ mount(function () {
 
             <!-- Desktop Menu -->
             <div class="hidden md:flex items-center space-x-8">
-                <a href="#profil"
-                    class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors duration-200">Profil</a>
-                <a href="#program"
-                    class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors duration-200">Program</a>
-                <a href="#tutor"
-                    class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors duration-200">Tutor</a>
+                @php
+                    $navClass = 'text-sm font-medium transition-colors duration-200';
+                    $activeClass = 'text-primary dark:text-primary font-semibold';
+                    $inactiveClass = 'text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary';
+                @endphp
+
+                <a href="/#profil"
+                    class="{{ $navClass }} {{ request()->is('/') && !request()->hash ? $inactiveClass : $inactiveClass }}">Profil</a>
+                <a href="/#program" class="{{ $navClass }} {{ $inactiveClass }}">Program</a>
+                <a href="/#tutor" class="{{ $navClass }} {{ $inactiveClass }}">Tutor</a>
                 <a href="/jadwal" wire:navigate
-                    class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors duration-200">Jadwal</a>
-                <a href="#pengumuman"
-                    class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors duration-200">Pengumuman</a>
-                <a href="#berita"
-                    class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors duration-200">Berita</a>
-                <a href="#galeri"
-                    class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors duration-200">Galeri</a>
+                    class="{{ $navClass }} {{ request()->routeIs('jadwal') ? $activeClass : $inactiveClass }}">Jadwal</a>
+                <a href="/#pengumuman" class="{{ $navClass }} {{ $inactiveClass }}">Pengumuman</a>
+                <a href="/#berita" class="{{ $navClass }} {{ $inactiveClass }}">Berita</a>
+                <a href="/#galeri" class="{{ $navClass }} {{ $inactiveClass }}">Galeri</a>
             </div>
 
             <!-- Right Side (Dark Mode & CTA) -->
@@ -127,20 +128,20 @@ mount(function () {
         x-transition:leave-end="opacity-0 -translate-y-2"
         class="md:hidden border-t border-slate-100 dark:border-navy-700 bg-white dark:bg-navy-800" id="mobile-menu">
         <div class="px-4 pt-2 pb-6 space-y-1">
-            <a href="#profil"
-                class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-300 hover:text-primary dark:hover:text-primary hover:bg-slate-50 dark:hover:bg-navy-700 transition-colors">Profil</a>
-            <a href="#program"
-                class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-300 hover:text-primary dark:hover:text-primary hover:bg-slate-50 dark:hover:bg-navy-700 transition-colors">Program</a>
-            <a href="#tutor"
-                class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-300 hover:text-primary dark:hover:text-primary hover:bg-slate-50 dark:hover:bg-navy-700 transition-colors">Tutor</a>
+            @php
+                $mobileNavClass = 'block px-3 py-3 rounded-md text-base font-medium transition-colors';
+                $mobileActiveClass = 'text-primary dark:text-primary bg-slate-50 dark:bg-navy-700';
+                $mobileInactiveClass = 'text-slate-700 dark:text-slate-300 hover:text-primary dark:hover:text-primary hover:bg-slate-50 dark:hover:bg-navy-700';
+            @endphp
+
+            <a href="/#profil" class="{{ $mobileNavClass }} {{ $mobileInactiveClass }}">Profil</a>
+            <a href="/#program" class="{{ $mobileNavClass }} {{ $mobileInactiveClass }}">Program</a>
+            <a href="/#tutor" class="{{ $mobileNavClass }} {{ $mobileInactiveClass }}">Tutor</a>
             <a href="/jadwal" wire:navigate
-                class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-300 hover:text-primary dark:hover:text-primary hover:bg-slate-50 dark:hover:bg-navy-700 transition-colors">Jadwal</a>
-            <a href="#pengumuman"
-                class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-300 hover:text-primary dark:hover:text-primary hover:bg-slate-50 dark:hover:bg-navy-700 transition-colors">Pengumuman</a>
-            <a href="#berita"
-                class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-300 hover:text-primary dark:hover:text-primary hover:bg-slate-50 dark:hover:bg-navy-700 transition-colors">Berita</a>
-            <a href="#galeri"
-                class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-300 hover:text-primary dark:hover:text-primary hover:bg-slate-50 dark:hover:bg-navy-700 transition-colors">Galeri</a>
+                class="{{ $mobileNavClass }} {{ request()->routeIs('jadwal') ? $mobileActiveClass : $mobileInactiveClass }}">Jadwal</a>
+            <a href="/#pengumuman" class="{{ $mobileNavClass }} {{ $mobileInactiveClass }}">Pengumuman</a>
+            <a href="/#berita" class="{{ $mobileNavClass }} {{ $mobileInactiveClass }}">Berita</a>
+            <a href="/#galeri" class="{{ $mobileNavClass }} {{ $mobileInactiveClass }}">Galeri</a>
             <div class="pt-4 mt-4 border-t border-slate-100 dark:border-navy-700">
                 <a href="/login"
                     class="block w-full text-center px-5 py-3 text-base font-semibold text-white bg-primary rounded-lg hover:bg-primary-focus shadow-md shadow-primary/20">
