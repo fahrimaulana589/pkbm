@@ -51,7 +51,7 @@ class SidebarPanel
                 [
                     'announcement' => [
                         'title' => 'Pengumuman',
-                        'route_name' => 'admin.pengumuman'
+                        'route_name' => 'admin.pengumuman.index'
                     ],
                     'berita' => [
                         'title' => 'Berita & Artikel',

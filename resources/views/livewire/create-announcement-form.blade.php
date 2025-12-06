@@ -57,7 +57,7 @@ $save = function () {
 
     session()->flash('status', 'Pengumuman berhasil dibuat');
     session()->flash('message', 'Pengumuman berhasil ditambahkan.');
-    return $this->redirectRoute('admin.pengumuman', navigate: true);
+    return $this->redirectRoute('admin.pengumuman.index', navigate: true);
 };
 ?>
 
@@ -105,11 +105,11 @@ $save = function () {
                         <span class="text-xs text-slate-400">Max 2MB. Format: JPG, PNG, JPEG.</span>
                         @if ($thumbnail && method_exists($thumbnail, 'temporaryUrl'))
                             <div class="grid grid-cols-3">
-                            <div
-                                class="mt-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500 relative">
-                                <img src="{{ $thumbnail->temporaryUrl() }}" alt="Preview"
-                                    class="h-48 w-full rounded-lg object-cover">
-                            </div>
+                                <div
+                                    class="mt-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500 relative">
+                                    <img src="{{ $thumbnail->temporaryUrl() }}" alt="Preview"
+                                        class="h-48 w-full rounded-lg object-cover">
+                                </div>
                             </div>
                         @endif
                     </x-input-label>

@@ -2,7 +2,7 @@
 
 use function Laravel\Folio\name;
 
-name('admin.pengumuman');
+name('admin.pengumuman.index');
 
 ?>
 <x-app-layout title="Pengumuman" is-sidebar-open="true" is-header-blur="true">
