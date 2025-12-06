@@ -53,19 +53,19 @@ mount(function () {
                 @endphp
 
                 <a href="/profil" wire:navigate
-                    class="{{ $navClass }} {{ request()->routeIs('profil') ? $activeClass : $inactiveClass }}">Profil</a>
+                    class="{{ $navClass }} {{ request()->is('profil') ? $activeClass : $inactiveClass }}">Profil</a>
                 <a href="/program" wire:navigate
-                    class="{{ $navClass }} {{ request()->routeIs('program') ? $activeClass : $inactiveClass }}">Program</a>
+                    class="{{ $navClass }} {{ request()->is('program') ? $activeClass : $inactiveClass }}">Program</a>
                 <a href="/tutor" wire:navigate
-                    class="{{ $navClass }} {{ request()->routeIs('tutor') ? $activeClass : $inactiveClass }}">Tutor</a>
+                    class="{{ $navClass }} {{ request()->is('tutor') ? $activeClass : $inactiveClass }}">Tutor</a>
                 <a href="/jadwal" wire:navigate
-                    class="{{ $navClass }} {{ request()->routeIs('jadwal') ? $activeClass : $inactiveClass }}">Jadwal</a>
+                    class="{{ $navClass }} {{ request()->is('jadwal') ? $activeClass : $inactiveClass }}">Jadwal</a>
                 <a href="/pengumuman" wire:navigate
-                    class="{{ $navClass }} {{ request()->routeIs('pengumuman.*') ? $activeClass : $inactiveClass }}">Pengumuman</a>
+                    class="{{ $navClass }} {{ request()->is('pengumuman*') ? $activeClass : $inactiveClass }}">Pengumuman</a>
                 <a href="/berita" wire:navigate
-                    class="{{ $navClass }} {{ request()->routeIs('berita.*') ? $activeClass : $inactiveClass }}">Berita</a>
+                    class="{{ $navClass }} {{ request()->is('berita*') ? $activeClass : $inactiveClass }}">Berita</a>
                 <a href="/galeri" wire:navigate
-                    class="{{ $navClass }} {{ request()->routeIs('galeri') ? $activeClass : $inactiveClass }}">Galeri</a>
+                    class="{{ $navClass }} {{ request()->is('galeri*') ? $activeClass : $inactiveClass }}">Galeri</a>
             </div>
 
             <!-- Right Side (Dark Mode & CTA) -->
@@ -140,19 +140,19 @@ mount(function () {
             @endphp
 
             <a href="/profil" wire:navigate
-                class="{{ $mobileNavClass }} {{ request()->routeIs('profil') ? $mobileActiveClass : $mobileInactiveClass }}">Profil</a>
+                class="{{ $mobileNavClass }} {{ request()->is('profil') ? $mobileActiveClass : $mobileInactiveClass }}">Profil</a>
             <a href="/program" wire:navigate
-                class="{{ $mobileNavClass }} {{ request()->routeIs('program') ? $mobileActiveClass : $mobileInactiveClass }}">Program</a>
+                class="{{ $mobileNavClass }} {{ request()->is('program') ? $mobileActiveClass : $mobileInactiveClass }}">Program</a>
             <a href="/tutor" wire:navigate
-                class="{{ $mobileNavClass }} {{ request()->routeIs('tutor') ? $mobileActiveClass : $mobileInactiveClass }}">Tutor</a>
+                class="{{ $mobileNavClass }} {{ request()->is('tutor') ? $mobileActiveClass : $mobileInactiveClass }}">Tutor</a>
             <a href="/jadwal" wire:navigate
-                class="{{ $mobileNavClass }} {{ request()->routeIs('jadwal') ? $mobileActiveClass : $mobileInactiveClass }}">Jadwal</a>
+                class="{{ $mobileNavClass }} {{ request()->is('jadwal') ? $mobileActiveClass : $mobileInactiveClass }}">Jadwal</a>
             <a href="/pengumuman" wire:navigate
-                class="{{ $mobileNavClass }} {{ request()->routeIs('pengumuman.*') ? $mobileActiveClass : $mobileInactiveClass }}">Pengumuman</a>
+                class="{{ $mobileNavClass }} {{ request()->is('pengumuman*') ? $mobileActiveClass : $mobileInactiveClass }}">Pengumuman</a>
             <a href="/berita" wire:navigate
-                class="{{ $mobileNavClass }} {{ request()->routeIs('berita.*') ? $mobileActiveClass : $mobileInactiveClass }}">Berita</a>
+                class="{{ $mobileNavClass }} {{ request()->is('berita*') ? $mobileActiveClass : $mobileInactiveClass }}">Berita</a>
             <a href="/galeri" wire:navigate
-                class="{{ $mobileNavClass }} {{ request()->routeIs('galeri') ? $mobileActiveClass : $mobileInactiveClass }}">Galeri</a>
+                class="{{ $mobileNavClass }} {{ request()->is('galeri*') ? $mobileActiveClass : $mobileInactiveClass }}">Galeri</a>
             <div class="pt-4 mt-4 border-t border-slate-100 dark:border-navy-700">
                 <a href="/login"
                     class="block w-full text-center px-5 py-3 text-base font-semibold text-white bg-primary rounded-lg hover:bg-primary-focus shadow-md shadow-primary/20">
