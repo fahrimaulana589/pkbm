@@ -179,6 +179,12 @@ $deletePhoto = function ($photoId) {
                                 <div class="relative group border rounded-lg p-2 dark:border-navy-500">
                                     <img src="{{ Storage::url($photo->file_path) }}"
                                         class="h-32 w-full object-cover rounded-lg mb-2">
+
+                                    <!-- Caption Input -->
+                                    <input type="text" wire:model="photo_captions.{{ $photo->id }}"
+                                        placeholder="Caption foto..."
+                                        class="form-input w-full rounded-lg border border-slate-300 bg-transparent px-2 py-1 text-xs placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" />
+
                                     <button wire:click="deletePhoto('{{ $photo->id }}')"
                                         class="absolute top-0 right-0 m-1 bg-red-500 text-white p-1 rounded-full shadow-sm hover:bg-red-600 transition-colors duration-200"
                                         onclick="confirm('Hapus foto ini?') || event.stopImmediatePropagation()">
