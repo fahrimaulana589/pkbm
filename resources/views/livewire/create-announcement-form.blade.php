@@ -91,7 +91,7 @@ $save = function () {
 
                     {{-- Thumbnail Upload --}}
                     <x-input-label>
-                        <span>Thumbnail (Opsional)</span>
+                        <span>Thumbnail</span>
                         <div class="relative">
                             <x-text-input wire:model="thumbnail" type="file" accept="image/*"
                                 :error="$errors->has('thumbnail')" />
@@ -116,7 +116,7 @@ $save = function () {
 
                     {{-- Lampiran File Upload --}}
                     <x-input-label>
-                        <span>Lampiran File (Opsional)</span>
+                        <span>Lampiran File</span>
                         <x-text-input wire:model="lampiran_file" type="file" :error="$errors->has('lampiran_file')" />
                         <x-input-error :messages="$errors->get('lampiran_file')" />
                         <span class="text-xs text-slate-400">Max 10MB.</span>

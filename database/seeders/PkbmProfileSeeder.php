@@ -13,6 +13,13 @@ class PkbmProfileSeeder extends Seeder
     public function run(): void
     {
         if (PkbmProfile::count() === 0) {
+            $imageFaker = new \Alirezasedghi\LaravelImageFaker\ImageFaker(new \Alirezasedghi\LaravelImageFaker\Services\LoremFlickr());
+            $path = storage_path('app/public/pkbm/logo');
+            if (!file_exists($path)) {
+                mkdir($path, 0755, true);
+            }
+            $filename = $imageFaker->image($path, 640, 480, false);
+
             PkbmProfile::create([
                 'nama_pkbm' => 'PKBM Harapan Bangsa',
                 'npsn' => '12345678',
@@ -26,7 +33,7 @@ class PkbmProfileSeeder extends Seeder
                 'kepala_pkbm' => 'Drs. Rudi Hartono',
                 'visi' => 'Menjadi lembaga pendidikan masyarakat unggul...',
                 'misi' => '- Memberikan layanan pendidikan...',
-                'logo' => null,
+                'logo' => 'pkbm/logo/' . $filename,
             ]);
         }
     }

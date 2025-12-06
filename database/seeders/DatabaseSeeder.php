@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             NewsCategorySeeder::class,
             NewsTagSeeder::class,
             NewsSeeder::class,
+            GallerySeeder::class,
         ]);
 
         User::factory()->create([

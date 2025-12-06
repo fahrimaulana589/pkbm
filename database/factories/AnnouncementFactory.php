@@ -25,6 +25,15 @@ class AnnouncementFactory extends Factory
         $prioritas = ['Normal', 'Tinggi', 'Penting'];
         $status = ['draft', 'dipublikasikan', 'kadaluarsa', 'terjadwal'];
 
+        $imageFaker = new \Alirezasedghi\LaravelImageFaker\ImageFaker(new \Alirezasedghi\LaravelImageFaker\Services\LoremFlickr());
+        $path = storage_path('app/public/announcements/thumbnails');
+        if (!file_exists($path)) {
+            mkdir($path, 0755, true);
+        }
+        
+        $filename = $imageFaker->image($path, 640, 480, false);
+        $thumbnail = 'announcements/thumbnails/' . $filename;
+
         return [
             'judul' => $judul,
             'slug' => \Illuminate\Support\Str::slug($judul),
@@ -32,8 +41,8 @@ class AnnouncementFactory extends Factory
             'kategori' => $this->faker->randomElement($kategori),
             'prioritas' => $this->faker->randomElement($prioritas),
             'status' => $this->faker->randomElement($status),
-            'lampiran_file' => $this->faker->boolean(30) ? $this->faker->word() . '.pdf' : null,
-            'thumbnail' => $this->faker->boolean(30) ? 'images/' . $this->faker->word() . '.jpg' : null,
+            'lampiran_file' => $this->faker->word() . '.pdf',
+            'thumbnail' => $thumbnail,
             'published_at' => $this->faker->boolean(70) ? $this->faker->dateTimeBetween('-1 month', '+1 month') : null,
             'start_date' => $this->faker->date(),
             'end_date' => $this->faker->date(),

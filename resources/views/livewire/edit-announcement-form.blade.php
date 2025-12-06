@@ -172,7 +172,7 @@ $save = function () {
 
                     {{-- Thumbnail Upload --}}
                     <x-input-label>
-                        <span>Thumbnail (Opsional)</span>
+                        <span>Thumbnail</span>
                         @if($existing_thumbnail)
                             <div class="grid grid-cols-3">
                                 <div
@@ -206,7 +206,7 @@ $save = function () {
 
                     {{-- Lampiran File Upload --}}
                     <x-input-label>
-                        <span>Lampiran File (Opsional)</span>
+                        <span>Lampiran File</span>
                         @if($existing_lampiran_file)
                             <div class="mb-2 flex items-center space-x-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-slate-500" fill="none"
