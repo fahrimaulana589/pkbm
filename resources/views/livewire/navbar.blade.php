@@ -25,7 +25,7 @@ mount(function () {
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
             <!-- Logo & Brand -->
-            <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer" onclick="window.location.href='/'">
+            <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer">
                 @if($profile && $profile->logo)
                     <img src="{{ asset('storage/' . $profile->logo) }}" alt="Logo {{ $profile->nama_pkbm }}"
                         class="w-10 h-10 object-contain">
@@ -39,7 +39,7 @@ mount(function () {
                         </svg>
                     </div>
                 @endif
-                <span class="font-bold text-xl text-slate-800 dark:text-white tracking-tight">
+                <a href="/" wire:navigate class="font-bold text-xl text-slate-800 dark:text-white tracking-tight">
                     {{ $profile->nama_pkbm ?? 'SekolahKita' }}
                 </span>
             </div>
