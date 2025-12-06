@@ -11,9 +11,8 @@ name('landing');
     @livewire('landing.profile')
     @livewire('landing.programs')
     @livewire('landing.tutors')
+    @livewire('landing.schedules')
     @livewire('landing.announcements')
     @livewire('landing.news')
     @livewire('landing.gallery')
-    @livewire('landing.stats')
-    @livewire('landing.footer')
 </x-landing-layout>

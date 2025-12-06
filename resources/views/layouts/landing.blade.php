@@ -36,6 +36,9 @@
     {{ $slot }}
     <div id="x-teleport-target"></div>
 
+
+    @livewire('landing.stats')
+    @livewire('landing.footer')
     @isset($script)
         {{ $script }}
     @endisset
