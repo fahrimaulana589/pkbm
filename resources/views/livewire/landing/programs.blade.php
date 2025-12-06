@@ -1,0 +1,68 @@
+<?php
+
+use function Livewire\Volt\{state, mount};
+use App\Models\Program;
+
+state(['programs' => []]);
+
+mount(function () {
+    $this->programs = Program::where('status', 'aktif')->get();
+});
+
+?>
+
+<section id="program" class="py-12 bg-white dark:bg-navy-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+            <h2 class="text-base text-primary font-semibold tracking-wide uppercase">Program Pendidikan</h2>
+            <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
+                Pilihan Program Belajar
+            </p>
+            <p class="mt-4 max-w-2xl text-xl text-slate-500 dark:text-slate-300 lg:mx-auto">
+                Kami menyediakan berbagai program pendidikan kesetaraan dan keterampilan sesuai kebutuhan Anda.
+            </p>
+        </div>
+
+        <div class="mt-10">
+            <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                @forelse($programs as $program)
+                    <div class="pt-6">
+                        <div class="flow-root bg-slate-50 dark:bg-navy-800 rounded-lg px-6 pb-8">
+                            <div class="-mt-6">
+                                <div>
+                                    <span
+                                        class="inline-flex items-center justify-center p-3 bg-primary rounded-md shadow-lg">
+                                        <!-- Heroicon name: outline/academic-cap -->
+                                        <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                            <path d="M12 14l9-5-9-5-9 5 9 5z" />
+                                            <path
+                                                d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+                                        </svg>
+                                    </span>
+                                </div>
+                                <h3 class="mt-8 text-lg font-medium text-slate-900 dark:text-white tracking-tight">
+                                    {{ $program->nama_program }}</h3>
+                                <p class="mt-5 text-base text-slate-500 dark:text-slate-300">
+                                    {{ Str::limit($program->deskripsi, 100) }}
+                                </p>
+                                <div class="mt-4">
+                                    <span
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                                        {{ $program->kategori }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="col-span-3 text-center text-slate-500">
+                        Belum ada data program.
+                    </div>
+                @endforelse
+            </div>
+        </div>
+    </div>
+</section>

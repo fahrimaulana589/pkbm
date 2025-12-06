@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Livewire;
 use Livewire\Volt\Volt;
 use Tests\TestCase;
 
@@ -68,6 +69,54 @@ class PkbmProfileTest extends TestCase
             'id' => $profile->id,
             'nama_pkbm' => 'New PKBM Name',
             'npsn' => '87654321',
+        ]);
+    }
+
+    /**
+     * Test updating PKBM profile with welcome message.
+     */
+    public function test_pkbm_profile_can_be_updated_with_welcome_message(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        // Ensure a profile exists (or create one if not)
+        PkbmProfile::create([
+            'nama_pkbm' => 'PKBM Initial',
+            'npsn' => '00000000',
+            'alamat' => 'Jl. Initial',
+            'provinsi' => 'Initial',
+            'kota' => 'Initial',
+            'kecamatan' => 'Initial',
+            'desa' => 'Initial',
+            'telepon' => '00000000000',
+            'email' => 'initial@example.com',
+            'kepala_pkbm' => 'Initial Head',
+            'visi' => 'Initial Vision',
+            'misi' => 'Initial Mission',
+            'logo' => 'pkbm/logo/initial.png',
+        ]);
+
+        Livewire::test('pkbm-profile-form')
+            ->set('nama_pkbm', 'PKBM Test')
+            ->set('npsn', '12345678')
+            ->set('alamat', 'Jl. Test')
+            ->set('provinsi', 'Jawa Barat')
+            ->set('kota', 'Bandung')
+            ->set('kecamatan', 'Cicendo')
+            ->set('desa', 'Sukamulya')
+            ->set('telepon', '08123456789')
+            ->set('email', 'test@example.com')
+            ->set('kepala_pkbm', 'Kepala Test')
+            ->set('visi', 'Visi Test')
+            ->set('misi', 'Misi Test')
+            ->set('kata_sambutan', 'Selamat Datang di PKBM Test')
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $this->assertDatabaseHas('pkbm_profiles', [
+            'nama_pkbm' => 'PKBM Test',
+            'kata_sambutan' => 'Selamat Datang di PKBM Test',
         ]);
     }
 

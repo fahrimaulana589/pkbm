@@ -23,6 +23,9 @@ state([
     'misi' => '',
     'new_logo' => null,
     'existing_logo' => null,
+    'kata_sambutan' => '',
+    'new_foto_sambutan' => null,
+    'existing_foto_sambutan' => null,
 ]);
 
 mount(function () {
@@ -41,6 +44,8 @@ mount(function () {
         $this->visi = $this->profile->visi;
         $this->misi = $this->profile->misi;
         $this->existing_logo = $this->profile->logo;
+        $this->kata_sambutan = $this->profile->kata_sambutan;
+        $this->existing_foto_sambutan = $this->profile->foto_sambutan;
     }
 });
 
@@ -58,6 +63,8 @@ rules(fn() => [
     'visi' => 'required|string',
     'misi' => 'required|string',
     'new_logo' => [$this->existing_logo ? 'nullable' : 'required', 'image', 'max:2048'], // Max 2MB
+    'kata_sambutan' => 'nullable|string',
+    'new_foto_sambutan' => ['nullable', 'image', 'max:2048'],
 ]);
 
 $save = function () {
@@ -80,6 +87,7 @@ $save = function () {
         'kepala_pkbm' => $this->kepala_pkbm,
         'visi' => $this->visi,
         'misi' => $this->misi,
+        'kata_sambutan' => $this->kata_sambutan,
     ];
 
     if ($this->new_logo) {
@@ -89,6 +97,15 @@ $save = function () {
         $data['logo'] = $this->new_logo->store('pkbm/logo', 'public');
         $this->existing_logo = $data['logo'];
         $this->new_logo = null;
+    }
+
+    if ($this->new_foto_sambutan) {
+        if ($this->existing_foto_sambutan) {
+            Storage::disk('public')->delete($this->existing_foto_sambutan);
+        }
+        $data['foto_sambutan'] = $this->new_foto_sambutan->store('pkbm/sambutan', 'public');
+        $this->existing_foto_sambutan = $data['foto_sambutan'];
+        $this->new_foto_sambutan = null;
     }
 
     if ($this->profile->exists) {
@@ -102,168 +119,219 @@ $save = function () {
 
 ?>
 
-<div class="grid grid-cols-12 gap-4 sm:gap-5 lg:gap-6">
-    <div class="col-span-12 lg:col-span-8">
-        <div class="card px-4 pb-4 sm:px-5">
-            <div class="my-3 flex h-8 items-center justify-between">
-                <h2 class="font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 lg:text-base">
-                    Identitas PKBM
-                </h2>
-            </div>
-            <div class="max-w-xl">
-                <p>
-                    Informasi dasar mengenai lembaga PKBM.
-                </p>
-                <div class="mt-5 flex flex-col gap-4">
-                    <x-input-label>
-                        <span>Nama PKBM</span>
-                        <x-text-input wire:model="nama_pkbm" placeholder="Nama PKBM" type="text"
-                            :error="$errors->has('nama_pkbm')" />
-                        <x-input-error :messages="$errors->get('nama_pkbm')" />
-                    </x-input-label>
-
-                    <x-input-label>
-                        <span>NPSN</span>
-                        <x-text-input wire:model="npsn" placeholder="Nomor Pokok Sekolah Nasional" type="text"
-                            :error="$errors->has('npsn')" />
-                        <x-input-error :messages="$errors->get('npsn')" />
-                    </x-input-label>
-
-                    <x-input-label>
-                        <span>Kepala PKBM</span>
-                        <x-text-input wire:model="kepala_pkbm" placeholder="Nama Kepala PKBM" type="text"
-                            :error="$errors->has('kepala_pkbm')" />
-                        <x-input-error :messages="$errors->get('kepala_pkbm')" />
-                    </x-input-label>
-
-                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+<div>
+    <div class="grid grid-cols-12 gap-4 sm:gap-5 lg:gap-6">
+        <div class="col-span-12 lg:col-span-8">
+            <div class="card px-4 pb-4 sm:px-5">
+                <div class="my-3 flex h-8 items-center justify-between">
+                    <h2 class="font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 lg:text-base">
+                        Identitas PKBM
+                    </h2>
+                </div>
+                <div class="max-w-xl">
+                    <p>
+                        Informasi dasar mengenai lembaga PKBM.
+                    </p>
+                    <div class="mt-5 flex flex-col gap-4">
                         <x-input-label>
-                            <span>Telepon</span>
-                            <x-text-input wire:model="telepon" placeholder="Nomor Telepon" type="text"
-                                :error="$errors->has('telepon')" />
-                            <x-input-error :messages="$errors->get('telepon')" />
+                            <span>Nama PKBM</span>
+                            <x-text-input wire:model="nama_pkbm" placeholder="Nama PKBM" type="text"
+                                :error="$errors->has('nama_pkbm')" />
+                            <x-input-error :messages="$errors->get('nama_pkbm')" />
                         </x-input-label>
 
                         <x-input-label>
-                            <span>Email</span>
-                            <x-text-input wire:model="email" placeholder="Alamat Email" type="email"
-                                :error="$errors->has('email')" />
-                            <x-input-error :messages="$errors->get('email')" />
+                            <span>NPSN</span>
+                            <x-text-input wire:model="npsn" placeholder="Nomor Pokok Sekolah Nasional" type="text"
+                                :error="$errors->has('npsn')" />
+                            <x-input-error :messages="$errors->get('npsn')" />
                         </x-input-label>
+
+                        <x-input-label>
+                            <span>Kepala PKBM</span>
+                            <x-text-input wire:model="kepala_pkbm" placeholder="Nama Kepala PKBM" type="text"
+                                :error="$errors->has('kepala_pkbm')" />
+                            <x-input-error :messages="$errors->get('kepala_pkbm')" />
+                        </x-input-label>
+
+                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                            <x-input-label>
+                                <span>Telepon</span>
+                                <x-text-input wire:model="telepon" placeholder="Nomor Telepon" type="text"
+                                    :error="$errors->has('telepon')" />
+                                <x-input-error :messages="$errors->get('telepon')" />
+                            </x-input-label>
+
+                            <x-input-label>
+                                <span>Email</span>
+                                <x-text-input wire:model="email" placeholder="Alamat Email" type="email"
+                                    :error="$errors->has('email')" />
+                                <x-input-error :messages="$errors->get('email')" />
+                            </x-input-label>
+                        </div>
+
+                        <x-input-label>
+                            <span>Alamat Lengkap</span>
+                            <x-textarea-input wire:model="alamat" rows="3" placeholder="Alamat jalan, RT/RW..."
+                                :error="$errors->has('alamat')">
+                            </x-textarea-input>
+                            <x-input-error :messages="$errors->get('alamat')" />
+                        </x-input-label>
+
+                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                            <x-input-label>
+                                <span>Provinsi</span>
+                                <x-text-input wire:model="provinsi" placeholder="Provinsi" type="text"
+                                    :error="$errors->has('provinsi')" />
+                                <x-input-error :messages="$errors->get('provinsi')" />
+                            </x-input-label>
+                            <x-input-label>
+                                <span>Kota/Kabupaten</span>
+                                <x-text-input wire:model="kota" placeholder="Kota/Kabupaten" type="text"
+                                    :error="$errors->has('kota')" />
+                                <x-input-error :messages="$errors->get('kota')" />
+                            </x-input-label>
+                            <x-input-label>
+                                <span>Kecamatan</span>
+                                <x-text-input wire:model="kecamatan" placeholder="Kecamatan" type="text"
+                                    :error="$errors->has('kecamatan')" />
+                                <x-input-error :messages="$errors->get('kecamatan')" />
+                            </x-input-label>
+                            <x-input-label>
+                                <span>Desa/Kelurahan</span>
+                                <x-text-input wire:model="desa" placeholder="Desa/Kelurahan" type="text"
+                                    :error="$errors->has('desa')" />
+                                <x-input-error :messages="$errors->get('desa')" />
+                            </x-input-label>
+                        </div>
                     </div>
+                </div>
+            </div>
 
-                    <x-input-label>
-                        <span>Alamat Lengkap</span>
-                        <x-textarea-input wire:model="alamat" rows="3" placeholder="Alamat jalan, RT/RW..."
-                            :error="$errors->has('alamat')">
-                        </x-textarea-input>
-                        <x-input-error :messages="$errors->get('alamat')" />
-                    </x-input-label>
+            <div class="card mt-4 px-4 pb-4 sm:px-5">
+                <div class="my-3 flex h-8 items-center justify-between">
+                    <h2 class="font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 lg:text-base">
+                        Visi & Misi
+                    </h2>
+                </div>
+                <div class="max-w-xl">
+                    <div class="mt-5 flex flex-col gap-4">
+                        <x-input-label>
+                            <span>Visi</span>
+                            <x-textarea-input wire:model="visi" rows="4" placeholder="Visi PKBM..."
+                                :error="$errors->has('visi')">
+                            </x-textarea-input>
+                            <x-input-error :messages="$errors->get('visi')" />
+                        </x-input-label>
 
-                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <x-input-label>
-                            <span>Provinsi</span>
-                            <x-text-input wire:model="provinsi" placeholder="Provinsi" type="text"
-                                :error="$errors->has('provinsi')" />
-                            <x-input-error :messages="$errors->get('provinsi')" />
-                        </x-input-label>
-                        <x-input-label>
-                            <span>Kota/Kabupaten</span>
-                            <x-text-input wire:model="kota" placeholder="Kota/Kabupaten" type="text"
-                                :error="$errors->has('kota')" />
-                            <x-input-error :messages="$errors->get('kota')" />
-                        </x-input-label>
-                        <x-input-label>
-                            <span>Kecamatan</span>
-                            <x-text-input wire:model="kecamatan" placeholder="Kecamatan" type="text"
-                                :error="$errors->has('kecamatan')" />
-                            <x-input-error :messages="$errors->get('kecamatan')" />
-                        </x-input-label>
-                        <x-input-label>
-                            <span>Desa/Kelurahan</span>
-                            <x-text-input wire:model="desa" placeholder="Desa/Kelurahan" type="text"
-                                :error="$errors->has('desa')" />
-                            <x-input-error :messages="$errors->get('desa')" />
+                            <span>Misi</span>
+                            <x-textarea-input wire:model="misi" rows="6" placeholder="Misi PKBM..."
+                                :error="$errors->has('misi')">
+                            </x-textarea-input>
+                            <x-input-error :messages="$errors->get('misi')" />
                         </x-input-label>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="card mt-4 px-4 pb-4 sm:px-5">
-            <div class="my-3 flex h-8 items-center justify-between">
-                <h2 class="font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 lg:text-base">
-                    Visi & Misi
-                </h2>
-            </div>
-            <div class="max-w-xl">
-                <div class="mt-5 flex flex-col gap-4">
-                    <x-input-label>
-                        <span>Visi</span>
-                        <x-textarea-input wire:model="visi" rows="4" placeholder="Visi PKBM..."
-                            :error="$errors->has('visi')">
-                        </x-textarea-input>
-                        <x-input-error :messages="$errors->get('visi')" />
-                    </x-input-label>
-
-                    <x-input-label>
-                        <span>Misi</span>
-                        <x-textarea-input wire:model="misi" rows="6" placeholder="Misi PKBM..."
-                            :error="$errors->has('misi')">
-                        </x-textarea-input>
-                        <x-input-error :messages="$errors->get('misi')" />
-                    </x-input-label>
+        <div class="col-span-12 lg:col-span-4">
+            <div class="card px-4 pb-4 sm:px-5">
+                <div class="my-3 flex h-8 items-center justify-between">
+                    <h2 class="font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 lg:text-base">
+                        Logo Lembaga
+                    </h2>
+                </div>
+                <div class="max-w-xl">
+                    <div class="flex flex-col gap-4">
+                        <x-input-label>
+                            <span>Upload Logo</span>
+                            @if($existing_logo)
+                                <div class="mt-2">
+                                    <div
+                                        class="mb-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500">
+                                        <img src="{{ asset('storage/' . $existing_logo) }}" alt="Logo PKBM"
+                                            class="h-32 w-auto object-contain">
+                                    </div>
+                                </div>
+                            @endif
+                            <div class="relative">
+                                <x-text-input wire:model="new_logo" type="file" accept="image/*"
+                                    :error="$errors->has('new_logo')" />
+                                <div wire:loading wire:target="new_logo" class="absolute right-3 top-2.5">
+                                    <div
+                                        class="spinner size-5 animate-spin rounded-full border-2 border-primary border-t-transparent dark:border-accent-light dark:border-t-transparent">
+                                    </div>
+                                </div>
+                            </div>
+                            <x-input-error :messages="$errors->get('new_logo')" />
+                            <span class="text-xs text-slate-400">Max 2MB. Format: PNG, JPG, JPEG.</span>
+                            @if ($new_logo && method_exists($new_logo, 'temporaryUrl'))
+                                <div class="grid">
+                                    <div
+                                        class="mt-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500">
+                                        <img src="{{ $new_logo->temporaryUrl() }}" alt="Preview"
+                                            class="h-32 w-auto object-contain">
+                                    </div>
+                                </div>
+                            @endif
+                        </x-input-label>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-span-12 lg:col-span-4">
-        <div class="card px-4 pb-4 sm:px-5">
-            <div class="my-3 flex h-8 items-center justify-between">
-                <h2 class="font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 lg:text-base">
-                    Logo Lembaga
-                </h2>
-            </div>
-            <div class="max-w-xl">
-                <div class="flex flex-col gap-4">
-                    <x-input-label>
-                        <span>Upload Logo</span>
-                        @if($existing_logo)
-                            <div class="mt-2 grid grid-cols-3">
-                                <div
-                                    class="mb-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500">
-                                    <img src="{{ asset('storage/' . $existing_logo) }}" alt="Logo PKBM"
-                                        class="h-32 w-auto object-contain">
-                                </div>
-                            </div>
-                        @endif
-                        <div class="relative">
-                            <x-text-input wire:model="new_logo" type="file" accept="image/*"
-                                :error="$errors->has('new_logo')" />
-                            <div wire:loading wire:target="new_logo" class="absolute right-3 top-2.5">
-                                <div
-                                    class="spinner size-5 animate-spin rounded-full border-2 border-primary border-t-transparent dark:border-accent-light dark:border-t-transparent">
-                                </div>
+
+    <div class="card mt-4 px-4 pb-4 sm:px-5">
+        <div class="my-3 flex h-8 items-center justify-between">
+            <h2 class="font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 lg:text-base">
+                Sambutan Kepala PKBM
+            </h2>
+        </div>
+        <div class="max-w-xl">
+            <div class="flex flex-col gap-4">
+                <x-input-label>
+                    <span>Foto Sambutan</span>
+                    @if($existing_foto_sambutan)
+                        <div class="mt-2 grid grid-cols-3">
+                            <div class="mb-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500">
+                                <img src="{{ asset('storage/' . $existing_foto_sambutan) }}" alt="Foto Sambutan"
+                                    class="h-32 w-auto object-contain">
                             </div>
                         </div>
-                        <x-input-error :messages="$errors->get('new_logo')" />
-                        <span class="text-xs text-slate-400">Max 2MB. Format: PNG, JPG, JPEG.</span>
-                        @if ($new_logo && method_exists($new_logo, 'temporaryUrl'))
-                            <div class="grid grid-cols-3">
-                                <div
-                                    class="mt-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500">
-                                    <img src="{{ $new_logo->temporaryUrl() }}" alt="Preview"
-                                        class="h-32 w-auto object-contain">
-                                </div>
+                    @endif
+                    <div class="relative">
+                        <x-text-input wire:model="new_foto_sambutan" type="file" accept="image/*"
+                            :error="$errors->has('new_foto_sambutan')" />
+                        <div wire:loading wire:target="new_foto_sambutan" class="absolute right-3 top-2.5">
+                            <div
+                                class="spinner size-5 animate-spin rounded-full border-2 border-primary border-t-transparent dark:border-accent-light dark:border-t-transparent">
                             </div>
-                        @endif
-                    </x-input-label>
-                </div>
-                <div class="mt-5">
-                    <x-primary-button wire:click="save">
-                        Simpan Profil
-                    </x-primary-button>
-                </div>
+                        </div>
+                    </div>
+                    <x-input-error :messages="$errors->get('new_foto_sambutan')" />
+                    <span class="text-xs text-slate-400">Max 2MB. Format: PNG, JPG, JPEG.</span>
+                    @if ($new_foto_sambutan && method_exists($new_foto_sambutan, 'temporaryUrl'))
+                        <div class="grid grid-cols-3">
+                            <div class="mt-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500">
+                                <img src="{{ $new_foto_sambutan->temporaryUrl() }}" alt="Preview"
+                                    class="h-32 w-auto object-contain">
+                            </div>
+                        </div>
+                    @endif
+                </x-input-label>
+
+                <x-input-label>
+                    <span>Kata Sambutan</span>
+                    <x-textarea-input wire:model="kata_sambutan" rows="6" placeholder="Kata sambutan..."
+                        :error="$errors->has('kata_sambutan')"></x-textarea-input>
+                    <x-input-error :messages="$errors->get('kata_sambutan')" />
+                </x-input-label>
+            </div>
+            <div class="mt-5">
+                <x-primary-button wire:click="save">
+                    Simpan Profil
+                </x-primary-button>
             </div>
         </div>
     </div>

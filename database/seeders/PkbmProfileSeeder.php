@@ -20,6 +20,12 @@ class PkbmProfileSeeder extends Seeder
             }
             $filename = $imageFaker->image($path, 640, 480, false);
 
+            $pathSambutan = storage_path('app/public/pkbm/sambutan');
+            if (!file_exists($pathSambutan)) {
+                mkdir($pathSambutan, 0755, true);
+            }
+            $filenameSambutan = $imageFaker->image($pathSambutan, 640, 480, false);
+
             PkbmProfile::create([
                 'nama_pkbm' => 'PKBM Harapan Bangsa',
                 'npsn' => '12345678',
@@ -34,6 +40,8 @@ class PkbmProfileSeeder extends Seeder
                 'visi' => 'Menjadi lembaga pendidikan masyarakat unggul...',
                 'misi' => '- Memberikan layanan pendidikan...',
                 'logo' => 'pkbm/logo/' . $filename,
+                'foto_sambutan' => 'pkbm/sambutan/' . $filenameSambutan,
+                'kata_sambutan' => 'Selamat datang di PKBM Harapan Bangsa. Kami berkomitmen untuk memberikan pendidikan kesetaraan yang berkualitas bagi seluruh masyarakat. Mari bergabung bersama kami untuk meraih masa depan yang lebih cerah.',
             ]);
         }
     }

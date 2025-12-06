@@ -24,6 +24,8 @@ class PkbmProfile extends Model
         'visi',
         'misi',
         'logo',
+        'foto_sambutan',
+        'kata_sambutan',
     ];
 
     protected static function booted(): void
