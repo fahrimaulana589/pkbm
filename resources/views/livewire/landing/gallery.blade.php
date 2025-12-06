@@ -2,10 +2,12 @@
 
 use function Livewire\Volt\{state, mount};
 use App\Models\Gallery;
+use App\Models\PkbmProfile;
 
-state(['galleries' => []]);
+state(['galleries' => [], 'profile' => null]);
 
 mount(function () {
+    $this->profile = PkbmProfile::first();
     $this->galleries = Gallery::with(['photos' => function($query) {
             $query->orderBy('urutan', 'asc')->take(4);
         }])
@@ -24,7 +26,7 @@ mount(function () {
                 Album Kegiatan
             </p>
             <p class="mt-4 max-w-2xl text-xl text-slate-500 dark:text-slate-300 lg:mx-auto">
-                Dokumentasi kegiatan dan acara di PKBM SekolahKita.
+                Dokumentasi kegiatan dan acara di {{ $profile->nama_pkbm ?? 'PKBM SekolahKita' }}.
             </p>
         </div>
 

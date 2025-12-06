@@ -2,11 +2,13 @@
 
 use function Livewire\Volt\{state, with, uses};
 use App\Models\Gallery;
+use App\Models\PkbmProfile;
 use Livewire\WithPagination;
 
 uses(WithPagination::class);
 
 with(fn() => [
+    'profile' => PkbmProfile::first(),
     'galleries' => Gallery::with([
         'photos' => function ($query) {
             $query->orderBy('urutan', 'asc')->take(4);
@@ -27,7 +29,7 @@ with(fn() => [
                 Album Kegiatan
             </p>
             <p class="mt-4 max-w-2xl text-xl text-slate-500 dark:text-slate-300 mx-auto">
-                Dokumentasi kegiatan dan acara di PKBM SekolahKita.
+                Dokumentasi kegiatan dan acara di {{ $profile->nama_pkbm ?? 'PKBM SekolahKita' }}.
             </p>
         </div>
 
