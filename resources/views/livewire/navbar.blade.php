@@ -52,6 +52,8 @@ mount(function () {
                     class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors duration-200">Program</a>
                 <a href="#tutor"
                     class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors duration-200">Tutor</a>
+                <a href="/jadwal" wire:navigate
+                    class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors duration-200">Jadwal</a>
                 <a href="#pengumuman"
                     class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors duration-200">Pengumuman</a>
                 <a href="#berita"
@@ -131,6 +133,8 @@ mount(function () {
                 class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-300 hover:text-primary dark:hover:text-primary hover:bg-slate-50 dark:hover:bg-navy-700 transition-colors">Program</a>
             <a href="#tutor"
                 class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-300 hover:text-primary dark:hover:text-primary hover:bg-slate-50 dark:hover:bg-navy-700 transition-colors">Tutor</a>
+            <a href="/jadwal" wire:navigate
+                class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-300 hover:text-primary dark:hover:text-primary hover:bg-slate-50 dark:hover:bg-navy-700 transition-colors">Jadwal</a>
             <a href="#pengumuman"
                 class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-300 hover:text-primary dark:hover:text-primary hover:bg-slate-50 dark:hover:bg-navy-700 transition-colors">Pengumuman</a>
             <a href="#berita"

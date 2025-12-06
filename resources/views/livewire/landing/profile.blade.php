@@ -18,7 +18,7 @@ mount(function () {
             <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
                 Tentang {{ $profile->nama_pkbm ?? 'PKBM SekolahKita' }}
             </p>
-            <p class="mt-4 max-w-2xl text-xl text-slate-500 dark:text-slate-300 lg:mx-auto">
+            <p class="mt-4 text-xl text-slate-500 dark:text-slate-300 lg:mx-auto">
                 {{ $profile->visi ?? 'Menjadi pusat kegiatan belajar masyarakat yang unggul dan berdaya saing.' }}
             </p>
         </div>

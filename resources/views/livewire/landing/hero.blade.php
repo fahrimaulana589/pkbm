@@ -21,7 +21,7 @@ mount(function () {
                     <span class="block">Wujudkan Masa Depan</span>
                     <span class="block text-primary">Generasi Emas</span>
                 </h1>
-                <p class="mt-4 text-lg text-slate-600 dark:text-slate-300 sm:mt-6 max-w-lg">
+                <p class="mt-4 text-lg text-slate-600 dark:text-slate-300 sm:mt-6">
                     {{ $profile->kata_sambutan ?? 'Sekolah Pelita Nusantara berkomitmen mencetak pemimpin masa depan yang cerdas, berintegritas, dan siap bersaing di kancah global.' }}
                 </p>
 
