@@ -9,7 +9,7 @@ uses(WithPagination::class);
 with(fn() => [
     'announcements' => Announcement::where('status', 'dipublikasikan')
         ->orderBy('created_at', 'desc')
-        ->paginate(9),
+        ->paginate(10),
 ]);
 
 ?>
@@ -26,48 +26,82 @@ with(fn() => [
             </p>
         </div>
 
-        <div class="mt-10 grid gap-8 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
+        <div class="mt-10 grid gap-8 lg:grid-cols-2 sm:grid-cols-1">
             @forelse($announcements as $announcement)
                 <div
-                    class="flex flex-col rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                    <div class="flex-1 bg-white dark:bg-navy-800 p-6 flex flex-col justify-between">
+                    class="flex flex-col rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-white dark:bg-navy-800 border border-slate-100 dark:border-navy-700">
+                    @if($announcement->thumbnail)
+                                    <div class="flex-shrink-0 h-64 w-full relative">
+                                        <img class="h-full w-full object-cover" src="{{ asset('storage/' . $announcement->thumbnail) }}"
+                                            alt="{{ $announcement->judul }}">
+                                        <div class="absolute top-4 right-4">
+                                            @php
+                                                $priorityClass = match ($announcement->prioritas) {
+                                                    'Penting' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+                                                    'Tinggi' => 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
+                                                    default => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+                                                };
+                                            @endphp
+                         <span
+                                                class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium {{ $priorityClass }}">
+                                                {{ $announcement->prioritas }}
+                                            </span>
+                                        </div>
+                                    </div>
+                    @endif
+
+                    <div class="flex-1 p-6 flex flex-col justify-between">
                         <div class="flex-1">
-                            <p class="text-sm font-medium text-primary">
-                                <span class="hover:underline">
+                            <div class="flex items-center justify-between mb-2">
+                                <p class="text-sm font-medium text-primary">
                                     {{ $announcement->kategori }}
-                                </span>
-                            </p>
-                            <a href="#" class="block mt-2">
-                                <p class="text-xl font-semibold text-slate-900 dark:text-white">
-                                    {{ $announcement->judul }}
                                 </p>
-                                <p class="mt-3 text-base text-slate-500 dark:text-slate-300">
-                                    {{ Str::limit(strip_tags($announcement->isi), 150) }}
-                                </p>
-                            </a>
+                                <time datetime="{{ $announcement->created_at }}"
+                                    class="text-sm text-slate-500 dark:text-slate-400">
+                                    {{ $announcement->created_at->format('d M Y') }}
+                                </time>
+                            </div>
+
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4">
+                                {{ $announcement->judul }}
+                            </h3>
+
+                            <div class="prose dark:prose-invert max-w-none text-slate-500 dark:text-slate-300 mb-6">
+                                {!! nl2br(e($announcement->isi)) !!}
+                            </div>
                         </div>
-                        <div class="mt-6 flex items-center">
-                            <div class="flex-shrink-0">
-                                <span class="sr-only">{{ $announcement->penulis->name ?? 'Admin' }}</span>
-                                <div
-                                    class="h-10 w-10 rounded-full bg-slate-200 dark:bg-navy-700 flex items-center justify-center text-slate-500 dark:text-slate-300">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                                        stroke="currentColor">
+
+                        <div
+                            class="mt-6 flex items-center justify-between border-t border-slate-100 dark:border-navy-700 pt-4">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                    <div
+                                        class="h-10 w-10 rounded-full bg-slate-200 dark:bg-navy-700 flex items-center justify-center text-slate-500 dark:text-slate-300">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm font-medium text-slate-900 dark:text-white">
+                                        {{ $announcement->penulis->name ?? 'Admin' }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            @if($announcement->lampiran_file)
+                                <a href="{{ asset('storage/' . $announcement->lampiran_file) }}" target="_blank"
+                                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary-focus focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors">
+                                    <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                                     </svg>
-                                </div>
-                            </div>
-                            <div class="ml-3">
-                                <p class="text-sm font-medium text-slate-900 dark:text-white">
-                                    {{ $announcement->penulis->name ?? 'Admin' }}
-                                </p>
-                                <div class="flex space-x-1 text-sm text-slate-500 dark:text-slate-400">
-                                    <time datetime="{{ $announcement->created_at }}">
-                                        {{ $announcement->created_at->format('d M Y') }}
-                                    </time>
-                                </div>
-                            </div>
+                                    Download Lampiran
+                                </a>
+                            @endif
                         </div>
                     </div>
                 </div>

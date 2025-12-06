@@ -117,6 +117,32 @@ class PagesTest extends TestCase
         $response->assertSeeLivewire('landing.announcement-index');
     }
 
+    public function test_announcement_page_shows_enhanced_features()
+    {
+        $user = \App\Models\User::factory()->create();
+        
+        $announcement = \App\Models\Announcement::create([
+            'judul' => 'Announcement Test',
+            'slug' => 'announcement-test',
+            'isi' => 'This is the full content of the announcement.',
+            'kategori' => 'Umum',
+            'prioritas' => 'Penting',
+            'status' => 'dipublikasikan',
+            'thumbnail' => 'path/to/thumbnail.jpg',
+            'lampiran_file' => 'path/to/file.pdf',
+            'published_at' => now(),
+            'penulis_id' => $user->id,
+        ]);
+
+        $component = \Livewire\Volt\Volt::test('landing.announcement-index');
+        
+        $component->assertSee('Announcement Test');
+        $component->assertSee('This is the full content of the announcement.');
+        $component->assertSee('Penting'); // Priority badge
+        $component->assertSee('Download Lampiran'); // Download button
+        $component->assertSee('path/to/thumbnail.jpg'); // Thumbnail src
+    }
+
     public function test_can_render_gallery_page()
     {
         $response = $this->get('/galeri');

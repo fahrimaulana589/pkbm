@@ -12,7 +12,10 @@ class AnnouncementSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create 12 announcement records using the factory
-        Announcement::factory(12)->create();
+        // Create 20 active announcement records
+        Announcement::factory(20)->create([
+            'status' => 'dipublikasikan',
+            'published_at' => now(),
+        ]);
     }
 }
