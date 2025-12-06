@@ -20,7 +20,7 @@ mount(function () {
 
 ?>
 
-<section class="py-24 bg-slate-50 dark:bg-navy-900 min-h-screen">
+<section class="py-16 sm:py-20 bg-slate-50 dark:bg-navy-900 min-h-screen">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
             <h2 class="text-base text-primary font-semibold tracking-wide uppercase">Jadwal Lengkap</h2>

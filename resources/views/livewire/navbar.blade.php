@@ -52,16 +52,20 @@ mount(function () {
                     $inactiveClass = 'text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary';
                 @endphp
 
-                <a href="/#profil"
-                    class="{{ $navClass }} {{ request()->is('/') && !request()->hash ? $inactiveClass : $inactiveClass }}">Profil</a>
-                <a href="/#program" class="{{ $navClass }} {{ $inactiveClass }}">Program</a>
-                <a href="/#tutor" class="{{ $navClass }} {{ $inactiveClass }}">Tutor</a>
+                <a href="/profil" wire:navigate
+                    class="{{ $navClass }} {{ request()->routeIs('profil') ? $activeClass : $inactiveClass }}">Profil</a>
+                <a href="/program" wire:navigate
+                    class="{{ $navClass }} {{ request()->routeIs('program') ? $activeClass : $inactiveClass }}">Program</a>
+                <a href="/tutor" wire:navigate
+                    class="{{ $navClass }} {{ request()->routeIs('tutor') ? $activeClass : $inactiveClass }}">Tutor</a>
                 <a href="/jadwal" wire:navigate
                     class="{{ $navClass }} {{ request()->routeIs('jadwal') ? $activeClass : $inactiveClass }}">Jadwal</a>
-                <a href="/#pengumuman" class=" {{ $navClass }} {{ $inactiveClass }}">Pengumuman</a>
+                <a href="/pengumuman" wire:navigate
+                    class="{{ $navClass }} {{ request()->routeIs('pengumuman.*') ? $activeClass : $inactiveClass }}">Pengumuman</a>
                 <a href="/berita" wire:navigate
                     class="{{ $navClass }} {{ request()->routeIs('berita.*') ? $activeClass : $inactiveClass }}">Berita</a>
-                <a href="/#galeri" class="{{ $navClass }} {{ $inactiveClass }}">Galeri</a>
+                <a href="/galeri" wire:navigate
+                    class="{{ $navClass }} {{ request()->routeIs('galeri') ? $activeClass : $inactiveClass }}">Galeri</a>
             </div>
 
             <!-- Right Side (Dark Mode & CTA) -->
@@ -135,15 +139,20 @@ mount(function () {
                 $mobileInactiveClass = 'text-slate-700 dark:text-slate-300 hover:text-primary dark:hover:text-primary hover:bg-slate-50 dark:hover:bg-navy-700';
             @endphp
 
-            <a href="/#profil" class="{{ $mobileNavClass }} {{ $mobileInactiveClass }}">Profil</a>
-            <a href="/#program" class="{{ $mobileNavClass }} {{ $mobileInactiveClass }}">Program</a>
-            <a href="/#tutor" class="{{ $mobileNavClass }} {{ $mobileInactiveClass }}">Tutor</a>
+            <a href="/profil" wire:navigate
+                class="{{ $mobileNavClass }} {{ request()->routeIs('profil') ? $mobileActiveClass : $mobileInactiveClass }}">Profil</a>
+            <a href="/program" wire:navigate
+                class="{{ $mobileNavClass }} {{ request()->routeIs('program') ? $mobileActiveClass : $mobileInactiveClass }}">Program</a>
+            <a href="/tutor" wire:navigate
+                class="{{ $mobileNavClass }} {{ request()->routeIs('tutor') ? $mobileActiveClass : $mobileInactiveClass }}">Tutor</a>
             <a href="/jadwal" wire:navigate
                 class="{{ $mobileNavClass }} {{ request()->routeIs('jadwal') ? $mobileActiveClass : $mobileInactiveClass }}">Jadwal</a>
-            <a href="/#pengumuman" class="{{ $mobileNavClass }} {{ $mobileInactiveClass }}">Pengumuman</a>
+            <a href="/pengumuman" wire:navigate
+                class="{{ $mobileNavClass }} {{ request()->routeIs('pengumuman.*') ? $mobileActiveClass : $mobileInactiveClass }}">Pengumuman</a>
             <a href="/berita" wire:navigate
                 class="{{ $mobileNavClass }} {{ request()->routeIs('berita.*') ? $mobileActiveClass : $mobileInactiveClass }}">Berita</a>
-            <a href="/#galeri" class="{{ $mobileNavClass }} {{ $mobileInactiveClass }}">Galeri</a>
+            <a href="/galeri" wire:navigate
+                class="{{ $mobileNavClass }} {{ request()->routeIs('galeri') ? $mobileActiveClass : $mobileInactiveClass }}">Galeri</a>
             <div class="pt-4 mt-4 border-t border-slate-100 dark:border-navy-700">
                 <a href="/login"
                     class="block w-full text-center px-5 py-3 text-base font-semibold text-white bg-primary rounded-lg hover:bg-primary-focus shadow-md shadow-primary/20">

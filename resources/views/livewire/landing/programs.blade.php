@@ -3,15 +3,16 @@
 use function Livewire\Volt\{state, mount};
 use App\Models\Program;
 
-state(['programs' => []]);
+state(['programs' => [], 'limitDescription' => true]);
 
-mount(function () {
+mount(function ($limitDescription = true) {
     $this->programs = Program::where('status', 'aktif')->get();
+    $this->limitDescription = $limitDescription;
 });
 
 ?>
 
-<section id="program" class="py-12 bg-white dark:bg-navy-900">
+<section id="program" class="py-16 sm:py-20 bg-white dark:bg-navy-900">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center">
             <h2 class="text-base text-primary font-semibold tracking-wide uppercase">Program Pendidikan</h2>
@@ -27,8 +28,8 @@ mount(function () {
             <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
                 @forelse($programs as $program)
                     <div class="pt-6">
-                        <div class="flow-root bg-slate-50 dark:bg-navy-800 rounded-lg px-6 pb-8">
-                            <div class="-mt-6">
+                        <div class="flow-root bg-slate-50 dark:bg-navy-800 rounded-lg px-6 pb-8 h-full flex flex-col">
+                            <div class="-mt-6 flex-1 flex flex-col">
                                 <div>
                                     <span
                                         class="inline-flex items-center justify-center p-3 bg-primary rounded-md shadow-lg">
@@ -44,15 +45,26 @@ mount(function () {
                                     </span>
                                 </div>
                                 <h3 class="mt-8 text-lg font-medium text-slate-900 dark:text-white tracking-tight">
-                                    {{ $program->nama_program }}</h3>
-                                <p class="mt-5 text-base text-slate-500 dark:text-slate-300">
-                                    {{ Str::limit($program->deskripsi, 100) }}
+                                    {{ $program->nama_program }}
+                                </h3>
+                                <p class="mt-5 text-base text-slate-500 dark:text-slate-300 flex-1">
+                                    {{ $limitDescription ? Str::limit($program->deskripsi, 100) : $program->deskripsi }}
                                 </p>
                                 <div class="mt-4">
                                     <span
                                         class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
                                         {{ $program->kategori }}
                                     </span>
+                                    @if($program->durasi)
+                                        <span class="ml-2 text-sm text-slate-500 dark:text-slate-400">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                            {{ $program->durasi }}
+                                        </span>
+                                    @endif
                                 </div>
                             </div>
                         </div>
