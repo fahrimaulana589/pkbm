@@ -3,7 +3,7 @@
 <div
     x-data="{ showModal: false }"
     @if($trigger)
-        x-on:{{ $trigger }}.window="showModal = true; setTimeout(() => showModal = false, 3000)"
+        x-on:{{ $trigger }}.window="showModal = true;"
     @else
         x-init="showModal = true"
     @endif

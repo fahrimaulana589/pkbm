@@ -34,12 +34,16 @@ mount(function ($id) {
     }
 });
 
-rules([
+rules(fn() => [
     'judul' => 'required|string|max:255',
     'kategori' => 'required|in:kegiatan,fasilitas,event',
     'deskripsi' => 'required|string',
     'tanggal' => 'required|date',
     'status' => 'required|in:aktif,arsip',
+    'new_photos' => [
+        $this->existing_photos->isEmpty() ? 'required' : 'nullable',
+        'array'
+    ],
     'new_photos.*' => 'image|max:2048',
     'photo_captions.*' => 'nullable|string|max:255',
 ]);
@@ -82,6 +86,8 @@ $save = function () {
 
     session()->flash('status', 'Galeri berhasil diperbarui');
     session()->flash('message', 'Data galeri berhasil diperbarui.');
+
+    $this->dispatch('gallery-updated');
 };
 
 $deletePhoto = function ($photoId) {
@@ -164,7 +170,7 @@ $deletePhoto = function ($photoId) {
                         <x-input-error :messages="$errors->get('deskripsi')" />
                     </x-input-label>
 
-                    <div class="mt-2">  
+                    <div class="mt-2">
                         <h3 class="font-medium text-slate-700 dark:text-navy-100 mb-2">Foto Galeri</h3>
 
                         <!-- Existing Photos -->
@@ -200,13 +206,12 @@ $deletePhoto = function ($photoId) {
                             </div>
                             <div x-show="uploading" class="text-xs text-slate-500 mt-1"
                                 x-text="'Uploading... ' + progress + '%'"></div>
-                        </x-input-label>                        
+                        </x-input-label>
                     </div>
                     <!-- Previews -->
                     <div class="grid grid-cols-3 gap-4" x-show="files.length > 0">
                         <template x-for="(file, index) in files" :key="index">
-                            <div
-                                class="relative group rounded-lg border border-slate-200 p-1 dark:border-navy-500">
+                            <div class="relative group rounded-lg border border-slate-200 p-1 dark:border-navy-500">
                                 <img :src="file.preview" class="h-24 w-full rounded-lg object-cover">
                                 <button @click="removeFile(index)" type="button"
                                     class="absolute top-0 right-0 m-1 bg-red-500 text-white p-1 rounded-full shadow-sm hover:bg-red-600 transition-colors duration-200">
@@ -266,5 +271,6 @@ $deletePhoto = function ($photoId) {
                 </div>
             </div>
         </div>
+        <x-success-modal trigger="gallery-updated" message="Data galeri berhasil diperbarui." />
     </div>
 </div>

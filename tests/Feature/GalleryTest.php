@@ -40,7 +40,7 @@ class GalleryTest extends TestCase
             ->set('deskripsi', 'Deskripsi kegiatan baru.')
             ->set('tanggal', '2024-01-01')
             ->set('status', 'aktif')
-            ->set('photos', [$file])
+            ->set('newPhotos', [$file])
             ->call('save')
             ->assertHasNoErrors()
             ->assertRedirect(route('admin.galeri.index'));
@@ -62,6 +62,7 @@ class GalleryTest extends TestCase
         $this->actingAs($user);
 
         $gallery = Gallery::factory()->create();
+        GalleryPhoto::factory()->create(['gallery_id' => $gallery->id]);
 
         Volt::test('gallery-form-edit', ['id' => $gallery->id])
             ->set('judul', 'Updated Judul')
@@ -89,5 +90,38 @@ class GalleryTest extends TestCase
         $this->assertDatabaseMissing('galleries', [
             'id' => $gallery->id,
         ]);
+    }
+    public function test_gallery_update_validation_rules()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+        Storage::fake('public');
+
+        // Case 1: Gallery with existing photos, no new photos -> Should pass
+        $galleryWithPhotos = Gallery::factory()->create();
+        $photo = GalleryPhoto::factory()->create(['gallery_id' => $galleryWithPhotos->id]);
+        
+        Volt::test('gallery-form-edit', ['id' => $galleryWithPhotos->id])
+            ->set('judul', 'Updated Title')
+            ->call('save')
+            ->assertHasNoErrors();
+
+        // Case 2: Gallery without photos, no new photos -> Should fail
+        $galleryWithoutPhotos = Gallery::factory()->create();
+        
+        Volt::test('gallery-form-edit', ['id' => $galleryWithoutPhotos->id])
+            ->set('judul', 'Updated Title')
+            ->set('new_photos', [])
+            ->call('save')
+            ->assertHasErrors(['new_photos']);
+
+        // Case 3: Gallery without photos, with new photos -> Should pass
+        $file = UploadedFile::fake()->image('new.jpg');
+        
+        Volt::test('gallery-form-edit', ['id' => $galleryWithoutPhotos->id])
+            ->set('judul', 'Updated Title')
+            ->set('new_photos', [$file])
+            ->call('save')
+            ->assertHasNoErrors();
     }
 }

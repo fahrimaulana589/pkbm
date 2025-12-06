@@ -44,7 +44,7 @@ mount(function () {
     }
 });
 
-rules(fn () => [
+rules(fn() => [
     'nama_pkbm' => 'required|string|max:255',
     'npsn' => 'required|string|max:20',
     'alamat' => 'required|string',
@@ -83,6 +83,9 @@ $save = function () {
     ];
 
     if ($this->new_logo) {
+        if ($this->existing_logo) {
+            Storage::disk('public')->delete($this->existing_logo);
+        }
         $data['logo'] = $this->new_logo->store('pkbm/logo', 'public');
         $this->existing_logo = $data['logo'];
         $this->new_logo = null;

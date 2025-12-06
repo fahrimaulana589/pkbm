@@ -74,10 +74,16 @@ $save = function () {
     ];
 
     if ($this->new_lampiran_file) {
+        if ($this->existing_lampiran_file) {
+            Storage::disk('public')->delete($this->existing_lampiran_file);
+        }
         $data['lampiran_file'] = $this->new_lampiran_file->store('announcements/attachments', 'public');
     }
 
     if ($this->new_thumbnail) {
+        if ($this->existing_thumbnail) {
+            Storage::disk('public')->delete($this->existing_thumbnail);
+        }
         $data['thumbnail'] = $this->new_thumbnail->store('announcements/thumbnails', 'public');
     }
 
@@ -171,8 +177,8 @@ $save = function () {
                             <div class="grid grid-cols-3">
                                 <div
                                     class="mb-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500 relative">
-                                   <img src="{{ asset('storage/' . $existing_thumbnail) }}" alt="Thumbnail"
-                                    class="h-48 w-full rounded-lg object-cover">
+                                    <img src="{{ asset('storage/' . $existing_thumbnail) }}" alt="Thumbnail"
+                                        class="h-48 w-full rounded-lg object-cover">
                                 </div>
                             </div>
                         @endif
@@ -191,9 +197,9 @@ $save = function () {
                             <div class="grid grid-cols-3">
                                 <div
                                     class="mt-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500 relative">
-                                   <img src="{{ $new_thumbnail->temporaryUrl() }}" alt="Preview"
-                                    class="h-48 w-full rounded-lg object-cover">
-                            </div>
+                                    <img src="{{ $new_thumbnail->temporaryUrl() }}" alt="Preview"
+                                        class="h-48 w-full rounded-lg object-cover">
+                                </div>
                             </div>
                         @endif
                     </x-input-label>

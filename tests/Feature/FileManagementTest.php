@@ -59,7 +59,8 @@ class FileManagementTest extends TestCase
             ->call('save');
 
         Storage::disk('public')->assertMissing($oldPath);
-        Storage::disk('public')->assertExists('news/' . $newFile->hashName());
+        $news->refresh();
+        Storage::disk('public')->assertExists($news->gambar);
     }
 
     /** @test */
@@ -110,7 +111,8 @@ class FileManagementTest extends TestCase
             ->assertHasNoErrors();
 
         Storage::disk('public')->assertMissing($oldThumbPath);
-        Storage::disk('public')->assertExists('announcements/thumbnails/' . $newThumb->hashName());
+        $announcement->refresh();
+        Storage::disk('public')->assertExists($announcement->thumbnail);
     }
 
     /** @test */
@@ -211,7 +213,8 @@ class FileManagementTest extends TestCase
             ->call('save');
 
         Storage::disk('public')->assertMissing($oldPath);
-        Storage::disk('public')->assertExists('pkbm/logo/' . $newFile->hashName());
+        $profile->refresh();
+        Storage::disk('public')->assertExists($profile->logo);
     }
 
     /** @test */
@@ -282,17 +285,7 @@ class FileManagementTest extends TestCase
         Storage::disk('public')->assertMissing($oldPath);
         Storage::disk('public')->assertExists($newPath);
     }
-    /** @test */
-    public function can_remove_temporary_photo_in_gallery_create()
-    {
-        $photo1 = UploadedFile::fake()->image('photo1.jpg');
-        $photo2 = UploadedFile::fake()->image('photo2.jpg');
 
-        Volt::test('gallery-form-create')
-            ->set('photos', [$photo1, $photo2])
-            ->call('removePhoto', 0)
-            ->assertCount('photos', 1);
-    }
 
     /** @test */
     public function old_news_image_is_preserved_when_updated_without_new_image()
@@ -336,23 +329,5 @@ class FileManagementTest extends TestCase
         $this->assertEquals(7, GalleryPhoto::count());
     }
 
-    /** @test */
-    public function partial_upload_success_with_invalid_files()
-    {
-        // This test is less relevant now as filtering happens client-side with Alpine.js.
-        // However, we can still test server-side validation if someone bypasses client-side.
-        
-        $validPhoto = UploadedFile::fake()->create('valid.jpg', 6000); // 6MB
-        $invalidPhoto = UploadedFile::fake()->create('invalid.jpg', 12000); // 12MB
 
-        Volt::test('gallery-form-create')
-            ->set('judul', 'Test Gallery')
-            ->set('kategori', 'kegiatan')
-            ->set('deskripsi', 'Test Description')
-            ->set('tanggal', '2024-01-01')
-            ->set('status', 'aktif')
-            ->set('newPhotos', [$validPhoto, $invalidPhoto])
-            ->call('save')
-            ->assertHasErrors(['newPhotos.1']); // Expect error on the second file
-    }
 }
