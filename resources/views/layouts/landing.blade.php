@@ -17,7 +17,7 @@
 
     <!-- CSS & JS Assets -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
+    @livewireStyles
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -31,17 +31,26 @@
 
 </head>
 
-<body>
-    @livewire('navbar')
-    {{ $slot }}
+<body x-data x-bind="$store.global.documentBody">
+    <!-- Page Wrapper -->
+    <div id="root"  x-cloak>
+        @livewire('navbar')
+        {{ $slot }}
+        @livewire('landing.stats')
+        @livewire('landing.footer')
+    </div>
+
+    <!--
+  This is a place for Alpine.js Teleport feature
+  @see https://alpinejs.dev/directives/teleport
+-->
     <div id="x-teleport-target"></div>
 
-
-    @livewire('landing.stats')
-    @livewire('landing.footer')
     @isset($script)
         {{ $script }}
     @endisset
+    @livewireScriptConfig
 </body>
 
 </html>
+
