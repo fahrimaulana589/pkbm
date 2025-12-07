@@ -25,7 +25,7 @@ rules([
     'newPhotos.*' => 'image|max:2048', // 2MB Max per photo
 ]);
 
-$save = function () {
+$save = function ($captions = []) {
     $this->validate();
 
     $gallery = Gallery::create([
@@ -36,12 +36,12 @@ $save = function () {
         'status' => $this->status,
     ]);
 
-    foreach ($this->newPhotos as $photo) {
+    foreach ($this->newPhotos as $index => $photo) {
         $path = $photo->store('gallery/' . $gallery->id, 'public');
         GalleryPhoto::create([
             'gallery_id' => $gallery->id,
             'file_path' => $path,
-            'caption' => '',
+            'caption' => $captions[$index] ?? '',
             'urutan' => 0,
         ]);
     }
@@ -65,6 +65,7 @@ $save = function () {
                     return;
                 }
                 file.preview = URL.createObjectURL(file);
+                file.caption = ''; // Initialize caption
                 this.files.push(file);
             });
             e.value = '';
@@ -85,7 +86,8 @@ $save = function () {
                 this.files,
                 () => { // Success
                     this.uploading = false;
-                    @this.call('save');
+                    let captions = this.files.map(f => f.caption || '');
+                    @this.call('save', captions);
                 },
                 () => { // Error
                     this.uploading = false;
@@ -140,14 +142,16 @@ $save = function () {
                         <div x-show="uploading" class="text-xs text-slate-500 mt-1"
                             x-text="'Uploading... ' + progress + '%'"></div>
 
-                        
+
                     </x-input-label>
 
                     <!-- Previews -->
                     <div class="grid grid-cols-3 gap-4" x-show="files.length > 0">
                         <template x-for="(file, index) in files" :key="index">
-                            <div class="relative group rounded-lg border border-slate-200 p-1 dark:border-navy-500">
-                                <img :src="file.preview" class="h-24 w-full rounded-lg object-cover">
+                            <div class="relative group rounded-lg border border-slate-200 p-2 dark:border-navy-500">
+                                <img :src="file.preview" class="h-24 w-full rounded-lg object-cover mb-2">
+                                <input type="text" x-model="file.caption" placeholder="Caption..."
+                                    class="form-input w-full rounded-lg border border-slate-300 bg-transparent px-2 py-1 text-xs placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" />
                                 <button @click="removeFile(index)" type="button"
                                     class="absolute top-0 right-0 m-1 bg-red-500 text-white p-1 rounded-full shadow-sm hover:bg-red-600 transition-colors duration-200">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
