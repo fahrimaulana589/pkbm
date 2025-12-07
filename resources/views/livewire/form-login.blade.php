@@ -134,7 +134,7 @@ $throttleKey = function (): string
                     <span class="line-clamp-1">Remember me</span>
                 </label>
                 <a href="{{ route('password.request') }}"
-                    wire:navigate
+                    wire:navigate.hover
                     class="text-xs text-slate-400 transition-colors line-clamp-1 hover:text-slate-800 focus:text-slate-800 dark:text-navy-300 dark:hover:text-navy-100 dark:focus:text-navy-100">Forgot
                     Password?</a>
             </div>

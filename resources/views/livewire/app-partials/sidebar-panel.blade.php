@@ -68,7 +68,7 @@ $isActive = function ($routeName, $currentPage) {
                                     @foreach ($menu['submenu'] as $keyMenu => $submenu)
                                         <li @if ($isActive($submenu['route_name'], $this->pageName))
                                         x-init="$el.scrollIntoView({block:'center'}); expanded = true" @endif>
-                                            <a href="{{ route($submenu['route_name']) }}" wire:navigate
+                                            <a href="{{ route($submenu['route_name']) }}" wire:navigate.hover
                                                 class="flex items-center justify-between p-2 text-xs+ tracking-wide
                                                                  outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4
                                                                  {{ $isActive($submenu['route_name'], $this->pageName) ? 'text-primary dark:text-accent-light font-medium' : 'text-slate-600 hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50' }}">
@@ -84,7 +84,7 @@ $isActive = function ($routeName, $currentPage) {
                             </li>
                         @else
                             <li @if ($isActive($menu['route_name'], $this->pageName)) x-init="$el.scrollIntoView({block:'center'});" @endif>
-                                <a href="{{ route($menu['route_name']) }}" wire:navigate
+                                <a href="{{ route($menu['route_name']) }}" wire:navigate.hover
                                     class="flex text-xs+ py-2  tracking-wide outline-none transition-colors duration-300 ease-in-out {{ $isActive($menu['route_name'], $this->pageName) ? 'text-primary dark:text-accent-light font-medium' : 'text-slate-600  hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50' }}">
                                     {{ $menu['title'] }}
                                 </a>

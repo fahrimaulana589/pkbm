@@ -18,7 +18,7 @@ name('admin.galeri.create');
             <ul class="hidden flex-wrap items-center space-x-2 sm:flex">
                 <li class="flex items-center space-x-2">
                     <a class="text-primary transition-colors hover:text-primary-focus dark:text-accent-light dark:hover:text-accent"
-                        wire:navigate href="{{ route('admin.galeri.index') }}">Galeri</a>
+                        wire:navigate.hover href="{{ route('admin.galeri.index') }}">Galeri</a>
                     <svg x-ignore xmlns="http://www.w3.org/2000/svg" class="size-4" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />

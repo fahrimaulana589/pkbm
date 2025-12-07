@@ -53,15 +53,15 @@ mount(function () {
             <div>
                 <h3 class="text-lg font-semibold mb-4">Tautan Cepat</h3>
                 <ul class="space-y-2 text-slate-400">
-                    <li><a href="/" wire:navigate class="hover:text-primary transition-colors">Beranda</a></li>
-                    <li><a href="/profil" wire:navigate class="hover:text-primary transition-colors">Profil</a></li>
-                    <li><a href="/program" wire:navigate class="hover:text-primary transition-colors">Program</a></li>
-                    <li><a href="/tutor" wire:navigate class="hover:text-primary transition-colors">Tutor</a></li>
-                    <li><a href="/jadwal" wire:navigate class="hover:text-primary transition-colors">Jadwal</a></li>
-                    <li><a href="/pengumuman" wire:navigate class="hover:text-primary transition-colors">Pengumuman</a>
+                    <li><a href="/" wire:navigate.hover class="hover:text-primary transition-colors">Beranda</a></li>
+                    <li><a href="/profil" wire:navigate.hover class="hover:text-primary transition-colors">Profil</a></li>
+                    <li><a href="/program" wire:navigate.hover class="hover:text-primary transition-colors">Program</a></li>
+                    <li><a href="/tutor" wire:navigate.hover class="hover:text-primary transition-colors">Tutor</a></li>
+                    <li><a href="/jadwal" wire:navigate.hover class="hover:text-primary transition-colors">Jadwal</a></li>
+                    <li><a href="/pengumuman" wire:navigate.hover class="hover:text-primary transition-colors">Pengumuman</a>
                     </li>
-                    <li><a href="/berita" wire:navigate class="hover:text-primary transition-colors">Berita</a></li>
-                    <li><a href="/galeri" wire:navigate class="hover:text-primary transition-colors">Galeri</a></li>
+                    <li><a href="/berita" wire:navigate.hover class="hover:text-primary transition-colors">Berita</a></li>
+                    <li><a href="/galeri" wire:navigate.hover class="hover:text-primary transition-colors">Galeri</a></li>
                 </ul>
             </div>
 

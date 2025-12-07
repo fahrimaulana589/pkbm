@@ -30,7 +30,7 @@ mount(function () {
                         </svg>
                     </div>
                 @endif
-                <a href="/" wire:navigate class="font-bold text-xl text-slate-800 dark:text-white tracking-tight">
+                <a href="/" wire:navigate.hover class="font-bold text-xl text-slate-800 dark:text-white tracking-tight">
                     {{ $profile->nama_pkbm ?? 'SekolahKita' }}
                 </span>
             </div>
@@ -43,19 +43,19 @@ mount(function () {
                     $inactiveClass = 'text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary';
                 @endphp
 
-                <a href="/profil" wire:navigate
+                <a href="/profil" wire:navigate.hover
                     class="{{ $navClass }} {{ request()->is('profil') ? $activeClass : $inactiveClass }}">Profil</a>
-                <a href="/program" wire:navigate
+                <a href="/program" wire:navigate.hover
                     class="{{ $navClass }} {{ request()->is('program') ? $activeClass : $inactiveClass }}">Program</a>
-                <a href="/tutor" wire:navigate
+                <a href="/tutor" wire:navigate.hover
                     class="{{ $navClass }} {{ request()->is('tutor') ? $activeClass : $inactiveClass }}">Tutor</a>
-                <a href="/jadwal" wire:navigate
+                <a href="/jadwal" wire:navigate.hover
                     class="{{ $navClass }} {{ request()->is('jadwal') ? $activeClass : $inactiveClass }}">Jadwal</a>
-                <a href="/pengumuman" wire:navigate
+                <a href="/pengumuman" wire:navigate.hover
                     class="{{ $navClass }} {{ request()->is('pengumuman*') ? $activeClass : $inactiveClass }}">Pengumuman</a>
-                <a href="/berita" wire:navigate
+                <a href="/berita" wire:navigate.hover
                     class="{{ $navClass }} {{ request()->is('berita*') ? $activeClass : $inactiveClass }}">Berita</a>
-                <a href="/galeri" wire:navigate
+                <a href="/galeri" wire:navigate.hover
                     class="{{ $navClass }} {{ request()->is('galeri*') ? $activeClass : $inactiveClass }}">Galeri</a>
             </div>
 
@@ -141,19 +141,19 @@ mount(function () {
                 $mobileInactiveClass = 'text-slate-700 dark:text-slate-300 hover:text-primary dark:hover:text-primary hover:bg-slate-50 dark:hover:bg-navy-700';
             @endphp
 
-            <a href="/profil" wire:navigate
+            <a href="/profil" wire:navigate.hover
                 class="{{ $mobileNavClass }} {{ request()->is('profil') ? $mobileActiveClass : $mobileInactiveClass }}">Profil</a>
-            <a href="/program" wire:navigate
+            <a href="/program" wire:navigate.hover
                 class="{{ $mobileNavClass }} {{ request()->is('program') ? $mobileActiveClass : $mobileInactiveClass }}">Program</a>
-            <a href="/tutor" wire:navigate
+            <a href="/tutor" wire:navigate.hover
                 class="{{ $mobileNavClass }} {{ request()->is('tutor') ? $mobileActiveClass : $mobileInactiveClass }}">Tutor</a>
-            <a href="/jadwal" wire:navigate
+            <a href="/jadwal" wire:navigate.hover
                 class="{{ $mobileNavClass }} {{ request()->is('jadwal') ? $mobileActiveClass : $mobileInactiveClass }}">Jadwal</a>
-            <a href="/pengumuman" wire:navigate
+            <a href="/pengumuman" wire:navigate.hover
                 class="{{ $mobileNavClass }} {{ request()->is('pengumuman*') ? $mobileActiveClass : $mobileInactiveClass }}">Pengumuman</a>
-            <a href="/berita" wire:navigate
+            <a href="/berita" wire:navigate.hover
                 class="{{ $mobileNavClass }} {{ request()->is('berita*') ? $mobileActiveClass : $mobileInactiveClass }}">Berita</a>
-            <a href="/galeri" wire:navigate
+            <a href="/galeri" wire:navigate.hover
                 class="{{ $mobileNavClass }} {{ request()->is('galeri*') ? $mobileActiveClass : $mobileInactiveClass }}">Galeri</a>
             <div class="pt-4 mt-4 border-t border-slate-100 dark:border-navy-700">
                 <a href="/login"

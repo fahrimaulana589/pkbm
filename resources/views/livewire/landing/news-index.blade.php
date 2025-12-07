@@ -54,7 +54,7 @@ with(fn() => [
                     Menampilkan berita untuk
                     {{ $currentCategory ? 'kategori ' . $currentCategory->nama_kategori : 'tag ' . $currentTag->nama_tag }}
                     <br>
-                    <a href="/berita" wire:navigate class="text-primary hover:underline text-base mt-2 inline-block">
+                    <a href="/berita" wire:navigate.hover class="text-primary hover:underline text-base mt-2 inline-block">
                         &larr; Kembali ke semua berita
                     </a>
                 @else
@@ -72,7 +72,7 @@ with(fn() => [
                             src="{{ $item->gambar ? asset('storage/' . $item->gambar) : 'https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80' }}"
                             alt="{{ $item->judul }}">
                         <div class="absolute top-4 left-4">
-                            <a href="/berita/kategori/{{ $item->category->slug ?? '#' }}" wire:navigate
+                            <a href="/berita/kategori/{{ $item->category->slug ?? '#' }}" wire:navigate.hover
                                 class="px-3 py-1 text-xs font-semibold rounded-full bg-white/90 text-primary shadow-sm backdrop-blur-sm hover:bg-white transition-colors">
                                 {{ $item->category->nama_kategori ?? 'Umum' }}
                             </a>
@@ -88,7 +88,7 @@ with(fn() => [
                                 </svg>
                                 {{ $item->created_at->translatedFormat('d F Y') }}
                             </div>
-                            <a href="/berita/{{ $item->slug }}" wire:navigate class="block group">
+                            <a href="/berita/{{ $item->slug }}" wire:navigate.hover class="block group">
                                 <h3
                                     class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors line-clamp-2">
                                     {{ $item->judul }}
@@ -102,7 +102,7 @@ with(fn() => [
                         @if($item->tags->count() > 0)
                             <div class="mt-4 pt-4 border-t border-slate-100 dark:border-navy-700 flex flex-wrap gap-2">
                                 @foreach($item->tags->take(3) as $tag)
-                                    <a href="/berita/tag/{{ $tag->slug }}" wire:navigate
+                                    <a href="/berita/tag/{{ $tag->slug }}" wire:navigate.hover
                                         class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-600 dark:bg-navy-700 dark:text-slate-300 hover:bg-primary/10 hover:text-primary transition-colors">
                                         #{{ $tag->nama_tag }}
                                     </a>
@@ -130,7 +130,7 @@ with(fn() => [
                         @endif
                     </p>
                     @if($currentCategory || $currentTag)
-                        <a href="/berita" wire:navigate class="mt-4 inline-block text-primary hover:underline">
+                        <a href="/berita" wire:navigate.hover class="mt-4 inline-block text-primary hover:underline">
                             Lihat semua berita
                         </a>
                     @endif

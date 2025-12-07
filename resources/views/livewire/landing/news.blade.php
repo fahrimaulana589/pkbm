@@ -28,7 +28,7 @@ mount(function () {
             @forelse($news as $item)
                 <div class="flex flex-col rounded-lg shadow-lg overflow-hidden group">
                     <div class="flex-shrink-0">
-                        <a href="/berita/{{ $item->slug }}" wire:navigate class="block overflow-hidden">
+                        <a href="/berita/{{ $item->slug }}" wire:navigate.hover class="block overflow-hidden">
                             <img class="h-48 w-full object-cover group-hover:scale-110 transition-transform duration-300"
                                 src="{{ $item->gambar ? asset('storage/' . $item->gambar) : 'https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80' }}"
                                 alt="{{ $item->judul }}">
@@ -37,12 +37,12 @@ mount(function () {
                     <div class="flex-1 bg-white dark:bg-navy-700 p-6 flex flex-col justify-between">
                         <div class="flex-1">
                             <p class="text-sm font-medium text-primary">
-                                <a href="/berita/kategori/{{ $item->category->slug ?? '#' }}" wire:navigate
+                                <a href="/berita/kategori/{{ $item->category->slug ?? '#' }}" wire:navigate.hover
                                     class="hover:underline">
                                     {{ $item->category->nama_kategori ?? 'Umum' }}
                                 </a>
                             </p>
-                            <a href="/berita/{{ $item->slug }}" wire:navigate class="block mt-2">
+                            <a href="/berita/{{ $item->slug }}" wire:navigate.hover class="block mt-2">
                                 <p
                                     class="text-xl font-semibold text-slate-900 dark:text-white group-hover:text-primary transition-colors">
                                     {{ $item->judul }}
@@ -55,7 +55,7 @@ mount(function () {
                             @if($item->tags->count() > 0)
                                 <div class="mt-4 flex flex-wrap gap-2">
                                     @foreach($item->tags as $tag)
-                                        <a href="/berita/tag/{{ $tag->slug }}" wire:navigate
+                                        <a href="/berita/tag/{{ $tag->slug }}" wire:navigate.hover
                                             class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-focus hover:bg-primary/20 transition-colors">
                                             #{{ $tag->nama_tag }}
                                         </a>
@@ -73,7 +73,7 @@ mount(function () {
         </div>
 
         <div class="mt-12 text-center">
-            <a href="/berita" wire:navigate
+            <a href="/berita" wire:navigate.hover
                 class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary hover:bg-primary-focus transition-colors duration-200 shadow-lg shadow-primary/30 hover:shadow-primary/40">
                 Lihat Berita Selengkapnya
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24"

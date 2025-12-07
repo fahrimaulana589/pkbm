@@ -126,7 +126,7 @@ $updatedSearch = function () {
                         <div x-ref="popperRoot" class="popper-root" :class="isShowPopper && 'show'">
                             <div class="popper-box rounded-md border border-slate-150 bg-white py-1.5 font-inter dark:border-navy-500 dark:bg-navy-700">
                                 <ul>
-                                <li><a wire:navigate href="{{ route('admin.tutor.create') }}" class="flex h-8 items-center px-3 pr-8 font-medium tracking-wide outline-hidden transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Tambah Baru</a></li>
+                                <li><a wire:navigate.hover href="{{ route('admin.tutor.create') }}" class="flex h-8 items-center px-3 pr-8 font-medium tracking-wide outline-hidden transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Tambah Baru</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -296,7 +296,7 @@ $updatedSearch = function () {
                                 <div x-ref="popperRoot" class="popper-root" :class="isShowPopper && 'show'">
                                     <div class="popper-box rounded-md border border-slate-150 bg-white py-1.5 font-inter dark:border-navy-500 dark:bg-navy-700">
                                     <ul>
-                                        <li><a wire:navigate href="{{ route('admin.tutor.edit', ['id' => $tutor->id]) }}" class="flex h-8 items-center px-3 pr-8 font-medium tracking-wide outline-hidden transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Edit</a></li>
+                                        <li><a wire:navigate.hover href="{{ route('admin.tutor.edit', ['id' => $tutor->id]) }}" class="flex h-8 items-center px-3 pr-8 font-medium tracking-wide outline-hidden transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Edit</a></li>
                                         <li><button @click="isShowPopper = false" wire:click="confirmDelete('{{$tutor->id}}')" class="flex h-8 w-full items-center px-3 pr-8 font-medium tracking-wide outline-hidden text-error transition-all hover:bg-slate-100 focus:bg-slate-100 dark:hover:bg-navy-600 dark:focus:bg-navy-600">Hapus</button></li>
                                     </ul>
                                     </div>

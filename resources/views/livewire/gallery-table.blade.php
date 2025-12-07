@@ -129,7 +129,7 @@ $updatedSearch = function () {
                             <div
                                 class="popper-box rounded-md border border-slate-150 bg-white py-1.5 font-inter dark:border-navy-500 dark:bg-navy-700">
                                 <ul>
-                                    <li><a wire:navigate href="{{ route('admin.galeri.create') }}"
+                                    <li><a wire:navigate.hover href="{{ route('admin.galeri.create') }}"
                                             class="flex h-8 items-center px-3 pr-8 font-medium tracking-wide outline-hidden transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Tambah
                                             Baru</a></li>
                                 </ul>
@@ -282,7 +282,7 @@ $updatedSearch = function () {
                                                 <div
                                                     class="popper-box rounded-md border border-slate-150 bg-white py-1.5 font-inter dark:border-navy-500 dark:bg-navy-700">
                                                     <ul>
-                                                        <li><a wire:navigate
+                                                        <li><a wire:navigate.hover
                                                                 href="{{ route('admin.galeri.edit', ['id' => $item->id]) }}"
                                                                 class="flex h-8 items-center px-3 pr-8 font-medium tracking-wide outline-hidden transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Edit</a>
                                                         </li>
