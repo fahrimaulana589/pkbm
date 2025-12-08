@@ -8,7 +8,7 @@ use Livewire\WithPagination;
 uses(WithPagination::class);
 
 with(fn() => [
-    'profile' => PkbmProfile::first(),
+    // 'profile' is shared via View::share in AppServiceProvider
     'galleries' => Gallery::with([
         'photos' => function ($query) {
             $query->orderBy('urutan', 'asc')->take(4);

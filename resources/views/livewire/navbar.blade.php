@@ -3,10 +3,10 @@
 use function Livewire\Volt\{state, mount};
 use App\Models\PkbmProfile;
 
-state(['mobileMenuOpen' => false, 'profile' => null]);
+state(['mobileMenuOpen' => false]);
 
 mount(function () {
-    $this->profile = PkbmProfile::first();
+    // Profile is shared via View::share in AppServiceProvider
 });
 
 ?>

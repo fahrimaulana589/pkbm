@@ -4,10 +4,10 @@ use function Livewire\Volt\{state, mount};
 use App\Models\Gallery;
 use App\Models\PkbmProfile;
 
-state(['galleries' => [], 'profile' => null]);
+state(['galleries' => []]);
 
 mount(function () {
-    $this->profile = PkbmProfile::first();
+    // Profile is shared via View::share in AppServiceProvider
     $this->galleries = Gallery::with(['photos' => function($query) {
             $query->orderBy('urutan', 'asc')->take(4);
         }])

@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\PkbmProfile;
 use App\Models\Setting;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         try {
+            Facades\View::share('profile', PkbmProfile::first());
+            
             $setting = Setting::find(1);
             if ($setting) {
                 config([

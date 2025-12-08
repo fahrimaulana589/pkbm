@@ -3,10 +3,10 @@
 use function Livewire\Volt\{state, mount};
 use App\Models\PkbmProfile;
 
-state(['profile' => null, 'isFullPage' => false]);
+state(['isFullPage' => false]);
 
 mount(function ($isFullPage = false) {
-    $this->profile = PkbmProfile::first();
+    // Profile is shared via View::share in AppServiceProvider
     $this->isFullPage = $isFullPage;
 });
 
