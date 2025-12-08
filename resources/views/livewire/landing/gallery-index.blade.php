@@ -16,7 +16,7 @@ with(fn() => [
     ])
         ->where('status', 'aktif')
         ->orderBy('created_at', 'desc')
-        ->paginate(9),
+        ->paginate(10),
 ]);
 
 ?>
