@@ -1,12 +1,20 @@
 <?php
 
 use App\Models\NewsTag;
-use function Livewire\Volt\{state, computed, mount, rules, validate, on};
+use function Livewire\Volt\{state, computed, mount, rules, validate, on, uses};
 
-$tags = NewsTag::orderBy('created_at', 'desc')->get();
-state('tags', $tags);
+use Livewire\WithPagination;
+
+uses([WithPagination::class]);
+
 state('id', null);
 state('search', '');
+
+$tags = computed(function () {
+    return NewsTag::where('nama_tag', 'like', '%' . $this->search . '%')
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
+});
 
 $confirmDelete = function ($id) {
     $this->id = $id;
@@ -15,15 +23,7 @@ $confirmDelete = function ($id) {
 
 $delete = function () {
     NewsTag::find($this->id)->delete();
-    $this->tags = NewsTag::orderBy('created_at', 'desc')->get();
     $this->dispatch('delete-tag-confirmed');
-};
-
-// Search Logic
-$updatedSearch = function () {
-    $this->tags = NewsTag::where('nama_tag', 'like', '%' . $this->search . '%')
-        ->orderBy('created_at', 'desc')
-        ->get();
 };
 
 ?>
@@ -281,10 +281,8 @@ $updatedSearch = function () {
                     </table>
                 </div>
 
-                <div
-                    class="flex flex-col justify-between space-y-4 px-4 py-4 sm:flex-row sm:items-center sm:space-y-0 sm:px-5">
-                    <div class="text-xs-plus">Menampilkan {{ $this->tags->count() }} dari {{ $this->tags->count() }}
-                        entri</div>
+                <div class="px-4 py-4 sm:px-5">
+                    {{ $this->tags->links() }}
                 </div>
             </div>
         </div>

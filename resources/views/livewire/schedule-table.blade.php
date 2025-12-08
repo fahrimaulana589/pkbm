@@ -1,12 +1,25 @@
 <?php
 
 use App\Models\Schedule;
-use function Livewire\Volt\{state, computed, mount, rules, validate, on};
+use function Livewire\Volt\{state, computed, mount, rules, validate, on, uses};
 
-$schedules = Schedule::with('classGroup')->orderBy('created_at', 'desc')->get();
-state('schedules', $schedules);
+use Livewire\WithPagination;
+
+uses([WithPagination::class]);
+
 state('id', null);
 state('search', '');
+
+$schedules = computed(function () {
+    return Schedule::with('classGroup')
+        ->where('materi', 'like', '%' . $this->search . '%')
+        ->orWhere('hari', 'like', '%' . $this->search . '%')
+        ->orWhereHas('classGroup', function ($query) {
+            $query->where('nama_rombel', 'like', '%' . $this->search . '%');
+        })
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
+});
 
 $confirmDelete = function ($id) {
     $this->id = $id;
@@ -15,20 +28,7 @@ $confirmDelete = function ($id) {
 
 $delete = function () {
     Schedule::find($this->id)->delete();
-    $this->schedules = Schedule::with('classGroup')->orderBy('created_at', 'desc')->get();
     $this->dispatch('delete-schedule-confirmed');
-};
-
-// Search Logic
-$updatedSearch = function () {
-    $this->schedules = Schedule::with('classGroup')
-        ->where('materi', 'like', '%' . $this->search . '%')
-        ->orWhere('hari', 'like', '%' . $this->search . '%')
-        ->orWhereHas('classGroup', function ($query) {
-            $query->where('nama_rombel', 'like', '%' . $this->search . '%');
-        })
-        ->orderBy('created_at', 'desc')
-        ->get();
 };
 
 ?>
@@ -303,10 +303,8 @@ $updatedSearch = function () {
                     </table>
                 </div>
 
-                <div
-                    class="flex flex-col justify-between space-y-4 px-4 py-4 sm:flex-row sm:items-center sm:space-y-0 sm:px-5">
-                    <div class="text-xs-plus">Menampilkan {{ $this->schedules->count() }} dari
-                        {{ $this->schedules->count() }} entri</div>
+                <div class="px-4 py-4 sm:px-5">
+                    {{ $this->schedules->links() }}
                 </div>
             </div>
         </div>

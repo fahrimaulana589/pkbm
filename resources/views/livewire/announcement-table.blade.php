@@ -1,11 +1,21 @@
 <?php
 
 use App\Models\Announcement;
-use function Livewire\Volt\{state, computed, mount, rules, validate, on};
+use function Livewire\Volt\{state, computed, mount, rules, validate, on, uses};
 
-$pengumumans = Announcement::with('penulis')->orderBy('created_at', 'desc')->get();
-state('pengumumans', $pengumumans);
+use Livewire\WithPagination;
+
+uses([WithPagination::class]);
+
 state('id', null);
+state('search', '');
+
+$pengumumans = computed(function() {
+    return Announcement::with('penulis')
+        ->where('judul', 'like', '%' . $this->search . '%')
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
+});
 
 $getStatusBadge = fn($status) => match($status) {
     'dipublikasikan' => '<div class="badge rounded-full bg-success/10 text-success dark:bg-success/15">Dipublikasikan</div>',
@@ -25,7 +35,6 @@ $confim = function ($id) {
 
 $delete = function () {
     Announcement::find($this->id)->delete();
-    $this->pengumumans = Announcement::with('penulis')->orderBy('created_at', 'desc')->get();   
     $this->dispatch('delete-announcement-confirmated');
 };
 
@@ -86,7 +95,7 @@ $delete = function () {
                 <div class="flex">
                     <div class="flex items-center" x-data="{isInputActive:false}">
                         <label class="block">
-                        <input
+                        <input wire:model.live.debounce.250ms="search"
                             x-effect="isInputActive === true && $nextTick(() => { $el.focus()});"
                             :class="isInputActive ? 'w-32 lg:w-48' : 'w-0'"
                             class="form-input bg-transparent px-1 text-right transition-all duration-100 placeholder:text-slate-500 dark:placeholder:text-navy-200"
@@ -317,8 +326,8 @@ $delete = function () {
                     </table>
                 </div>
 
-                <div class="flex flex-col justify-between space-y-4 px-4 py-4 sm:flex-row sm:items-center sm:space-y-0 sm:px-5">
-                    <div class="text-xs-plus">Menampilkan {{ $this->pengumumans->count() }} dari {{ $this->pengumumans->count() }} entri</div>
+                <div class="px-4 py-4 sm:px-5">
+                    {{ $this->pengumumans->links() }}
                 </div>
             </div>
         </div> 

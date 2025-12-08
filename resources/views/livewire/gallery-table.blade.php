@@ -1,12 +1,20 @@
 <?php
 
 use App\Models\Gallery;
-use function Livewire\Volt\{state, computed, mount, rules, validate, on};
+use function Livewire\Volt\{state, computed, mount, rules, validate, on, uses};
 
-$galleries = Gallery::orderBy('created_at', 'desc')->get();
-state('galleries', $galleries);
+use Livewire\WithPagination;
+
+uses([WithPagination::class]);
+
 state('id', null);
 state('search', '');
+
+$galleries = computed(function () {
+    return Gallery::where('judul', 'like', '%' . $this->search . '%')
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
+});
 
 $confirmDelete = function ($id) {
     $this->id = $id;
@@ -15,15 +23,7 @@ $confirmDelete = function ($id) {
 
 $delete = function () {
     Gallery::find($this->id)->delete();
-    $this->galleries = Gallery::orderBy('created_at', 'desc')->get();
     $this->dispatch('delete-gallery-confirmed');
-};
-
-// Search Logic
-$updatedSearch = function () {
-    $this->galleries = Gallery::where('judul', 'like', '%' . $this->search . '%')
-        ->orderBy('created_at', 'desc')
-        ->get();
 };
 
 ?>
@@ -301,11 +301,8 @@ $updatedSearch = function () {
                     </table>
                 </div>
 
-                <div
-                    class="flex flex-col justify-between space-y-4 px-4 py-4 sm:flex-row sm:items-center sm:space-y-0 sm:px-5">
-                    <div class="text-xs-plus">Menampilkan {{ $this->galleries->count() }} dari
-                        {{ $this->galleries->count() }}
-                        entri</div>
+                <div class="px-4 py-4 sm:px-5">
+                    {{ $this->galleries->links() }}
                 </div>
             </div>
         </div>

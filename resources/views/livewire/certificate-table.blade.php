@@ -1,27 +1,17 @@
 <?php
 
 use App\Models\Certificate;
-use function Livewire\Volt\{state, computed, mount, rules, validate, on};
+use function Livewire\Volt\{state, computed, mount, rules, validate, on, uses};
 
-$certificates = Certificate::with(['student', 'program'])->orderBy('created_at', 'desc')->get();
-state('certificates', $certificates);
+use Livewire\WithPagination;
+
+uses([WithPagination::class]);
+
 state('id', null);
 state('search', '');
 
-$confirmDelete = function ($id) {
-    $this->id = $id;
-    $this->dispatch('delete-certificate-confirmation');
-};
-
-$delete = function () {
-    Certificate::find($this->id)->delete();
-    $this->certificates = Certificate::with(['student', 'program'])->orderBy('created_at', 'desc')->get();
-    $this->dispatch('delete-certificate-confirmed');
-};
-
-// Search Logic
-$updatedSearch = function () {
-    $this->certificates = Certificate::with(['student', 'program'])
+$certificates = computed(function () {
+    return Certificate::with(['student', 'program'])
         ->where('nomor_sertifikat', 'like', '%' . $this->search . '%')
         ->orWhereHas('student', function ($query) {
             $query->where('nama_lengkap', 'like', '%' . $this->search . '%');
@@ -30,7 +20,17 @@ $updatedSearch = function () {
             $query->where('nama_program', 'like', '%' . $this->search . '%');
         })
         ->orderBy('created_at', 'desc')
-        ->get();
+        ->paginate(10);
+});
+
+$confirmDelete = function ($id) {
+    $this->id = $id;
+    $this->dispatch('delete-certificate-confirmation');
+};
+
+$delete = function () {
+    Certificate::find($this->id)->delete();
+    $this->dispatch('delete-certificate-confirmed');
 };
 
 ?>
@@ -304,10 +304,8 @@ $updatedSearch = function () {
                     </table>
                 </div>
 
-                <div
-                    class="flex flex-col justify-between space-y-4 px-4 py-4 sm:flex-row sm:items-center sm:space-y-0 sm:px-5">
-                    <div class="text-xs-plus">Menampilkan {{ $this->certificates->count() }} dari
-                        {{ $this->certificates->count() }} entri</div>
+                <div class="px-4 py-4 sm:px-5">
+                    {{ $this->certificates->links() }}
                 </div>
             </div>
         </div>

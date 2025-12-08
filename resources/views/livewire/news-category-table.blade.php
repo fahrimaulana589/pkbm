@@ -1,12 +1,20 @@
 <?php
 
 use App\Models\NewsCategory;
-use function Livewire\Volt\{state, computed, mount, rules, validate, on};
+use function Livewire\Volt\{state, computed, mount, rules, validate, on, uses};
 
-$categories = NewsCategory::orderBy('created_at', 'desc')->get();
-state('categories', $categories);
+use Livewire\WithPagination;
+
+uses([WithPagination::class]);
+
 state('id', null);
 state('search', '');
+
+$categories = computed(function () {
+    return NewsCategory::where('nama_kategori', 'like', '%' . $this->search . '%')
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
+});
 
 $confirmDelete = function ($id) {
     $this->id = $id;
@@ -15,15 +23,7 @@ $confirmDelete = function ($id) {
 
 $delete = function () {
     NewsCategory::find($this->id)->delete();
-    $this->categories = NewsCategory::orderBy('created_at', 'desc')->get();
     $this->dispatch('delete-category-confirmed');
-};
-
-// Search Logic
-$updatedSearch = function () {
-    $this->categories = NewsCategory::where('nama_kategori', 'like', '%' . $this->search . '%')
-        ->orderBy('created_at', 'desc')
-        ->get();
 };
 
 ?>
@@ -281,10 +281,8 @@ $updatedSearch = function () {
                     </table>
                 </div>
 
-                <div
-                    class="flex flex-col justify-between space-y-4 px-4 py-4 sm:flex-row sm:items-center sm:space-y-0 sm:px-5">
-                    <div class="text-xs-plus">Menampilkan {{ $this->categories->count() }} dari
-                        {{ $this->categories->count() }} entri</div>
+                <div class="px-4 py-4 sm:px-5">
+                    {{ $this->categories->links() }}
                 </div>
             </div>
         </div>

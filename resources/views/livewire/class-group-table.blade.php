@@ -1,27 +1,17 @@
 <?php
 
 use App\Models\ClassGroup;
-use function Livewire\Volt\{state, computed, mount, rules, validate, on};
+use function Livewire\Volt\{state, computed, mount, rules, validate, on, uses};
 
-$classGroups = ClassGroup::with(['program', 'tutor'])->orderBy('created_at', 'desc')->get();
-state('classGroups', $classGroups);
+use Livewire\WithPagination;
+
+uses([WithPagination::class]);
+
 state('id', null);
 state('search', '');
 
-$confirmDelete = function ($id) {
-    $this->id = $id;
-    $this->dispatch('delete-class-group-confirmation');
-};
-
-$delete = function () {
-    ClassGroup::find($this->id)->delete();
-    $this->classGroups = ClassGroup::with(['program', 'tutor'])->orderBy('created_at', 'desc')->get();
-    $this->dispatch('delete-class-group-confirmed');
-};
-
-// Search Logic
-$updatedSearch = function () {
-    $this->classGroups = ClassGroup::with(['program', 'tutor'])
+$classGroups = computed(function () {
+    return ClassGroup::with(['program', 'tutor'])
         ->where('nama_rombel', 'like', '%' . $this->search . '%')
         ->orWhereHas('program', function ($query) {
             $query->where('nama_program', 'like', '%' . $this->search . '%');
@@ -30,7 +20,17 @@ $updatedSearch = function () {
             $query->where('nama', 'like', '%' . $this->search . '%');
         })
         ->orderBy('created_at', 'desc')
-        ->get();
+        ->paginate(10);
+});
+
+$confirmDelete = function ($id) {
+    $this->id = $id;
+    $this->dispatch('delete-class-group-confirmation');
+};
+
+$delete = function () {
+    ClassGroup::find($this->id)->delete();
+    $this->dispatch('delete-class-group-confirmed');
 };
 
 ?>
@@ -304,10 +304,8 @@ $updatedSearch = function () {
                     </table>
                 </div>
 
-                <div
-                    class="flex flex-col justify-between space-y-4 px-4 py-4 sm:flex-row sm:items-center sm:space-y-0 sm:px-5">
-                    <div class="text-xs-plus">Menampilkan {{ $this->classGroups->count() }} dari
-                        {{ $this->classGroups->count() }} entri</div>
+                <div class="px-4 py-4 sm:px-5">
+                    {{ $this->classGroups->links() }}
                 </div>
             </div>
         </div>
