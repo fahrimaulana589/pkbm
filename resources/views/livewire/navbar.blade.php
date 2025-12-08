@@ -16,7 +16,7 @@ mount(function () {
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
             <!-- Logo & Brand -->
-            <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer">
+            <div class="flex-shrink-0 flex items-center gap-3">
                 @if($profile && $profile->logo)
                     <img src="{{ asset('storage/' . $profile->logo) }}" alt="Logo {{ $profile->nama_pkbm }}"
                         class="w-10 h-10 object-contain">
@@ -30,7 +30,7 @@ mount(function () {
                         </svg>
                     </div>
                 @endif
-                <a href="/" wire:navigate.hover class="font-bold text-xl text-slate-800 dark:text-white tracking-tight">
+                <a href="/" wire:navigate.hover class="font-bold text-xl text-slate-800 dark:text-white tracking-tight hover:text-primary">
                     {{ $profile->nama_pkbm ?? 'SekolahKita' }}
                 </span>
             </div>
@@ -80,6 +80,12 @@ mount(function () {
                             clip-rule="evenodd" />
                     </svg>
                 </button> 
+                <!-- Monochrome Mode Toggle -->
+                <button @click="$store.global.isMonochromeModeEnabled = !$store.global.isMonochromeModeEnabled;$store.monochrome.toggle()"
+                    class="btn size-8 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
+                    <i
+                        class="fa-solid fa-palette bg-gradient-to-r from-sky-400 to-blue-600 bg-clip-text text-lg font-semibold text-transparent"></i>
+                </button>
 
                 <a href="/login"
                     class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 bg-primary rounded-lg hover:bg-primary-focus focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-lg shadow-primary/30 hover:shadow-primary/40">
