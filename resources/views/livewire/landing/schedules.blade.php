@@ -12,7 +12,7 @@ mount(function () {
     $today = $now->translatedFormat('l');
     $this->currentDate = $now->translatedFormat('l, d F Y');
 
-    $this->schedules = Schedule::with('classGroup')
+    $this->schedules = Schedule::with('classGroup.tutor')
         ->where('hari', $today)
         ->orderBy('jam_mulai', 'asc')
         ->get();

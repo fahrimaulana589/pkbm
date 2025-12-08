@@ -8,7 +8,7 @@ state(['schedules' => []]);
 mount(function () {
     $daysOrder = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
 
-    $this->schedules = Schedule::with('classGroup')
+    $this->schedules = Schedule::with('classGroup.tutor')
         ->orderBy('jam_mulai', 'asc')
         ->get()
         ->groupBy('hari')

@@ -7,7 +7,8 @@ use Livewire\WithPagination;
 uses(WithPagination::class);
 
 with(fn() => [
-    'announcements' => Announcement::where('status', 'dipublikasikan')
+    'announcements' => Announcement::with('penulis')
+        ->where('status', 'dipublikasikan')
         ->orderBy('created_at', 'desc')
         ->paginate(10),
 ]);
@@ -31,23 +32,23 @@ with(fn() => [
                 <div
                     class="flex flex-col rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-white dark:bg-navy-800 border border-slate-100 dark:border-navy-700">
                     @if($announcement->thumbnail)
-                                    <div class="flex-shrink-0 h-64 w-full relative">
-                                        <img class="h-full w-full object-cover" src="{{ asset('storage/' . $announcement->thumbnail) }}"
-                                            alt="{{ $announcement->judul }}">
-                                        <div class="absolute top-4 right-4">
-                                            @php
-                                                $priorityClass = match ($announcement->prioritas) {
-                                                    'Penting' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-                                                    'Tinggi' => 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
-                                                    default => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-                                                };
-                                            @endphp
-                         <span
-                                                class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium {{ $priorityClass }}">
-                                                {{ $announcement->prioritas }}
-                                            </span>
-                                        </div>
-                                    </div>
+                        <div class="flex-shrink-0 h-64 w-full relative">
+                            <img class="h-full w-full object-cover" src="{{ asset('storage/' . $announcement->thumbnail) }}"
+                                alt="{{ $announcement->judul }}">
+                            <div class="absolute top-4 right-4">
+                                @php
+                                    $priorityClass = match ($announcement->prioritas) {
+                                        'Penting' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+                                        'Tinggi' => 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
+                                        default => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+                                    };
+                                @endphp
+                                <span
+                                    class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium {{ $priorityClass }}">
+                                    {{ $announcement->prioritas }}
+                                </span>
+                            </div>
+                        </div>
                     @endif
 
                     <div class="flex-1 p-6 flex flex-col justify-between">

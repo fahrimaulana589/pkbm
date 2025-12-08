@@ -16,7 +16,6 @@ state([
 use Illuminate\Support\Facades\DB;
 
 mount(function () {
-    // dd('STATS COMPONENT LOADED'); 
     $stats = DB::query()
         ->selectSub(Program::where('status', 'aktif')->selectRaw('count(*)'), 'programs')
         ->selectSub(Tutor::where('status', 'aktif')->selectRaw('count(*)'), 'tutors')

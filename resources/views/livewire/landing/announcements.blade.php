@@ -6,7 +6,8 @@ use App\Models\Announcement;
 state(['announcements' => []]);
 
 mount(function () {
-    $this->announcements = Announcement::where('status', 'dipublikasikan')
+    $this->announcements = Announcement::with('penulis')
+        ->where('status', 'dipublikasikan')
         ->orderBy('created_at', 'desc')
         ->take(3)
         ->get();
