@@ -1,12 +1,21 @@
 <?php
 
 use App\Models\Program;
-use function Livewire\Volt\{state, computed, mount, rules, validate, on};
+use function Livewire\Volt\{state, computed, mount, rules, validate, on, uses};
 
-$programs = Program::orderBy('created_at', 'desc')->get();
-state('programs', $programs);
+use Livewire\WithPagination;
+
+uses([WithPagination::class]);
+
 state('id', null);
 state('search', '');
+
+$programs = computed(function () {
+    return Program::where('nama_program', 'like', '%' . $this->search . '%')
+        ->orWhere('kategori', 'like', '%' . $this->search . '%')
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
+});
 
 $getStatusBadge = fn($status) => match ($status) {
     'aktif' => '<div class="badge rounded-full bg-success/10 text-success dark:bg-success/15">Aktif</div>',
@@ -21,16 +30,7 @@ $confirmDelete = function ($id) {
 
 $delete = function () {
     Program::find($this->id)->delete();
-    $this->programs = Program::orderBy('created_at', 'desc')->get();
     $this->dispatch('delete-program-confirmed');
-};
-
-// Search Logic
-$updatedSearch = function () {
-    $this->programs = Program::where('nama_program', 'like', '%' . $this->search . '%')
-        ->orWhere('kategori', 'like', '%' . $this->search . '%')
-        ->orderBy('created_at', 'desc')
-        ->get();
 };
 
 ?>
@@ -302,10 +302,8 @@ $updatedSearch = function () {
                     </table>
                 </div>
 
-                <div
-                    class="flex flex-col justify-between space-y-4 px-4 py-4 sm:flex-row sm:items-center sm:space-y-0 sm:px-5">
-                    <div class="text-xs-plus">Menampilkan {{ $this->programs->count() }} dari
-                        {{ $this->programs->count() }} entri</div>
+                <div class="px-4 py-4 sm:px-5">
+                    {{ $this->programs->links() }}
                 </div>
             </div>
         </div>
