@@ -13,11 +13,21 @@ state([
     'rombelsCount' => 0,
 ]);
 
+use Illuminate\Support\Facades\DB;
+
 mount(function () {
-    $this->programsCount = Program::where('status', 'aktif')->count();
-    $this->tutorsCount = Tutor::where('status', 'aktif')->count();
-    $this->studentsCount = Student::where('status', 'aktif')->count();
-    $this->rombelsCount = ClassGroup::count();
+    // dd('STATS COMPONENT LOADED'); 
+    $stats = DB::query()
+        ->selectSub(Program::where('status', 'aktif')->selectRaw('count(*)'), 'programs')
+        ->selectSub(Tutor::where('status', 'aktif')->selectRaw('count(*)'), 'tutors')
+        ->selectSub(Student::where('status', 'aktif')->selectRaw('count(*)'), 'students')
+        ->selectSub(ClassGroup::selectRaw('count(*)'), 'rombels')
+        ->first();
+
+    $this->programsCount = $stats->programs;
+    $this->tutorsCount = $stats->tutors;
+    $this->studentsCount = $stats->students;
+    $this->rombelsCount = $stats->rombels;
 });
 
 ?>
