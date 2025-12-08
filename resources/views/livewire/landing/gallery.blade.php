@@ -12,6 +12,7 @@ mount(function () {
             $query->orderBy('urutan', 'asc')->take(4);
         }])
         ->where('status', 'aktif')
+        ->take(3)
         ->orderBy('created_at', 'desc')
         ->get();
 });

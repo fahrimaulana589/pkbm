@@ -2,6 +2,7 @@
 use function Laravel\Folio\{name,middleware};
 
 name('login');
+middleware('guest')
 
 ?>
 <x-guest-layout title="login">
