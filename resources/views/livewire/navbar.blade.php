@@ -90,10 +90,17 @@ mount(function () {
                         class="fa-solid fa-palette bg-gradient-to-r from-sky-400 to-blue-600 bg-clip-text text-lg font-semibold text-transparent"></i>
                 </button>
 
-                <a href="/login"
-                    class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 bg-primary rounded-lg hover:bg-primary-focus focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-lg shadow-primary/30 hover:shadow-primary/40">
-                    Masuk
-                </a>
+                @auth
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 bg-primary rounded-lg hover:bg-primary-focus focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-lg shadow-primary/30 hover:shadow-primary/40">
+                        Dashboard
+                    </a>
+                @else
+                    <a href="/login"
+                        class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 bg-primary rounded-lg hover:bg-primary-focus focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-lg shadow-primary/30 hover:shadow-primary/40">
+                        Masuk
+                    </a>
+                @endauth
             </div>
 
             <!-- Mobile Menu Button -->
@@ -166,10 +173,17 @@ mount(function () {
             <a href="/galeri" wire:navigate.hover
                 class="{{ $mobileNavClass }} {{ request()->is('galeri*') ? $mobileActiveClass : $mobileInactiveClass }}">Galeri</a>
             <div class="pt-4 mt-4 border-t border-slate-100 dark:border-navy-700">
-                <a href="/login"
-                    class="block w-full text-center px-5 py-3 text-base font-semibold text-white bg-primary rounded-lg hover:bg-primary-focus shadow-md shadow-primary/20">
-                    Masuk
-                </a>
+                @auth
+                    <a href="/dashboard"
+                        class="block w-full text-center px-5 py-3 text-base font-semibold text-white bg-primary rounded-lg hover:bg-primary-focus shadow-md shadow-primary/20">
+                        Dashboard
+                    </a>
+                @else
+                    <a href="/login"
+                        class="block w-full text-center px-5 py-3 text-base font-semibold text-white bg-primary rounded-lg hover:bg-primary-focus shadow-md shadow-primary/20">
+                        Masuk
+                    </a>
+                @endauth
             </div>
         </div>
     </div>
