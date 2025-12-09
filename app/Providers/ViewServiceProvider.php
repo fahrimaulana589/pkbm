@@ -25,5 +25,9 @@ class ViewServiceProvider extends ServiceProvider
     public function boot()
     {
         View::composer('*', 'App\Http\View\Composers\SidebarComposer');
+        
+        View::composer('*', function ($view) {
+            $view->with('profile', \App\Models\PkbmProfile::first());
+        });
     }
 }

@@ -33,7 +33,7 @@ $confirmDelete = function ($id) {
 
 $delete = function () {
     Student::find($this->id)->delete();
-    $this->students = Student::with('program')->orderBy('created_at', 'desc')->get();
+    // Computed property will automatically refresh
     $this->dispatch('delete-student-confirmed');
 };
 
