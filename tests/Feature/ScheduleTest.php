@@ -55,6 +55,8 @@ class ScheduleTest extends TestCase
         $classGroup = ClassGroup::factory()->create();
         $schedule = Schedule::factory()->create([
             'rombel_id' => $classGroup->id,
+            'jam_mulai' => '08:00',
+            'jam_selesai' => '10:00',
         ]);
 
         Volt::test('schedule-form-edit', ['id' => $schedule->id])

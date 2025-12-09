@@ -313,7 +313,7 @@ class FileManagementTest extends TestCase
 
         $photos = [];
         for ($i = 0; $i < 7; $i++) {
-            $photos[] = UploadedFile::fake()->create("photo_{$i}.jpg", 3000); // 3MB
+            $photos[] = UploadedFile::fake()->create("photo_{$i}.jpg", 1000); // 1MB
         }
 
         Volt::test('gallery-form-create')
