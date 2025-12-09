@@ -108,7 +108,7 @@ class SidebarPanel
                 [
                     'ppdb_ppdb' => [
                         'title' => 'PPDB',
-                        'route_name' => 'ppdb.ppdb'
+                        'route_name' => 'ppdb.ppdb.index'
                     ],
                 ]
             ]

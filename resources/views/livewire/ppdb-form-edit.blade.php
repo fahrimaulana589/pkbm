@@ -41,7 +41,7 @@ $save = function () {
     ]);
 
     session()->flash('message', 'Data PPDB berhasil diperbarui.');
-    return $this->redirectRoute('ppdb.ppdb', navigate: true);
+    return $this->redirectRoute('ppdb.ppdb.index', navigate: true);
 };
 
 ?>

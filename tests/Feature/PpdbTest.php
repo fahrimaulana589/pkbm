@@ -17,7 +17,7 @@ class PpdbTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $response = $this->get(route('ppdb.ppdb'));
+        $response = $this->get(route('ppdb.ppdb.index'));
 
         $response->assertStatus(200);
         $response->assertSee('Data PPDB');
@@ -36,7 +36,7 @@ class PpdbTest extends TestCase
             ->set('end_date', '2025-02-01')
             ->call('save')
             ->assertHasNoErrors()
-            ->assertRedirect(route('ppdb.ppdb'));
+            ->assertRedirect(route('ppdb.ppdb.index'));
 
         $this->assertDatabaseHas('ppdbs', [
             'name' => 'Test PPDB',
@@ -58,7 +58,7 @@ class PpdbTest extends TestCase
             ->set('end_date', '2025-02-01')
             ->call('save')
             ->assertHasNoErrors()
-            ->assertRedirect(route('ppdb.ppdb'));
+            ->assertRedirect(route('ppdb.ppdb.index'));
 
         $this->assertDatabaseHas('ppdbs', [
             'id' => $ppdb->id,
