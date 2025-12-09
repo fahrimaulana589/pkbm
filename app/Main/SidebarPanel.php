@@ -104,6 +104,12 @@ class SidebarPanel
                         'title' => 'Dashboard',
                         'route_name' => 'ppdb.dashboard'
                     ],
+                ],
+                [
+                    'ppdb_ppdb' => [
+                        'title' => 'PPDB',
+                        'route_name' => 'ppdb.ppdb'
+                    ],
                 ]
             ]
         ];
