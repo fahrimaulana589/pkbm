@@ -34,7 +34,7 @@
 <body x-data x-bind="$store.global.documentBody">
     <!-- Page Wrapper -->
     <div id="root"  x-cloak>
-        @livewire('navbar')
+        @livewire('landing.navbar')
         {{ $slot }}
         @livewire('landing.stats')
         @livewire('landing.footer')

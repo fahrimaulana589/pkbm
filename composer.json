@@ -11,12 +11,15 @@
     "require": {
         "php": "^8.2",
         "alirezasedghi/laravel-image-faker": "^1.0",
+        "kris/laravel-form-builder": "^1.54",
         "laravel/folio": "^1.1",
         "laravel/framework": "^12.0",
         "laravel/octane": "^2.13",
         "laravel/tinker": "^2.10.1",
         "livewire/livewire": "^3.6",
-        "livewire/volt": "^1.10"
+        "livewire/volt": "^1.10",
+        "spatie/laravel-permission": "^6.23",
+        "spatie/laravel-schemaless-attributes": "^2.5"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.16",

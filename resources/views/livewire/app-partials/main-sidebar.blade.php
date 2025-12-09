@@ -1,5 +1,5 @@
 <?php
-use function Livewire\Volt\{state,mount};
+use function Livewire\Volt\{state, mount};
 
 state('routePrefix');
 
@@ -23,8 +23,7 @@ $changeRoutePrefix = function ($newPrefix) {
         <!-- Main Sections Links -->
         <div class="is-scrollbar-hidden flex grow flex-col space-y-4 overflow-y-auto pt-6">
             <!-- Dashobards -->
-            <button
-                wire:click="changeRoutePrefix('admin')"
+            <button wire:click="changeRoutePrefix('admin')"
                 class="flex size-11 items-center justify-center rounded-lg outline-none transition-colors duration-200 {{ $this->routePrefix === 'admin' ? 'text-primary hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:bg-navy-600 bg-primary/10 dark:text-accent-light dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90' : 'hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25' }}"
                 x-tooltip.placement.right="'Dashboards'">
                 <svg class="size-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -37,14 +36,25 @@ $changeRoutePrefix = function ($newPrefix) {
                         d="M17.5 5h-1a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5Z" />
                 </svg>
             </button>
-   
+
+            <!-- PPDB -->
+            <button wire:click="changeRoutePrefix('ppdb')"
+                class="flex size-11 items-center justify-center rounded-lg outline-none transition-colors duration-200 {{ $this->routePrefix === 'ppdb' ? 'text-primary hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:bg-navy-600 bg-primary/10 dark:text-accent-light dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90' : 'hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25' }}"
+                x-tooltip.placement.right="'PPDB'">
+                <svg class="size-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path fill-opacity=".3"
+                        d="M5.25 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM2.25 19.125a7.125 7.125 0 0 1 14.25 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122Z" />
+                    <path
+                        d="M18.75 7.5a.75.75 0 0 0-1.5 0v2.25H15a.75.75 0 0 0 0 1.5h2.25v2.25a.75.75 0 0 0 1.5 0v-2.25H21a.75.75 0 0 0 0-1.5h-2.25V7.5Z" />
+                </svg>
+            </button>
+
         </div>
 
         <!-- Bottom Links -->
         <div class="flex flex-col items-center space-y-3 py-3">
             <!-- Settings -->
-            <button
-                wire:click="changeRoutePrefix('setting')"
+            <button wire:click="changeRoutePrefix('setting')"
                 class="flex size-11 items-center justify-center rounded-lg outline-none transition-colors duration-200 hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25 {{ $this->routePrefix === 'setting' ? 'text-primary hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:bg-navy-600 bg-primary/10 dark:text-accent-light dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90' : 'hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25' }}">
                 <svg class="size-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fill-opacity="0.3" fill="currentColor"
@@ -54,7 +64,8 @@ $changeRoutePrefix = function ($newPrefix) {
                 </svg>
             </button>
             <!-- Profile -->
-            <div x-data="usePopper({ placement: 'right-end', offset: 12 })" @click.outside="if(isShowPopper) isShowPopper = false" class="flex">
+            <div x-data="usePopper({ placement: 'right-end', offset: 12 })"
+                @click.outside="if(isShowPopper) isShowPopper = false" class="flex">
                 <button @click="isShowPopper = !isShowPopper" x-ref="popperRef" class="avatar size-12">
                     <img class="rounded-full" src="{{ asset('images/200x200.png') }}" alt="avatar" />
                     <span
@@ -65,8 +76,7 @@ $changeRoutePrefix = function ($newPrefix) {
                         class="popper-box w-64 rounded-lg border border-slate-150 bg-white shadow-soft dark:border-navy-600 dark:bg-navy-700">
                         <div class="flex items-center space-x-4 rounded-t-lg bg-slate-100 py-5 px-4 dark:bg-navy-800">
                             <div class="avatar size-14">
-                                <img class="rounded-full" src="{{ asset('images/200x200.png') }}"
-                                    alt="avatar" />
+                                <img class="rounded-full" src="{{ asset('images/200x200.png') }}" alt="avatar" />
                             </div>
                             <div>
                                 <a href="#"
@@ -79,8 +89,7 @@ $changeRoutePrefix = function ($newPrefix) {
                             </div>
                         </div>
                         <div class="flex flex-col pt-2 pb-5">
-                            <a href="{{ route('admin.profile') }}"
-                                wire:navigate.hover
+                            <a href="{{ route('admin.profile') }}" wire:navigate.hover
                                 class="group flex items-center space-x-3 py-2 px-4 tracking-wide outline-none transition-all hover:bg-slate-100 focus:bg-slate-100 dark:hover:bg-navy-600 dark:focus:bg-navy-600">
                                 <div class="flex size-8 items-center justify-center rounded-lg bg-warning text-white">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="size-4.5" fill="none"

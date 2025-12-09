@@ -25,6 +25,9 @@ class SidebarComposer
                 case 'setting':
                     $view->with('sidebarMenu', SidebarPanel::settings());
                     break;
+                case 'ppdb':
+                    $view->with('sidebarMenu', SidebarPanel::ppdb());
+                    break;
                 default:
                     $view->with('sidebarMenu', SidebarPanel::dashboards());
             }

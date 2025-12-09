@@ -94,7 +94,22 @@ class SidebarPanel
         ];
     }
 
+    public static function ppdb()
+    {
+        return [
+            'title' => 'PPDB',
+            'items' => [
+                [
+                    'ppdb_dashboard' => [
+                        'title' => 'Dashboard',
+                        'route_name' => 'ppdb.dashboard'
+                    ],
+                ]
+            ]
+        ];
+    }
+
     public static function all(){
-        return ['admin' => self::dashboards(), 'setting' => self::settings()];
+        return ['admin' => self::dashboards(), 'setting' => self::settings(), 'ppdb' => self::ppdb()];
     }
 }

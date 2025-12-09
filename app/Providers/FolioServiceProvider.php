@@ -27,6 +27,9 @@ class FolioServiceProvider extends ServiceProvider
             'setting/*' => [
                 'verified','auth'
             ],
+            'ppdb/*' => [
+                'verified','auth'
+            ],
         ]);
     }
 }
