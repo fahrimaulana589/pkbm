@@ -14,7 +14,9 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton('pkbm_profile', function () {
+            return \App\Models\PkbmProfile::first();
+        });
     }
 
     /**
@@ -27,7 +29,7 @@ class ViewServiceProvider extends ServiceProvider
         View::composer('*', 'App\Http\View\Composers\SidebarComposer');
         
         View::composer('*', function ($view) {
-            $view->with('profile', \App\Models\PkbmProfile::first());
+            $view->with('profile', app('pkbm_profile'));
         });
     }
 }
