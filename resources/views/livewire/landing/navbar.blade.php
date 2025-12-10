@@ -36,8 +36,10 @@ mount(function () {
                     </span>
             </div>
 
-            <!-- Desktop Menu -->
-            <div class="hidden md:flex items-center space-x-8">
+
+
+            <!-- Desktop Menu (Inline lg) -->
+            <div class="hidden lg:flex items-center space-x-8">
                 @php
                     $navClass = 'text-sm font-medium transition-colors duration-200';
                     $activeClass = 'text-primary dark:text-primary font-semibold';
@@ -124,6 +126,30 @@ mount(function () {
                     </svg>
                 </button>
             </div>
+        </div>
+
+        <!-- Desktop Menu (Stacked md only) -->
+        <div class="hidden md:flex lg:hidden items-center space-x-8 pb-4">
+            @php
+                $navClass = 'text-sm font-medium transition-colors duration-200';
+                $activeClass = 'text-primary dark:text-primary font-semibold';
+                $inactiveClass = 'text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary';
+            @endphp
+
+            <a href="/profil" wire:navigate.hover
+                class="{{ $navClass }} {{ request()->is('profil') ? $activeClass : $inactiveClass }}">Profil</a>
+            <a href="/program" wire:navigate.hover
+                class="{{ $navClass }} {{ request()->is('program') ? $activeClass : $inactiveClass }}">Program</a>
+            <a href="/tutor" wire:navigate.hover
+                class="{{ $navClass }} {{ request()->is('tutor') ? $activeClass : $inactiveClass }}">Tutor</a>
+            <a href="/jadwal" wire:navigate.hover
+                class="{{ $navClass }} {{ request()->is('jadwal') ? $activeClass : $inactiveClass }}">Jadwal</a>
+            <a href="/pengumuman" wire:navigate.hover
+                class="{{ $navClass }} {{ request()->is('pengumuman*') ? $activeClass : $inactiveClass }}">Pengumuman</a>
+            <a href="/berita" wire:navigate.hover
+                class="{{ $navClass }} {{ request()->is('berita*') ? $activeClass : $inactiveClass }}">Berita</a>
+            <a href="/galeri" wire:navigate.hover
+                class="{{ $navClass }} {{ request()->is('galeri*') ? $activeClass : $inactiveClass }}">Galeri</a>
         </div>
     </div>
 
