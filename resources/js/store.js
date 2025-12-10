@@ -13,7 +13,7 @@ export default {
       Alpine.store("breakpoints").xlAndUp;
     
     Alpine.store('darkMode', {
-        on: Alpine.$persist(true).as('darkMode_on'),
+        on: Alpine.$persist(false).as('darkMode_on'),
         toggle() {
           this.on = ! this.on
         },
@@ -25,7 +25,7 @@ export default {
         }
     });
     Alpine.store('monochrome', {
-        on: Alpine.$persist(true).as('monochrome_on'),
+        on: Alpine.$persist(false).as('monochrome_on'),
         toggle() {
           this.on = ! this.on
         },
