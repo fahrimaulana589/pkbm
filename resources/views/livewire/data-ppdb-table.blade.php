@@ -1,53 +1,76 @@
 <?php
 
-use App\Models\Ppdb;
-use function Livewire\Volt\{state, computed, mount, rules, validate, on, uses};
+use Livewire\Volt\Component;
 use Livewire\WithPagination;
+use App\Models\DataPpdb;
+use Illuminate\Database\Eloquent\Builder;
 
-uses([WithPagination::class]);
+new class extends Component {
+    use WithPagination;
 
-state('id', null);
-state('search', '');
+    public $ppdbId;
+    public $search = '';
+    public $perPage = 10;
 
-$ppdbs = computed(function () {
-    return Ppdb::where('name', 'like', '%' . $this->search . '%')
-        ->orderBy('created_at', 'desc')
-        ->paginate(10);
-});
+    public function getStatusBadge($status)
+    {
+        return match ($status) {
+            'active' => '<div class="badge rounded-full bg-success/10 text-success dark:bg-success/15">Wajib</div>',
+            'optional' => '<div class="badge rounded-full bg-info/10 text-info dark:bg-info/15">Opsional</div>',
+            'inactive' => '<div class="badge rounded-full bg-error/10 text-error dark:bg-error/15">Non-Aktif</div>',
+            default => '<div class="badge rounded-full bg-slate-100 text-slate-600 dark:bg-navy-500/50 dark:text-navy-200">' . $status . '</div>',
+        };
+    }
 
-$getStatusBadge = fn($status) => match ($status) {
-    'open' => '<div class="badge rounded-full bg-success/10 text-success dark:bg-success/15">Open</div>',
-    'closed' => '<div class="badge rounded-full bg-error/10 text-error dark:bg-error/15">Closed</div>',
-    default => '<div class="badge rounded-full bg-slate-100 text-slate-600 dark:bg-navy-500/50 dark:text-navy-200">' . $status . '</div>',
-};
+    public function with(): array
+    {
+        return [
+            'dataPpdbs' => DataPpdb::where('ppdb_id', $this->ppdbId)
+                ->where(function (Builder $query) {
+                    $query->where('nama', 'like', '%' . $this->search . '%');
+                })
+                ->latest()
+                ->paginate($this->perPage),
+        ];
+    }
 
-$confirmDelete = function ($id) {
-    $this->id = $id;
-    $this->dispatch('delete-ppdb-confirmation');
-};
+    public $idToDelete = null;
 
-$delete = function () {
-    Ppdb::find($this->id)->delete();
-    $this->dispatch('delete-ppdb-confirmed');
-};
+    public function confirmDelete($id)
+    {
+        $this->idToDelete = $id;
+        $this->dispatch('delete-data-ppdb-confirmation');
+    }
 
-?>
+    public function delete()
+    {
+        $dataPpdb = DataPpdb::find($this->idToDelete);
+
+        if ($dataPpdb) {
+            $dataPpdb->delete();
+            $this->dispatch('delete-data-ppdb-confirmed');
+        }
+    }
+}; ?>
 
 <div>
     <div class="flex items-center space-x-4 py-5 lg:py-6">
         <h2 class="text-xl font-medium text-slate-800 dark:text-navy-50 lg:text-2xl">
-            Data PPDB
+            Data Atribut PPDB
         </h2>
         <div class="hidden h-full py-1 sm:flex">
             <div class="h-full w-px bg-slate-300 dark:bg-navy-600"></div>
         </div>
     </div>
 
+    <!-- STYLE TAMBAHAN UNTUK DRAG LOGIC -->
     <style>
+        /* Memaksa elemen anak mewarisi cursor parent agar transisi mulus */
         .inherit-cursor * {
             cursor: inherit !important;
         }
 
+        /* PENTING: Kembalikan cursor pointer untuk elemen interaktif (tombol/link) */
         .inherit-cursor button,
         .inherit-cursor a,
         .inherit-cursor [role="button"],
@@ -72,6 +95,7 @@ $delete = function () {
             cursor: default;
         }
 
+        /* Sembunyikan scrollbar native tapi tetap bisa discroll */
         .is-scrollbar-hidden::-webkit-scrollbar {
             display: none;
         }
@@ -81,6 +105,7 @@ $delete = function () {
             scrollbar-width: none;
         }
 
+        /* Fix Popper/Dropdown Layout Shift */
         .popper-root {
             position: absolute;
             z-index: 100;
@@ -93,10 +118,12 @@ $delete = function () {
     </style>
 
     <div class="grid grid-cols-1 gap-4 sm:gap-5 lg:gap-6">
+        <!-- Announcement Table -->
         <div>
+            <!-- Header Tools (Search, dll) -->
             <div class="flex items-center justify-between">
                 <h2 class="text-base font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100">
-                    Tabel Master Data PPDB
+                    Tabel Data Atribut
                 </h2>
                 <div class="flex">
                     <div class="flex items-center" x-data="{isInputActive:false}">
@@ -105,7 +132,7 @@ $delete = function () {
                                 x-effect="isInputActive === true && $nextTick(() => { $el.focus()});"
                                 :class="isInputActive ? 'w-32 lg:w-48' : 'w-0'"
                                 class="form-input bg-transparent px-1 text-right transition-all duration-100 placeholder:text-slate-500 dark:placeholder:text-navy-200"
-                                placeholder="Cari..." type="text" />
+                                placeholder="Cari Data..." type="text" />
                         </label>
                         <button @click="isInputActive = !isInputActive"
                             class="btn size-8 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
@@ -116,6 +143,7 @@ $delete = function () {
                             </svg>
                         </button>
                     </div>
+                    <!-- Menu Popper Atas -->
                     <div x-data="usePopper({placement:'bottom-end',offset:4})"
                         @click.outside="if(isShowPopper) isShowPopper = false" class="inline-flex">
                         <button x-ref="popperRef" @click="isShowPopper = !isShowPopper"
@@ -130,7 +158,8 @@ $delete = function () {
                             <div
                                 class="popper-box rounded-md border border-slate-150 bg-white py-1.5 font-inter dark:border-navy-500 dark:bg-navy-700">
                                 <ul>
-                                    <li><a wire:navigate.hover href="{{ route('ppdb.ppdb.create') }}"
+                                    <li><a wire:navigate.hover
+                                            href="{{ route('admin.ppdb.master.data.create', ['id' => $ppdbId]) }}"
                                             class="flex h-8 items-center px-3 pr-8 font-medium tracking-wide outline-hidden transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Tambah
                                             Baru</a></li>
                                 </ul>
@@ -141,41 +170,57 @@ $delete = function () {
             </div>
 
             <div class="card mt-3">
+                <!-- 
+                    WRAPPER TABLE DENGAN ALPINE DRAG LOGIC 
+                -->
                 <div x-data="{
                         isDragging: false,
                         isTextHover: false,
-                        isInteractive: false,
+                        isInteractive: false, // State baru untuk area interaktif (Action Col)
                         startX: 0,
                         scrollLeft: 0,
+
                         startDrag(e) {
+                            // 1. Jangan drag jika klik tombol/link/input (Interactive Elements)
                             if (e.target.closest('button, a, input, select, .popper-box')) return;
+                            
+                            // 2. Jangan drag jika cursor terdeteksi di dekat teks ATAU area interaktif
                             if (this.isTextHover || this.isInteractive) return;
+
                             e.preventDefault();
                             this.isDragging = true;
                             this.startX = e.pageX - this.$refs.container.offsetLeft;
                             this.scrollLeft = this.$refs.container.scrollLeft;
                         },
+
                         handleDrag(e) {
                             if (!this.isDragging) return;
                             e.preventDefault();
                             const x = e.pageX - this.$refs.container.offsetLeft;
-                            const walk = (x - this.startX) * 1.5;
+                            const walk = (x - this.startX) * 1.5; 
                             this.$refs.container.scrollLeft = this.scrollLeft - walk;
                         },
+
                         stopDrag() {
                             this.isDragging = false;
                         },
+
                         checkHoverStatus(e) {
                             if (this.isDragging) return;
+                            
+                            // A. LOGIC BARU: Jika di kolom action, set Interactive Mode (Pointer Normal)
                             if (e.target.closest('.action-col')) {
                                 this.isInteractive = true;
                                 this.isTextHover = false;
                                 return;
                             }
                             this.isInteractive = false;
+
                             const x = e.clientX;
                             const y = e.clientY;
                             let foundText = false;
+
+                            // B. Logic deteksi teks standar
                             if (document.caretRangeFromPoint) {
                                 const range = document.caretRangeFromPoint(x, y);
                                 if (range && range.startContainer.nodeType === 3) {
@@ -191,6 +236,7 @@ $delete = function () {
                             }
                             this.isTextHover = foundText;
                         },
+
                         isPointInsideChar(textNode, offset, mouseX, mouseY) {
                             try {
                                 if (offset >= textNode.length) return false;
@@ -198,7 +244,8 @@ $delete = function () {
                                 range.setStart(textNode, offset);
                                 range.setEnd(textNode, offset + 1);
                                 const rects = range.getClientRects();
-                                const buffer = 15;
+                                const buffer = 15; // Toleransi area 15px
+
                                 for (const rect of rects) {
                                     if (mouseX >= rect.left - buffer && mouseX <= rect.right + buffer &&
                                         mouseY >= rect.top - buffer && mouseY <= rect.bottom + buffer) {
@@ -212,7 +259,7 @@ $delete = function () {
                     class="is-scrollbar-hidden min-w-full overflow-x-auto inherit-cursor transition-colors" :class="{
                         'cursor-text select-text': isTextHover && !isDragging,
                         'cursor-grabbing select-none': isDragging,
-                        'cursor-default': isInteractive && !isDragging,
+                        'cursor-default': isInteractive && !isDragging, /* Pointer normal (default) */
                         'cursor-grab select-none': !isDragging && !isTextHover && !isInteractive
                     }" @mousedown="startDrag($event)" @mousemove.window="handleDrag($event)"
                     @mouseup.window="stopDrag()" @mousemove="checkHoverStatus($event)"
@@ -225,16 +272,13 @@ $delete = function () {
                                     #</th>
                                 <th
                                     class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                    Nama</th>
+                                    Nama Data</th>
                                 <th
                                     class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                    Tahun</th>
+                                    Jenis</th>
                                 <th
                                     class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                    Mulai</th>
-                                <th
-                                    class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                    Selesai</th>
+                                    Default</th>
                                 <th
                                     class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                                     Status</th>
@@ -244,31 +288,26 @@ $delete = function () {
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($this->ppdbs as $index => $ppdb)
+                            @foreach ($dataPpdbs as $index => $item)
                                 <tr class="border-y border-transparent border-b-slate-200 dark:border-b-navy-500">
                                     <td class="whitespace-nowrap px-4 py-3 sm:px-5">{{ $index + 1 }}</td>
                                     <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                                         <div class="font-medium text-slate-700 dark:text-navy-100">
-                                            {{ $ppdb->name }}
+                                            {{ $item->nama }}
                                         </div>
                                     </td>
                                     <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                                         <div class="text-slate-700 dark:text-navy-100">
-                                            {{ $ppdb->tahun }}
+                                            {{ $item->jenis }}
                                         </div>
                                     </td>
                                     <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                                         <div class="text-slate-700 dark:text-navy-100">
-                                            {{ \Carbon\Carbon::parse($ppdb->start_date)->format('d M Y') }}
+                                            {{ $item->default ?? '-' }}
                                         </div>
                                     </td>
                                     <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                                        <div class="text-slate-700 dark:text-navy-100">
-                                            {{ \Carbon\Carbon::parse($ppdb->end_date)->format('d M Y') }}
-                                        </div>
-                                    </td>
-                                    <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                                        {!! $this->getStatusBadge($ppdb->status) !!}
+                                        {!! $this->getStatusBadge($item->status) !!}
                                     </td>
                                     <td class="whitespace-nowrap px-4 py-3 sm:px-5 action-col">
                                         <div x-data="usePopper({placement:'bottom-end',offset:4})"
@@ -286,15 +325,11 @@ $delete = function () {
                                                     class="popper-box rounded-md border border-slate-150 bg-white py-1.5 font-inter dark:border-navy-500 dark:bg-navy-700">
                                                     <ul>
                                                         <li><a wire:navigate.hover
-                                                                href="{{ route('admin.ppdb.master.data.index', ['id' => $ppdb->id]) }}"
-                                                                class="flex h-8 w-full items-center px-3 pr-8 font-medium tracking-wide outline-hidden transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Atur
-                                                                Data</a>
+                                                                href="{{ route('admin.ppdb.master.data.edit', ['id' => $ppdbId, 'dataPpdb' => $item->id]) }}"
+                                                                class="flex h-8 items-center px-3 pr-8 font-medium tracking-wide outline-hidden transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Edit</a>
                                                         </li>
-                                                        <li><a wire:navigate.hover
-                                                                href="{{ route('ppdb.ppdb.edit', ['id' => $ppdb->id]) }}"
-                                                                class="flex h-8 w-full items-center px-3 pr-8 font-medium tracking-wide outline-hidden transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Edit</a>
-                                                        </li>
-                                                        <li><button wire:click="confirmDelete('{{ $ppdb->id }}')"
+                                                        <li><button @click="isShowPopper = false"
+                                                                wire:click="confirmDelete('{{ $item->id }}')"
                                                                 class="flex h-8 w-full items-center px-3 pr-8 font-medium tracking-wide outline-hidden text-error transition-all hover:bg-slate-100 focus:bg-slate-100 dark:hover:bg-navy-600 dark:focus:bg-navy-600">Hapus</button>
                                                         </li>
                                                     </ul>
@@ -309,15 +344,15 @@ $delete = function () {
                 </div>
 
                 <div class="px-4 py-4 sm:px-5">
-                    {{ $this->ppdbs->links() }}
+                    {{ $dataPpdbs->links() }}
                 </div>
             </div>
         </div>
     </div>
 
-    <x-confirm-modal :trigger="'delete-ppdb-confirmation'" :title="'Konfirmasi Penghapusan'" :message="'Data PPDB ini akan dihapus. Apakah Anda yakin ingin menghapus data ini?'" :action="'delete'" />
+    <x-confirm-modal :trigger="'delete-data-ppdb-confirmation'" :title="'Konfirmasi Penghapusan'" :message="'Data ini akan dihapus. Apakah Anda yakin ingin menghapus data ini?'" :action="'delete'" />
 
-    <x-success-modal :trigger="'delete-ppdb-confirmed'" :title="'Data berhasil dihapus'" :message="'Data PPDB telah dihapus.'" />
+    <x-success-modal :trigger="'delete-data-ppdb-confirmed'" :title="'Data berhasil dihapus'" :message="'Data atribut telah dihapus.'" />
 
     @if (session()->has('message'))
         <x-success-modal :title="session('status') ?? 'Berhasil'" :message="session('message')" />
