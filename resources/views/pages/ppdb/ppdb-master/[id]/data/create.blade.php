@@ -34,6 +34,6 @@ name('admin.ppdb.master.data.create');
             </ul>
         </div>
 
-        @livewire('data-ppdb-form', ['ppdbId' => $id])
+        @livewire('data-ppdb-form-create', ['ppdbId' => $id])
     </main>
 </x-app-layout>

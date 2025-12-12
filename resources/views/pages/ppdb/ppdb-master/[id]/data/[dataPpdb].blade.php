@@ -34,6 +34,6 @@ name('admin.ppdb.master.data.edit');
             </ul>
         </div>
 
-        @livewire('data-ppdb-form', ['id' => $dataPpdb, 'ppdbId' => $id])
+        @livewire('data-ppdb-form-edit', ['id' => $dataPpdb, 'ppdbId' => $id])
     </main>
 </x-app-layout>

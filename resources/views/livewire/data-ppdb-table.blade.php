@@ -1,57 +1,53 @@
 <?php
 
-use Livewire\Volt\Component;
-use Livewire\WithPagination;
 use App\Models\DataPpdb;
 use Illuminate\Database\Eloquent\Builder;
+use function Livewire\Volt\{state, computed, mount, rules, validate, on, uses};
+use Livewire\WithPagination;
 
-new class extends Component {
-    use WithPagination;
+uses([WithPagination::class]);
 
-    public $ppdbId;
-    public $search = '';
-    public $perPage = 10;
+state('ppdbId', null);
+state('search', '');
+state('perPage', 10);
+state('idToDelete', null);
 
-    public function getStatusBadge($status)
-    {
-        return match ($status) {
-            'active' => '<div class="badge rounded-full bg-success/10 text-success dark:bg-success/15">Wajib</div>',
-            'optional' => '<div class="badge rounded-full bg-info/10 text-info dark:bg-info/15">Opsional</div>',
-            'inactive' => '<div class="badge rounded-full bg-error/10 text-error dark:bg-error/15">Non-Aktif</div>',
-            default => '<div class="badge rounded-full bg-slate-100 text-slate-600 dark:bg-navy-500/50 dark:text-navy-200">' . $status . '</div>',
-        };
+mount(function ($ppdbId) {
+    // Parameter from parent, e.g. @livewire('data-ppdb-table', ['ppdbId' => $id])
+    $this->ppdbId = $ppdbId;
+});
+
+$dataPpdbs = computed(function () {
+    return DataPpdb::where('ppdb_id', $this->ppdbId)
+        ->where(function (Builder $query) {
+            $query->where('nama', 'like', '%' . $this->search . '%');
+        })
+        ->latest()
+        ->paginate($this->perPage);
+});
+
+$getStatusBadge = fn($status) => match ($status) {
+    'active' => '<div class="badge rounded-full bg-success/10 text-success dark:bg-success/15">Wajib</div>',
+    'optional' => '<div class="badge rounded-full bg-info/10 text-info dark:bg-info/15">Opsional</div>',
+    'inactive' => '<div class="badge rounded-full bg-error/10 text-error dark:bg-error/15">Non-Aktif</div>',
+    default => '<div class="badge rounded-full bg-slate-100 text-slate-600 dark:bg-navy-500/50 dark:text-navy-200">' . $status . '</div>',
+};
+
+$confirmDelete = function ($id) {
+    $this->idToDelete = $id;
+    $this->dispatch('delete-data-ppdb-confirmation');
+};
+
+$delete = function () {
+    $dataPpdb = DataPpdb::find($this->idToDelete);
+
+    if ($dataPpdb) {
+        $dataPpdb->delete();
+        $this->dispatch('delete-data-ppdb-confirmed');
     }
+};
 
-    public function with(): array
-    {
-        return [
-            'dataPpdbs' => DataPpdb::where('ppdb_id', $this->ppdbId)
-                ->where(function (Builder $query) {
-                    $query->where('nama', 'like', '%' . $this->search . '%');
-                })
-                ->latest()
-                ->paginate($this->perPage),
-        ];
-    }
-
-    public $idToDelete = null;
-
-    public function confirmDelete($id)
-    {
-        $this->idToDelete = $id;
-        $this->dispatch('delete-data-ppdb-confirmation');
-    }
-
-    public function delete()
-    {
-        $dataPpdb = DataPpdb::find($this->idToDelete);
-
-        if ($dataPpdb) {
-            $dataPpdb->delete();
-            $this->dispatch('delete-data-ppdb-confirmed');
-        }
-    }
-}; ?>
+?>
 
 <div>
     <div class="flex items-center space-x-4 py-5 lg:py-6">
@@ -288,7 +284,7 @@ new class extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($dataPpdbs as $index => $item)
+                            @foreach ($this->dataPpdbs as $index => $item)
                                 <tr class="border-y border-transparent border-b-slate-200 dark:border-b-navy-500">
                                     <td class="whitespace-nowrap px-4 py-3 sm:px-5">{{ $index + 1 }}</td>
                                     <td class="whitespace-nowrap px-4 py-3 sm:px-5">
@@ -344,7 +340,7 @@ new class extends Component {
                 </div>
 
                 <div class="px-4 py-4 sm:px-5">
-                    {{ $dataPpdbs->links() }}
+                    {{ $this->dataPpdbs->links() }}
                 </div>
             </div>
         </div>

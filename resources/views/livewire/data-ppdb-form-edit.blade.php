@@ -1,71 +1,48 @@
 <?php
 
-use Livewire\Volt\Component;
 use App\Models\DataPpdb;
-use App\Models\Ppdb;
-use Livewire\Attributes\Validate;
+use function Livewire\Volt\{state, rules, mount};
 
-new class extends Component {
-    public ?DataPpdb $dataPpdb = null;
+state([
+    'dataPpdb' => null,
+    'ppdb_id' => null,
+    'nama' => '',
+    'jenis' => 'text',
+    'status' => 'active',
+    'default' => '',
+]);
 
-    #[Validate('required')]
-    public $ppdb_id = '';
+mount(function ($ppdbId, $id) {
+    $this->ppdb_id = $ppdbId;
+    $this->dataPpdb = DataPpdb::where('ppdb_id', $ppdbId)->findOrFail($id);
 
-    #[Validate('required|string|max:255')]
-    public $nama = '';
+    $this->nama = $this->dataPpdb->nama;
+    $this->jenis = $this->dataPpdb->jenis;
+    $this->status = $this->dataPpdb->status;
+    $this->default = $this->dataPpdb->default;
+});
 
-    #[Validate('required')]
-    public $jenis = 'text';
+rules([
+    'nama' => 'required|string|max:255',
+    'jenis' => 'required',
+    'status' => 'required',
+    'default' => 'nullable|string|max:255',
+]);
 
-    #[Validate('required')]
-    public $status = 'active';
+$save = function () {
+    $this->validate();
 
-    #[Validate('nullable|string|max:255')]
-    public $default = '';
+    $this->dataPpdb->update([
+        'nama' => $this->nama,
+        'jenis' => $this->jenis,
+        'default' => $this->default,
+        'status' => $this->status,
+    ]);
 
-    public $ppdbOptions = [];
+    $this->dispatch('data-ppdb-updated');
+};
 
-    public function mount($ppdbId, $id = null)
-    {
-        $this->ppdb_id = $ppdbId;
-
-        if ($id) {
-            $this->dataPpdb = DataPpdb::where('ppdb_id', $ppdbId)->findOrFail($id);
-            $this->nama = $this->dataPpdb->nama;
-            $this->jenis = $this->dataPpdb->jenis;
-            $this->status = $this->dataPpdb->status;
-            $this->default = $this->dataPpdb->default;
-        }
-    }
-
-    public function save()
-    {
-        $this->validate();
-
-        if ($this->dataPpdb) {
-            $this->dataPpdb->update([
-                'nama' => $this->nama,
-                'jenis' => $this->jenis,
-                'default' => $this->default,
-                'status' => $this->status,
-            ]);
-
-            $this->dispatch('data-ppdb-updated');
-        } else {
-            DataPpdb::create([
-                'ppdb_id' => $this->ppdb_id,
-                'nama' => $this->nama,
-                'jenis' => $this->jenis,
-                'default' => $this->default,
-                'status' => $this->status,
-            ]);
-
-            session()->flash('status', 'Berhasil');
-            session()->flash('message', 'Data berhasil ditambahkan.');
-            return $this->redirectRoute('admin.ppdb.master.data.index', ['id' => $this->ppdb_id], navigate: true);
-        }
-    }
-}; ?>
+?>
 
 <div class="grid grid-cols-12 gap-4 sm:gap-5 lg:gap-6">
     <div class="col-span-12 lg:col-span-8">
@@ -77,7 +54,7 @@ new class extends Component {
             </div>
             <div class="max-w-xl">
                 <p>
-                    Isi detail atribut data yang akan ditampilkan pada formulir PPDB.
+                    Perbarui detail atribut data yang akan ditampilkan pada formulir PPDB.
                 </p>
                 <div class="mt-5 flex flex-col gap-4">
                     <x-input-label>
@@ -131,7 +108,7 @@ new class extends Component {
                 </div>
                 <div class="mt-5">
                     <x-primary-button wire:click="save">
-                        {{ $this->dataPpdb ? 'Simpan Perubahan' : 'Simpan Data' }}
+                        Simpan Perubahan
                     </x-primary-button>
                 </div>
             </div>
