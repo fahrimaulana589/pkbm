@@ -47,7 +47,7 @@ $save = function () {
 ?>
 
 <div class="grid grid-cols-12 gap-4 sm:gap-5 lg:gap-6">
-    <div class="col-span-12 lg:col-span-8">
+    <div class="col-span-12">
         <div class="card px-4 pb-4 sm:px-5">
             <div class="my-3 flex h-8 items-center justify-between">
                 <h2 class="font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 lg:text-base">
@@ -85,27 +85,6 @@ $save = function () {
                             <x-input-error :messages="$errors->get('end_date')" />
                         </x-input-label>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-span-12 lg:col-span-4">
-        <div class="card px-4 pb-4 sm:px-5">
-            <div class="my-3 flex h-8 items-center justify-between">
-                <h2 class="font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 lg:text-base">
-                    Pengaturan Tambahan
-                </h2>
-            </div>
-            <div class="max-w-xl">
-                <div class="mt-5 flex flex-col gap-4">
-                    <x-input-label>
-                        <span>Status</span>
-                        <x-select-input wire:model="status" :error="$errors->has('status')">
-                            <option value="open">Open</option>
-                            <option value="closed">Closed</option>
-                        </x-select-input>
-                        <x-input-error :messages="$errors->get('status')" />
-                    </x-input-label>
                 </div>
                 <div class="mt-5">
                     <x-primary-button wire:click="save">

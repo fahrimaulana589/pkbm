@@ -31,6 +31,30 @@ $delete = function () {
     $this->dispatch('delete-ppdb-confirmed');
 };
 
+$confirmActivate = function ($id) {
+    $this->id = $id;
+    $this->dispatch('activate-ppdb-confirmation');
+};
+
+$activate = function () {
+    // Set all others to closed
+    Ppdb::where('id', '!=', $this->id)->update(['status' => 'closed']);
+    // Set selected to open
+    Ppdb::where('id', $this->id)->update(['status' => 'open']);
+
+    $this->dispatch('activate-ppdb-confirmed');
+};
+
+$confirmClose = function ($id) {
+    $this->id = $id;
+    $this->dispatch('close-ppdb-confirmation');
+};
+
+$close = function () {
+    Ppdb::where('id', $this->id)->update(['status' => 'closed']);
+    $this->dispatch('close-ppdb-confirmed');
+};
+
 ?>
 
 <div>
@@ -290,6 +314,17 @@ $delete = function () {
                                                                 class="flex h-8 w-full items-center px-3 pr-8 font-medium tracking-wide outline-hidden transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Atur
                                                                 Data</a>
                                                         </li>
+
+                                                        @if($ppdb->status == 'closed')
+                                                            <li><button wire:click="confirmActivate('{{ $ppdb->id }}')"
+                                                                    class="flex h-8 w-full items-center px-3 pr-8 font-medium tracking-wide outline-hidden text-success transition-all hover:bg-slate-100 focus:bg-slate-100 dark:hover:bg-navy-600 dark:focus:bg-navy-600">Aktifkan</button>
+                                                            </li>
+                                                        @else
+                                                            <li><button wire:click="confirmClose('{{ $ppdb->id }}')"
+                                                                    class="flex h-8 w-full items-center px-3 pr-8 font-medium tracking-wide outline-hidden text-warning transition-all hover:bg-slate-100 focus:bg-slate-100 dark:hover:bg-navy-600 dark:focus:bg-navy-600">Tutup</button>
+                                                            </li>
+                                                        @endif
+
                                                         <li><a wire:navigate.hover
                                                                 href="{{ route('ppdb.ppdb.edit', ['id' => $ppdb->id]) }}"
                                                                 class="flex h-8 w-full items-center px-3 pr-8 font-medium tracking-wide outline-hidden transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Edit</a>
@@ -318,6 +353,12 @@ $delete = function () {
     <x-confirm-modal :trigger="'delete-ppdb-confirmation'" :title="'Konfirmasi Penghapusan'" :message="'Data PPDB ini akan dihapus. Apakah Anda yakin ingin menghapus data ini?'" :action="'delete'" />
 
     <x-success-modal :trigger="'delete-ppdb-confirmed'" :title="'Data berhasil dihapus'" :message="'Data PPDB telah dihapus.'" />
+
+    <x-confirm-modal :trigger="'activate-ppdb-confirmation'" :title="'Konfirmasi Aktivasi'" :message="'Apakah Anda yakin ingin mengaktifkan PPDB ini? PPDB lain yang sedang aktif akan otomatis ditutup.'" :action="'activate'" />
+    <x-success-modal :trigger="'activate-ppdb-confirmed'" :title="'Data berhasil diaktifkan'" :message="'PPDB telah diaktifkan.'" />
+
+    <x-confirm-modal :trigger="'close-ppdb-confirmation'" :title="'Konfirmasi Penutupan'" :message="'Apakah Anda yakin ingin menutup PPDB ini?'" :action="'close'" />
+    <x-success-modal :trigger="'close-ppdb-confirmed'" :title="'Data berhasil ditutup'" :message="'PPDB telah ditutup.'" />
 
     @if (session()->has('message'))
         <x-success-modal :title="session('status') ?? 'Berhasil'" :message="session('message')" />
