@@ -50,14 +50,7 @@ $delete = function () {
 ?>
 
 <div>
-    <div class="flex items-center space-x-4 py-5 lg:py-6">
-        <h2 class="text-xl font-medium text-slate-800 dark:text-navy-50 lg:text-2xl">
-            Data Atribut PPDB
-        </h2>
-        <div class="hidden h-full py-1 sm:flex">
-            <div class="h-full w-px bg-slate-300 dark:bg-navy-600"></div>
-        </div>
-    </div>
+
 
     <!-- STYLE TAMBAHAN UNTUK DRAG LOGIC -->
     <style>
@@ -155,7 +148,7 @@ $delete = function () {
                                 class="popper-box rounded-md border border-slate-150 bg-white py-1.5 font-inter dark:border-navy-500 dark:bg-navy-700">
                                 <ul>
                                     <li><a wire:navigate.hover
-                                            href="{{ route('admin.ppdb.master.data.create', ['id' => $ppdbId]) }}"
+                                            href="{{ route('ppdb.ppdb.data.create', ['id' => $ppdbId]) }}"
                                             class="flex h-8 items-center px-3 pr-8 font-medium tracking-wide outline-hidden transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Tambah
                                             Baru</a></li>
                                 </ul>
@@ -321,7 +314,7 @@ $delete = function () {
                                                     class="popper-box rounded-md border border-slate-150 bg-white py-1.5 font-inter dark:border-navy-500 dark:bg-navy-700">
                                                     <ul>
                                                         <li><a wire:navigate.hover
-                                                                href="{{ route('admin.ppdb.master.data.edit', ['id' => $ppdbId, 'dataPpdb' => $item->id]) }}"
+                                                                href="{{ route('ppdb.ppdb.data.edit', ['id' => $ppdbId, 'dataPpdb' => $item->id]) }}"
                                                                 class="flex h-8 items-center px-3 pr-8 font-medium tracking-wide outline-hidden transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Edit</a>
                                                         </li>
                                                         <li><button @click="isShowPopper = false"
