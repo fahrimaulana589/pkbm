@@ -110,6 +110,10 @@ class SidebarPanel
                         'title' => 'PPDB',
                         'route_name' => 'ppdb.ppdb.index'
                     ],
+                    'ppdb_pendaftar' => [
+                        'title' => 'Pendaftar',
+                        'route_name' => 'ppdb.pendaftar.index'
+                    ],
                 ]
             ]
         ];

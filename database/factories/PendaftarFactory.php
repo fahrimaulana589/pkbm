@@ -17,7 +17,16 @@ class PendaftarFactory extends Factory
     public function definition(): array
     {
         return [
-            
+            'name' => fake()->name(),
+            'program_id' => \App\Models\Program::factory(),
+            'email' => fake()->unique()->safeEmail(),
+            'phone' => fake()->unique()->phoneNumber(),
+            'address' => fake()->address(),
+            'birth_place' => fake()->city(),
+            'birth_date' => fake()->date(),
+            'status' => 'pending',
+            'code' => fake()->unique()->bothify('REG-#####'),
+            'extra_attributes' => [],
         ];
     }
 }
