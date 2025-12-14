@@ -46,6 +46,8 @@ mount(function () {
                     $inactiveClass = 'text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary';
                 @endphp
 
+                <a href="{{ route('ppdb.pkbm') }}" wire:navigate.hover
+                    class="{{ $navClass }} {{ request()->routeIs('ppdb.*') ? $activeClass : $inactiveClass }}">PPDB</a>
                 <a href="/profil" wire:navigate.hover
                     class="{{ $navClass }} {{ request()->is('profil') ? $activeClass : $inactiveClass }}">Profil</a>
                 <a href="/program" wire:navigate.hover
@@ -136,6 +138,8 @@ mount(function () {
                 $inactiveClass = 'text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary';
             @endphp
 
+            <a href="{{ route('ppdb.pkbm') }}" wire:navigate.hover
+                class="{{ $navClass }} {{ request()->routeIs('ppdb.*') ? $activeClass : $inactiveClass }}">PPDB</a>
             <a href="/profil" wire:navigate.hover
                 class="{{ $navClass }} {{ request()->is('profil') ? $activeClass : $inactiveClass }}">Profil</a>
             <a href="/program" wire:navigate.hover
@@ -166,6 +170,8 @@ mount(function () {
                 $mobileInactiveClass = 'text-slate-700 dark:text-slate-300 hover:text-primary dark:hover:text-primary hover:bg-slate-50 dark:hover:bg-navy-700';
             @endphp
 
+            <a href="{{ route('ppdb.pkbm') }}" wire:navigate.hover
+                class="{{ $mobileNavClass }} {{ request()->routeIs('ppdb.*') ? $mobileActiveClass : $mobileInactiveClass }}">PPDB</a>
             <a href="/profil" wire:navigate.hover
                 class="{{ $mobileNavClass }} {{ request()->is('profil') ? $mobileActiveClass : $mobileInactiveClass }}">Profil</a>
             <a href="/program" wire:navigate.hover
