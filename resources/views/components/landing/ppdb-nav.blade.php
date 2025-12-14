@@ -3,7 +3,7 @@
         $navs = [
             ['label' => 'Sambutan', 'route' => 'ppdb.pkbm'],
             ['label' => 'Pendaftaran', 'route' => 'ppdb.daftar'],
-            ['label' => 'Pengumuman', 'route' => 'ppdb.pengumuman'],
+            ['label' => 'Info PPDB', 'route' => 'ppdb.info'],
             ['label' => 'Pengecekan', 'route' => 'ppdb.check'],
         ];
     @endphp
