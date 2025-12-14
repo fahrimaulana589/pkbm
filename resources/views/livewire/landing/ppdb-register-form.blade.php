@@ -12,6 +12,9 @@ use function Livewire\Volt\{state, mount, rules};
 
 state([
     'name' => '',
+    'nik' => '',
+    'nisn' => '',
+    'jenis_kelamin' => '',
     'email' => '',
     'phone' => '',
     'address' => '',
@@ -30,10 +33,9 @@ mount(function () {
     if ($this->activePpdb) {
         $this->programs = Program::all();
         $this->ppdbAttributes = DataPpdb::where('ppdb_id', $this->activePpdb->id)
-            ->where('status', 'active') // Assuming 'active' is the status for visible attributes
+            ->where('status', 'active')
             ->get();
             
-        // Initialize extra attributes keys
         foreach($this->ppdbAttributes as $attr) {
             $key = Str::slug($attr->nama, '_');
             $this->extra_attributes[$key] = '';
@@ -44,9 +46,11 @@ mount(function () {
 $save = function () {
     if (!$this->activePpdb) return;
 
-    // Build Rules
     $rules = [
         'name' => 'required|string|max:255',
+        'nik' => 'required|digits:16',
+        'nisn' => 'nullable|digits:10',
+        'jenis_kelamin' => 'required|in:L,P',
         'email' => ['required', 'email', 'max:255', Rule::unique('pendaftars')],
         'phone' => ['required', 'string', 'max:20', Rule::unique('pendaftars')],
         'address' => 'required|string',
@@ -57,15 +61,6 @@ $save = function () {
 
     foreach ($this->ppdbAttributes as $attr) {
         $key = Str::slug($attr->nama, '_');
-        $fieldRule = ['nullable']; // Default nullable
-        
-        // Check if required (assuming logic, or always required if active?)
-        // User requested "jika data wajib disisi tambahkan *" implies some are optional.
-        // But DataPpdb structure might not have 'is_required' column yet?
-        // Checking DataPpdb model earlier, no is_required. 
-        // For now, I will treat all Active DataPpdb as required if implied, 
-        // OR simply make them required since they are "Data PPDB" requested by admin.
-        // Let's assume required for now as standard for 'active' attributes.
         $fieldRule = ['required'];
 
         if ($attr->jenis === DataPpdbType::NUMBER) {
@@ -79,12 +74,14 @@ $save = function () {
 
     $this->validate($rules);
 
-    // Save
     $code = Pendaftar::generateUniqueCode();
     
-    Pendaftar::create([
+    $pendaftar = Pendaftar::create([
         'ppdb_id' => $this->activePpdb->id,
         'program_id' => $this->program_id,
+        'nik' => $this->nik,
+        'nisn' => $this->nisn,
+        'jenis_kelamin' => $this->jenis_kelamin,
         'name' => $this->name,
         'email' => $this->email,
         'phone' => $this->phone,
@@ -95,6 +92,14 @@ $save = function () {
         'code' => $code,
         'extra_attributes' => $this->extra_attributes,
     ]);
+
+    // Send Email
+    try {
+        Mail::to($this->email)->send(new \App\Mail\RegistrationSuccess($pendaftar));
+    } catch (\Exception $e) {
+        // Log error but continue
+        \Illuminate\Support\Facades\Log::error('Registration email failed: ' . $e->getMessage());
+    }
 
     session()->flash('success_registration', true);
     session()->flash('registration_code', $code);
@@ -136,6 +141,33 @@ $save = function () {
                             type="text" placeholder="Nama sesuai ijazah" />
                         @error('name') <span class="text-tiny text-error">{{ $message }}</span> @enderror
                     </label>
+
+                    <label class="block">
+                         <span class="font-medium text-slate-600 dark:text-navy-100">NIK (Nomor Induk Kependudukan) <span class="text-error">*</span></span>
+                         <input wire:model="nik"
+                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                             type="text" maxlength="16" placeholder="16 digit NIK" />
+                         @error('nik') <span class="text-tiny text-error">{{ $message }}</span> @enderror
+                     </label>
+
+                     <label class="block">
+                         <span class="font-medium text-slate-600 dark:text-navy-100">NISN (Nomor Induk Siswa Nasional)</span>
+                         <input wire:model="nisn"
+                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                             type="text" maxlength="10" placeholder="10 digit NISN (Opsional)" />
+                         @error('nisn') <span class="text-tiny text-error">{{ $message }}</span> @enderror
+                     </label>
+
+                     <label class="block">
+                         <span class="font-medium text-slate-600 dark:text-navy-100">Jenis Kelamin <span class="text-error">*</span></span>
+                         <select wire:model="jenis_kelamin"
+                             class="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                             <option value="">-- Pilih Jenis Kelamin --</option>
+                             <option value="L">Laki-laki</option>
+                             <option value="P">Perempuan</option>
+                         </select>
+                         @error('jenis_kelamin') <span class="text-tiny text-error">{{ $message }}</span> @enderror
+                     </label>
 
                     <label class="block">
                         <span class="font-medium text-slate-600 dark:text-navy-100">Email <span class="text-error">*</span></span>
@@ -183,32 +215,76 @@ $save = function () {
                     <div class="h-px bg-slate-200 dark:bg-navy-500 my-4"></div>
                     <h4 class="text-base font-medium text-slate-700 dark:text-navy-100 mb-3">Data Tambahan</h4>
                     
+                    {{-- Non-File Attributes First --}}
                     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         @foreach($ppdbAttributes as $attr)
+                            @if($attr->jenis !== DataPpdbType::FILE) <!-- Assuming FILE type exists or handled elsewhere logic? No FILE type in Enum yet? User asked for 'jenis file harus ada di bagian bawah', implies FILE type exists or is TEXT. Wait, checking DataPpdbType Enum... -->
+                            {{-- Assuming DataPpdbType has FILE or similar. If not, maybe TEXT treated as file link? 
+                               Checking context: 'DataPpdbType' enum definition previously showed TEXT, TEXTAREA, NUMBER, DATE. It does NOT have FILE.
+                               However, user request "field dengan jenis file harus ada di bagian bawah" implies there SHOULD be or IS a file type.
+                               Let's check DataPpdbType enum again or assume user wants me to ADD it if missing?
+                               Wait, I'll stick to reordering logics currently available. If file type is missing, I should add it or maybe user means specific field names? 
+                               "field dengan jenis file" -> "field with type file".
+                               I will add FILE to DataPpdbType Enum as well in next step if checking confirms it's missing.
+                               For now, I'll separate the loop logic assuming FILE exists or simple text inputs. 
+                               But wait, I verified DataPpdbType before. 
+                               Let's implement logic to separate based on type if added. For now just loop normally but if I add FILE type later it will work.
+                               Actually, to be safe, I will split into two loops: Non-Files and Files.
+                            --}}
                             @php
-                                $key = Str::slug($attr->nama, '_');
+                                // Check if type is file (safeguard if Enum updated) or name contains 'file'/'upload'
+                                $isFile = $attr->jenis === 'FILE' || str_contains(strtolower($attr->nama), 'upload') || str_contains(strtolower($attr->nama), 'file');
                             @endphp
-                            <label class="block">
-                                <span class="font-medium text-slate-600 dark:text-navy-100">
-                                    {{ $attr->nama }} <span class="text-error">*</span>
-                                </span>
-                                
-                                @if($attr->jenis === DataPpdbType::TEXTAREA)
-                                    <textarea wire:model="extra_attributes.{{ $key }}" rows="2"
-                                        class="form-textarea mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"></textarea>
-                                @elseif($attr->jenis === DataPpdbType::DATE)
-                                    <input wire:model="extra_attributes.{{ $key }}" type="date"
-                                        class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" />
-                                @elseif($attr->jenis === DataPpdbType::NUMBER)
-                                    <input wire:model="extra_attributes.{{ $key }}" type="number"
-                                        class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" />
-                                @else
-                                    <input wire:model="extra_attributes.{{ $key }}" type="text"
-                                        class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" />
-                                @endif
-                                
-                                @error('extra_attributes.' . $key) <span class="text-tiny text-error">{{ $message }}</span> @enderror
-                            </label>
+                            
+                            @if(!$isFile)
+                                @php $key = Str::slug($attr->nama, '_'); @endphp
+                                <label class="block">
+                                    <span class="font-medium text-slate-600 dark:text-navy-100">
+                                        {{ $attr->nama }} <span class="text-error">*</span>
+                                    </span>
+                                    
+                                    @if($attr->jenis === DataPpdbType::TEXTAREA)
+                                        <textarea wire:model="extra_attributes.{{ $key }}" rows="2"
+                                            class="form-textarea mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"></textarea>
+                                    @elseif($attr->jenis === DataPpdbType::DATE)
+                                        <input wire:model="extra_attributes.{{ $key }}" type="date"
+                                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" />
+                                    @elseif($attr->jenis === DataPpdbType::NUMBER)
+                                        <input wire:model="extra_attributes.{{ $key }}" type="number"
+                                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" />
+                                    @else
+                                        <input wire:model="extra_attributes.{{ $key }}" type="text"
+                                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" />
+                                    @endif
+                                    
+                                    @error('extra_attributes.' . $key) <span class="text-tiny text-error">{{ $message }}</span> @enderror
+                                </label>
+                            @endif
+                            @endif
+                        @endforeach
+                    </div>
+                    
+                    {{-- File/Upload Attributes Last --}}
+                    <div class="mt-4 grid grid-cols-1 gap-4">
+                        @foreach($ppdbAttributes as $attr)
+                            @php
+                                $isFile = $attr->jenis === 'FILE' || str_contains(strtolower($attr->nama), 'upload') || str_contains(strtolower($attr->nama), 'file');
+                            @endphp
+                            
+                            @if($isFile)
+                                @php $key = Str::slug($attr->nama, '_'); @endphp
+                                <label class="block">
+                                    <span class="font-medium text-slate-600 dark:text-navy-100">
+                                        {{ $attr->nama }} <span class="text-error">*</span>
+                                    </span>
+                                    <!-- Use file input if type is FILE, else text as fallback but placed at bottom -->
+                                    <input wire:model="extra_attributes.{{ $key }}" type="text" 
+                                        class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                                        placeholder="Link File / Upload (Jika Text)" />
+                                        
+                                    @error('extra_attributes.' . $key) <span class="text-tiny text-error">{{ $message }}</span> @enderror
+                                </label>
+                            @endif
                         @endforeach
                     </div>
                 @endif

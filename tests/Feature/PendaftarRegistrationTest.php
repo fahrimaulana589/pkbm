@@ -44,6 +44,8 @@ class PendaftarRegistrationTest extends TestCase
 
         $data = [
             'name' => 'John Doe',
+            'nik' => '1234567890123456',
+            'jenis_kelamin' => 'L',
             'email' => 'john@example.com',
             'phone' => '08123456789',
             'address' => 'Jl. Test No. 1',
@@ -58,6 +60,8 @@ class PendaftarRegistrationTest extends TestCase
         // Act
         Volt::test('landing.ppdb-register-form')
             ->set('name', $data['name'])
+            ->set('nik', $data['nik'])
+            ->set('jenis_kelamin', $data['jenis_kelamin'])
             ->set('email', $data['email'])
             ->set('phone', $data['phone'])
             ->set('address', $data['address'])
@@ -66,6 +70,7 @@ class PendaftarRegistrationTest extends TestCase
             ->set('program_id', $data['program_id'])
             ->set('extra_attributes.ukuran_baju', $data['extra_attributes']['ukuran_baju'])
             ->call('save')
+            ->assertHasNoErrors() // Add this to see what errors are occurring
             ->assertRedirect(route('ppdb.check'));
 
         // Assert
@@ -88,7 +93,7 @@ class PendaftarRegistrationTest extends TestCase
          
          Volt::test('landing.ppdb-register-form')
             ->call('save')
-            ->assertHasErrors(['name', 'email', 'phone', 'address', 'program_id']);
+            ->assertHasErrors(['name', 'email', 'phone', 'address', 'program_id', 'nik', 'jenis_kelamin']);
     }
 
     public function test_registration_fails_when_no_active_ppdb()
