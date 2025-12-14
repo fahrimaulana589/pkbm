@@ -1,0 +1,61 @@
+
+   WARN  Metadata found in doc-comment for method Tests\Feature\FileManagementTest::news_image_is_deleted_when_news_is_deleted(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Feature\FileManagementTest::old_news_image_is_deleted_when_updated(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Feature\FileManagementTest::announcement_files_are_deleted_when_announcement_is_deleted(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Feature\FileManagementTest::old_announcement_files_are_deleted_when_updated(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Feature\FileManagementTest::gallery_photos_files_are_deleted_when_gallery_is_deleted(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Feature\FileManagementTest::gallery_photo_file_is_deleted_when_photo_is_deleted_via_form(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Feature\FileManagementTest::pkbm_logo_is_deleted_when_profile_is_deleted(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Feature\FileManagementTest::old_pkbm_logo_is_deleted_when_updated(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Feature\FileManagementTest::news_image_is_deleted_when_model_is_updated_directly(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Feature\FileManagementTest::announcement_files_are_deleted_when_model_is_updated_directly(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Feature\FileManagementTest::pkbm_logo_is_deleted_when_model_is_updated_directly(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Feature\FileManagementTest::old_news_image_is_preserved_when_updated_without_new_image(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Feature\FileManagementTest::can_upload_multiple_photos_at_once(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   PASS  Tests\Unit\ExampleTest
+  ✓ that true is true                                                    0.01s  
+
+   PASS  Tests\Feature\Auth\AuthenticationTest
+  ✓ login screen can be rendered                                         0.66s  
+  ✓ users can authenticate using the login screen                        0.07s  
+  ✓ users can not authenticate with invalid password                     0.24s  
+  ✓ users can logout                                                     0.04s  
+
+   PASS  Tests\Feature\Auth\EmailVerificationTest
+  ✓ email verification screen can be rendered                            0.07s  
+  ✓ email can be verified                                                0.05s  
+  ✓ email is not verified with invalid hash                              0.04s  
+
+   PASS  Tests\Feature\Auth\PasswordResetTest
+  ✓ reset password link screen can be rendered                           0.04s  
+  ✓ reset password link can be requested                                 0.25s  
+  ✓ reset password screen can be rendered                                0.05s  
+  ✓ password can be reset with valid token                               0.08s  
+
+   PASS  Tests\Feature\CertificateTest
+  ✓ can render certificate index page                                    0.08s  
+  ✓ can create certificate                                               1.42s  
+  ✓ can update certificate                                               0.05s  
+  ✓ can delete certificate                                               0.05s  
+
+   PASS  Tests\Feature\ClassGroupTest
+  ✓ can render class group index page                                    0.06s  
+  ✓ can create class group                                               0.07s  
+  ✓ can update class group                                               0.05s  
+  ✓ can delete class group                                               0.04s  
+
+   PASS  Tests\Feature\ExampleTest
+  ✓ the application returns a successful response                        0.06s  
