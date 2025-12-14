@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\SchemalessAttributes\Casts\SchemalessAttributes;
 
 class Pendaftar extends Model
 {
@@ -24,5 +25,6 @@ class Pendaftar extends Model
         'phone',
         'status',
         'code',
+        'extra_attributes',
     ];
 }

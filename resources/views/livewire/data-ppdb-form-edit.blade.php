@@ -26,8 +26,13 @@ mount(function ($ppdbId, $id) {
     $this->default = $this->dataPpdb->default;
 });
 
-rules([
-    'nama' => 'required|string|max:255',
+rules(fn () => [
+    'nama' => [
+        'required', 
+        'string', 
+        'max:255',
+        Rule::unique('data_ppdbs')->where(fn ($query) => $query->where('ppdb_id', $this->ppdb_id))->ignore($this->dataPpdb->id)
+    ],
     'jenis' => ['required', Rule::enum(DataPpdbType::class)],
     'status' => 'required',
     'default' => 'nullable|string|max:255',

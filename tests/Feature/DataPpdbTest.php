@@ -70,4 +70,23 @@ class DataPpdbTest extends TestCase
         $this->assertInstanceOf(DataPpdbType::class, $dataPpdb->jenis);
         $this->assertEquals(DataPpdbType::DATE, $dataPpdb->jenis);
     }
+
+    public function test_cannot_create_duplicate_nama_for_same_ppdb()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $ppdb = Ppdb::factory()->create();
+        DataPpdb::factory()->create([
+            'ppdb_id' => $ppdb->id,
+            'nama' => 'Existing Attribute',
+            'jenis' => DataPpdbType::TEXT,
+        ]);
+
+        Volt::test('data-ppdb-form-create', ['ppdbId' => $ppdb->id])
+            ->set('nama', 'Existing Attribute')
+            ->set('jenis', DataPpdbType::NUMBER)
+            ->call('save')
+            ->assertHasErrors(['nama']);
+    }
 }

@@ -7,8 +7,8 @@ name('ppdb.daftar');
         <h1 class="text-3xl font-bold text-center mb-8">Pendaftaran PPDB</h1>
         <x-landing.ppdb-nav />
 
-        <div class="bg-white rounded-lg shadow-sm p-6 text-center text-gray-500">
-            Form Pendaftaran akan tampil di sini.
+        <div class="max-w-3xl mx-auto">
+            @livewire('landing.ppdb-register-form')
         </div>
     </div>
 </x-landing-layout>
