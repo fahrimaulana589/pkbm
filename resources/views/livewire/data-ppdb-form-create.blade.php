@@ -1,12 +1,16 @@
 <?php
 
 use App\Models\DataPpdb;
+use App\Enums\DataPpdbType;
+use Illuminate\Validation\Rule;
 use function Livewire\Volt\{state, rules, mount};
+
+
 
 state([
     'ppdb_id' => null,
     'nama' => '',
-    'jenis' => 'text',
+    'jenis' => DataPpdbType::TEXT,
     'status' => 'active',
     'default' => '',
 ]);
@@ -17,7 +21,7 @@ mount(function ($ppdbId) {
 
 rules([
     'nama' => 'required|string|max:255',
-    'jenis' => 'required',
+    'jenis' => ['required', Rule::enum(DataPpdbType::class)],
     'status' => 'required',
     'default' => 'nullable|string|max:255',
 ]);
@@ -35,7 +39,7 @@ $save = function () {
 
     session()->flash('status', 'Berhasil');
     session()->flash('message', 'Data berhasil ditambahkan.');
-    return $this->redirectRoute('admin.ppdb.master.data.index', ['id' => $this->ppdb_id], navigate: true);
+    return $this->redirectRoute('ppdb.ppdb.data.index', ['id' => $this->ppdb_id], navigate: true);
 };
 
 ?>
@@ -63,11 +67,9 @@ $save = function () {
                     <x-input-label>
                         <span>Jenis Input</span>
                         <x-select-input wire:model="jenis" :error="$errors->has('jenis')">
-                            <option value="text">Teks Singkat (Text)</option>
-                            <option value="number">Angka (Number)</option>
-                            <option value="date">Tanggal (Date)</option>
-                            <option value="file">Upload File</option>
-                            <option value="textarea">Teks Panjang (Textarea)</option>
+                            @foreach(DataPpdbType::cases() as $type)
+                                <option value="{{ $type->value }}">{{ $type->label() }}</option>
+                            @endforeach
                         </x-select-input>
                         <x-input-error :messages="$errors->get('jenis')" />
                     </x-input-label>

@@ -287,7 +287,7 @@ $delete = function () {
                                     </td>
                                     <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                                         <div class="text-slate-700 dark:text-navy-100">
-                                            {{ $item->jenis }}
+                                            {{ $item->jenis->label() }}
                                         </div>
                                     </td>
                                     <td class="whitespace-nowrap px-4 py-3 sm:px-5">

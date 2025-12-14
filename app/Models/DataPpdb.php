@@ -17,6 +17,11 @@ class DataPpdb extends Model
         'default',
     ];
 
+    protected $casts = [
+        'jenis' => \App\Enums\DataPpdbType::class,
+    ];
+
+
     public function ppdb()
     {
         return $this->belongsTo(Ppdb::class);
