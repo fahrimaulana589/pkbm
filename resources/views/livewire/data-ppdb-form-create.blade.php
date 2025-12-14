@@ -19,15 +19,15 @@ mount(function ($ppdbId) {
     $this->ppdb_id = $ppdbId;
 });
 
-rules(fn () => [
+rules(fn() => [
     'nama' => [
-        'required', 
-        'string', 
-        'max:255', 
-        Rule::unique('data_ppdbs')->where(fn ($query) => $query->where('ppdb_id', $this->ppdb_id))
+        'required',
+        'string',
+        'max:255',
+        Rule::unique('data_ppdbs')->where(fn($query) => $query->where('ppdb_id', $this->ppdb_id))
     ],
     'jenis' => ['required', Rule::enum(DataPpdbType::class)],
-    'status' => 'required',
+    'status' => ['required', Rule::in(['active', 'optional', 'inactive'])],
     'default' => 'nullable|string|max:255',
 ]);
 

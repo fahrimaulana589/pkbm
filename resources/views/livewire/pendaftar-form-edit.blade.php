@@ -53,7 +53,7 @@ $save = function () {
         'address' => 'required|string',
         'birth_place' => 'required|string|max:255',
         'birth_date' => 'required|date',
-        'status' => 'required|string',
+        'status' => ['required', Rule::enum(\App\Enums\PendaftarStatus::class)],
         'program_id' => 'required|exists:programs,id',
     ];
 
@@ -78,7 +78,7 @@ $save = function () {
 
     session()->flash('message', 'Data Pendaftar berhasil diperbarui.');
 
-    $this->redirect(route('ppdb.pendaftar.index'), navigate: true);
+    $this->dispatch('pendaftar-updated');
 };
 
 // Helper to get definition
@@ -89,7 +89,7 @@ $getDefinition = function ($key) {
 ?>
 
 <div class="grid grid-cols-12 gap-4 sm:gap-5 lg:gap-6">
-    <div class="col-span-12">
+    <div class="col-span-12 lg:col-span-8">
         <div class="card px-4 pb-4 sm:px-5">
             <div class="my-3 flex h-8 items-center justify-between">
                 <h2 class="font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 lg:text-base">
@@ -97,83 +97,45 @@ $getDefinition = function ($key) {
                 </h2>
             </div>
             <div class="max-w-xl">
-                <p>
-                    Perbarui detail informasi pendaftar.
-                </p>
                 <div class="mt-5 flex flex-col gap-4">
-
                     {{-- Core Fields --}}
                     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                        <label class="block">
-                            <span class="font-medium text-slate-600 dark:text-navy-100">Nama Lengkap</span>
-                            <input wire:model="name"
-                                class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                type="text" />
-                            @error('name') <span class="text-tiny text-error">{{ $message }}</span> @enderror
-                        </label>
+                        <x-input-label>
+                            <span>Nama Lengkap</span>
+                            <x-text-input wire:model="name" type="text" :error="$errors->has('name')" />
+                            <x-input-error :messages="$errors->get('name')" />
+                        </x-input-label>
 
-                        <label class="block">
-                            <span class="font-medium text-slate-600 dark:text-navy-100">Email</span>
-                            <input wire:model="email"
-                                class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                type="email" />
-                            @error('email') <span class="text-tiny text-error">{{ $message }}</span> @enderror
-                        </label>
+                        <x-input-label>
+                            <span>Email</span>
+                            <x-text-input wire:model="email" type="email" :error="$errors->has('email')" />
+                            <x-input-error :messages="$errors->get('email')" />
+                        </x-input-label>
 
-                        <label class="block">
-                            <span class="font-medium text-slate-600 dark:text-navy-100">Nomor HP/WA</span>
-                            <input wire:model="phone"
-                                class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                type="text" />
-                            @error('phone') <span class="text-tiny text-error">{{ $message }}</span> @enderror
-                        </label>
+                        <x-input-label>
+                            <span>Nomor HP/WA</span>
+                            <x-text-input wire:model="phone" type="text" :error="$errors->has('phone')" />
+                            <x-input-error :messages="$errors->get('phone')" />
+                        </x-input-label>
 
-                        <label class="block">
-                            <span class="font-medium text-slate-600 dark:text-navy-100">Program</span>
-                            <select wire:model="program_id"
-                                class="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
-                                <option value="">Pilih Program</option>
-                                @foreach($programs as $program)
-                                    <option value="{{ $program->id }}">{{ $program->nama_program }}</option>
-                                @endforeach
-                            </select>
-                            @error('program_id') <span class="text-tiny text-error">{{ $message }}</span> @enderror
-                        </label>
+                        <x-input-label>
+                            <span>Tempat Lahir</span>
+                            <x-text-input wire:model="birth_place" type="text" :error="$errors->has('birth_place')" />
+                            <x-input-error :messages="$errors->get('birth_place')" />
+                        </x-input-label>
 
-                        <label class="block">
-                            <span class="font-medium text-slate-600 dark:text-navy-100">Tempat Lahir</span>
-                            <input wire:model="birth_place"
-                                class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                type="text" />
-                            @error('birth_place') <span class="text-tiny text-error">{{ $message }}</span> @enderror
-                        </label>
-
-                        <label class="block">
-                            <span class="font-medium text-slate-600 dark:text-navy-100">Tanggal Lahir</span>
-                            <input wire:model="birth_date"
-                                class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                type="date" />
-                            @error('birth_date') <span class="text-tiny text-error">{{ $message }}</span> @enderror
-                        </label>
-
-                        <label class="block">
-                            <span class="font-medium text-slate-600 dark:text-navy-100">Status</span>
-                            <select wire:model="status"
-                                class="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
-                                <option value="pending">Pending</option>
-                                <option value="accepted">Diterima</option>
-                                <option value="rejected">Ditolak</option>
-                            </select>
-                            @error('status') <span class="text-tiny text-error">{{ $message }}</span> @enderror
-                        </label>
+                        <x-input-label>
+                            <span>Tanggal Lahir</span>
+                            <x-text-input wire:model="birth_date" type="date" :error="$errors->has('birth_date')" />
+                            <x-input-error :messages="$errors->get('birth_date')" />
+                        </x-input-label>
                     </div>
 
-                    <label class="block">
-                        <span class="font-medium text-slate-600 dark:text-navy-100">Alamat Lengkap</span>
-                        <textarea wire:model="address" rows="3"
-                            class="form-textarea mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"></textarea>
-                        @error('address') <span class="text-tiny text-error">{{ $message }}</span> @enderror
-                    </label>
+                    <x-input-label>
+                        <span>Alamat Lengkap</span>
+                        <x-textarea-input wire:model="address" rows="3" :error="$errors->has('address')" />
+                        <x-input-error :messages="$errors->get('address')" />
+                    </x-input-label>
 
                     {{-- Dynamic Fields --}}
                     @if(!empty($extra_attributes))
@@ -186,32 +148,58 @@ $getDefinition = function ($key) {
                                     $label = $def ? $def['nama'] : ucwords(str_replace('_', ' ', $key));
                                     $type = $def ? $def['jenis'] : 'TEXT';
                                 @endphp
-                                <label class="block">
-                                    <span class="font-medium text-slate-600 dark:text-navy-100">{{ $label }}</span>
+                                <x-input-label>
+                                    <span>{{ $label }}</span>
 
                                     @if($type === \App\Enums\DataPpdbType::TEXTAREA)
-                                        <textarea wire:model="extra_attributes.{{ $key }}" rows="2"
-                                            class="form-textarea mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"></textarea>
+                                        <x-textarea-input wire:model="extra_attributes.{{ $key }}" rows="2" />
                                     @elseif($type === \App\Enums\DataPpdbType::DATE)
-                                        <input wire:model="extra_attributes.{{ $key }}"
-                                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                            type="date" />
+                                        <x-text-input wire:model="extra_attributes.{{ $key }}" type="date" />
                                     @elseif($type === \App\Enums\DataPpdbType::NUMBER)
-                                        <input wire:model="extra_attributes.{{ $key }}"
-                                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                            type="number" />
+                                        <x-text-input wire:model="extra_attributes.{{ $key }}" type="number" />
                                     @else
-                                        <!-- Default / Text / File (treated as text for now) -->
-                                        <input wire:model="extra_attributes.{{ $key }}"
-                                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                            type="text" />
+                                        <!-- Default / Text -->
+                                        <x-text-input wire:model="extra_attributes.{{ $key }}" type="text" />
                                     @endif
-                                </label>
+                                </x-input-label>
                             @endforeach
                         </div>
                     @endif
                 </div>
+            </div>
+        </div>
+    </div>
 
+    <div class="col-span-12 lg:col-span-4">
+        <div class="card px-4 pb-4 sm:px-5">
+            <div class="my-3 flex h-8 items-center justify-between">
+                <h2 class="font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 lg:text-base">
+                    Pengaturan
+                </h2>
+            </div>
+            <div class="max-w-xl">
+                <div class="mt-5 flex flex-col gap-4">
+                    <x-input-label>
+                        <span>Program</span>
+                        <x-select-input wire:model="program_id" :error="$errors->has('program_id')">
+                            <option value="">Pilih Program</option>
+                            @foreach($programs as $program)
+                                <option value="{{ $program->id }}">{{ $program->nama_program }}</option>
+                            @endforeach
+                        </x-select-input>
+                        <x-input-error :messages="$errors->get('program_id')" />
+                    </x-input-label>
+
+                    <x-input-label>
+                        <span>Status</span>
+                        <x-select-input wire:model="status" :error="$errors->has('status')">
+                            @foreach(\App\Enums\PendaftarStatus::cases() as $case)
+                                <option value="{{ $case->value }}">{{ $case->label() }}</option>
+                            @endforeach
+                        </x-select-input>
+                        <x-input-error :messages="$errors->get('status')" />
+                    </x-input-label>
+                </div>
                 <div class="mt-5">
                     <x-primary-button wire:click="save">
                         Simpan Perubahan
@@ -220,4 +208,6 @@ $getDefinition = function ($key) {
             </div>
         </div>
     </div>
+
+    <x-success-modal trigger="pendaftar-updated" message="Data pendaftar berhasil diperbarui." />
 </div>

@@ -24,7 +24,7 @@ class PendaftarFactory extends Factory
             'address' => fake()->address(),
             'birth_place' => fake()->city(),
             'birth_date' => fake()->date(),
-            'status' => 'pending',
+            'status' => \App\Enums\PendaftarStatus::TERDAFTAR,
             'code' => fake()->unique()->bothify('REG-#####'),
             'extra_attributes' => [],
         ];

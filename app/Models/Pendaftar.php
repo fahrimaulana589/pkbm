@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use App\Enums\PendaftarStatus;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\SchemalessAttributes\Casts\SchemalessAttributes;
 
 class Pendaftar extends Model
@@ -11,20 +14,35 @@ class Pendaftar extends Model
     /** @use HasFactory<\Database\Factories\PendaftarFactory> */
     use HasFactory;
 
-    public $casts = [
+    protected $guarded = ['id'];
+
+    protected $casts = [
         'extra_attributes' => SchemalessAttributes::class,
+        'status' => PendaftarStatus::class,
+        'birth_date' => 'date',
     ];
 
-    protected $fillable = [
-        'program_id',
-        'name',
-        'address',
-        'birth_place',
-        'birth_date',
-        'email',
-        'phone',
-        'status',
-        'code',
-        'extra_attributes',
-    ];
+    public function program(): BelongsTo
+    {
+        return $this->belongsTo(Program::class);
+    }
+
+    public function ppdb(): BelongsTo
+    {
+        return $this->belongsTo(Ppdb::class);
+    }
+
+    public function scopeWithExtraAttributes(Builder $query): Builder
+    {
+        return $this->extra_attributes->modelScope();
+    }
+
+    public static function generateUniqueCode(): string
+    {
+        do {
+            $code = (string) mt_rand(100000, 999999);
+        } while (self::where('code', $code)->exists());
+
+        return $code;
+    }
 }

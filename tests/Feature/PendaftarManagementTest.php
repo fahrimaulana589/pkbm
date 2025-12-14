@@ -102,7 +102,7 @@ class PendaftarManagementTest extends TestCase
         Volt::test('pendaftar-form-edit', ['id' => $pendaftar->id])
             ->set('name', 'Updated Name')
             ->call('save')
-            ->assertHasNoErrors();
+            ->assertHasNoErrors()->assertDispatched('pendaftar-updated');
 
         $this->assertDatabaseHas('pendaftars', [
             'id' => $pendaftar->id,
@@ -130,7 +130,7 @@ class PendaftarManagementTest extends TestCase
         Volt::test('pendaftar-form-edit', ['id' => $pendaftar->id])
             ->set("extra_attributes.$key", 'New Hobby')
             ->call('save')
-            ->assertHasNoErrors();
+            ->assertHasNoErrors()->assertDispatched('pendaftar-updated');
 
         $pendaftar->refresh();
         $this->assertEquals('New Hobby', $pendaftar->extra_attributes->$key);

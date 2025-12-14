@@ -22,11 +22,14 @@ $pendaftars = computed(function () {
         ->paginate($this->perPage);
 });
 
-$getStatusBadge = fn($status) => match ($status) {
-    'pending' => '<div class="badge rounded-full bg-warning/10 text-warning dark:bg-warning/15">Pending</div>',
-    'accepted' => '<div class="badge rounded-full bg-success/10 text-success dark:bg-success/15">Diterima</div>',
-    'rejected' => '<div class="badge rounded-full bg-error/10 text-error dark:bg-error/15">Ditolak</div>',
-    default => '<div class="badge rounded-full bg-slate-100 text-slate-600 dark:bg-navy-500/50 dark:text-navy-200">' . $status . '</div>',
+$getStatusBadge = function ($status) {
+    if ($status instanceof \App\Enums\PendaftarStatus) {
+        $color = $status->color();
+        $label = $status->label();
+        return "<div class=\"badge rounded-full bg-{$color}/10 text-{$color} dark:bg-{$color}/15\">{$label}</div>";
+    }
+    // Fallback for strings or other values
+    return '<div class="badge rounded-full bg-slate-100 text-slate-600 dark:bg-navy-500/50 dark:text-navy-200">' . $status . '</div>';
 };
 
 $confirmDelete = function ($id) {
