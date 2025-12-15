@@ -25,7 +25,7 @@ $check = function () {
 ?>
 
 <div>
-    <div class="card p-4 sm:p-5 bg-white dark:bg-navy-800 dark:text-navy-100">
+    <div class="">
         @if($activePpdb)
             {{-- Success Message from Registration --}}
             @if(session('success_registration'))
