@@ -54,10 +54,8 @@ mount(function () {
                     class="{{ $navClass }} {{ request()->is('profil') ? $activeClass : $inactiveClass }}">Profil</a>
                 <a href="/program" wire:navigate.hover
                     class="{{ $navClass }} {{ request()->is('program') ? $activeClass : $inactiveClass }}">Program</a>
-                <a href="/tutor" wire:navigate.hover
-                    class="{{ $navClass }} {{ request()->is('tutor') ? $activeClass : $inactiveClass }}">Tutor</a>
-                <a href="/jadwal" wire:navigate.hover
-                    class="{{ $navClass }} {{ request()->is('jadwal') ? $activeClass : $inactiveClass }}">Jadwal</a>
+                <a href="/kegiatan" wire:navigate.hover
+                    class="{{ $navClass }} {{ request()->is('kegiatan') ? $activeClass : $inactiveClass }}">Kegiatan</a>
                 <a href="/pengumuman" wire:navigate.hover
                     class="{{ $navClass }} {{ request()->is('pengumuman*') ? $activeClass : $inactiveClass }}">Pengumuman</a>
                 <a href="/berita" wire:navigate.hover
@@ -184,10 +182,6 @@ mount(function () {
                 class="{{ $mobileNavClass }} {{ request()->is('program') ? $mobileActiveClass : $mobileInactiveClass }}">Program</a>
             <a href="/kegiatan" wire:navigate.hover
                 class="{{ $mobileNavClass }} {{ request()->is('kegiatan') ? $mobileActiveClass : $mobileInactiveClass }}">Kegiatan</a>
-            <a href="/tutor" wire:navigate.hover
-                class="{{ $mobileNavClass }} {{ request()->is('tutor') ? $mobileActiveClass : $mobileInactiveClass }}">Tutor</a>
-            <a href="/jadwal" wire:navigate.hover
-                class="{{ $mobileNavClass }} {{ request()->is('jadwal') ? $mobileActiveClass : $mobileInactiveClass }}">Jadwal</a>
             <a href="/pengumuman" wire:navigate.hover
                 class="{{ $mobileNavClass }} {{ request()->is('pengumuman*') ? $mobileActiveClass : $mobileInactiveClass }}">Pengumuman</a>
             <a href="/berita" wire:navigate.hover

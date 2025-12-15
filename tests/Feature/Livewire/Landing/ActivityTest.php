@@ -26,6 +26,7 @@ class ActivityTest extends TestCase
             'judul' => 'Kegiatan Pramuka',
             'kategori' => 'kegiatan',
             'deskripsi' => 'Deskripsi kegiatan pramuka',
+            'status' => 'aktif',
         ]);
         GalleryPhoto::factory()->create(['gallery_id' => $activity->id]);
 
@@ -34,6 +35,7 @@ class ActivityTest extends TestCase
             'judul' => 'Prestasi Siswa',
             'kategori' => 'fasilitas',
             'deskripsi' => 'Deskripsi prestasi siswa',
+            'status' => 'aktif',
         ]);
         GalleryPhoto::factory()->create(['gallery_id' => $other->id]);
 
@@ -47,5 +49,22 @@ class ActivityTest extends TestCase
         Volt::test('landing.activity-index')
             ->assertSee('Belum ada kegiatan')
             ->assertSee('Dokumentasi kegiatan belum tersedia saat ini.');
+    }
+
+    public function test_can_view_activity_detail()
+    {
+        $activity = Gallery::factory()->create([
+            'judul' => 'Detail Kegiatan',
+            'kategori' => 'kegiatan',
+            'deskripsi' => 'Deskripsi detail kegiatan',
+            'status' => 'aktif',
+        ]);
+        GalleryPhoto::factory()->create(['gallery_id' => $activity->id]);
+
+        $this->get('/kegiatan/' . $activity->id)
+            ->assertOk()
+            ->assertSeeLivewire('landing.activity-show')
+            ->assertSee('Detail Kegiatan')
+            ->assertSee('Kembali ke Kegiatan');
     }
 }

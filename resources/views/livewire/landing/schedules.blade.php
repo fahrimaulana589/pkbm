@@ -94,5 +94,16 @@ mount(function () {
                 </div>
             @endif
         </div>
+        <div class="mt-10 text-center">
+            <a href="/jadwal" wire:navigate
+                class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-primary bg-primary/10 hover:bg-primary/20 transition-colors duration-300">
+                Lihat Jadwal Lengkap
+                <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 -mr-1 h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+            </a>
+        </div>
     </div>
 </section>

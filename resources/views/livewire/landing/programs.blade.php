@@ -47,9 +47,10 @@ mount(function ($limitDescription = true) {
                                 <h3 class="mt-8 text-lg font-medium text-slate-900 dark:text-white tracking-tight">
                                     {{ $program->nama_program }}
                                 </h3>
-                                <p class="mt-5 text-base text-slate-500 dark:text-slate-300 flex-1">
-                                    {{ $limitDescription ? Str::limit($program->deskripsi, 100) : $program->deskripsi }}
+                                <p class="mt-5 text-base text-slate-500 dark:text-slate-300 line-clamp-3">
+                                    {{ $program->deskripsi }}
                                 </p>
+                                <div class="flex-1"></div>
                                 <div class="mt-4">
                                     <span
                                         class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
