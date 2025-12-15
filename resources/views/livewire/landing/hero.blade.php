@@ -37,7 +37,7 @@ mount(function () {
                                     clip-rule="evenodd" />
                             </svg>
                         </div>
-                        <span class="text-sm font-medium text-slate-700 dark:text-slate-200">Akreditasi A</span>
+                        <span class="text-sm font-medium text-slate-700 dark:text-slate-200">Akreditasi {{ $profile->akreditasi }}</span>
                     </div>
                     <div
                         class="inline-flex items-center px-4 py-2 rounded-lg border border-slate-200 dark:border-navy-700 bg-white dark:bg-navy-800 shadow-sm">
