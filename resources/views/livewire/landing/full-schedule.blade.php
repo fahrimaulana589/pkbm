@@ -87,8 +87,7 @@ mount(function () {
                     </div>
                 </div>
             @empty
-                <div
-                    class="text-center py-24 bg-white dark:bg-navy-800 rounded-xl shadow-sm border border-slate-100 dark:border-navy-700">
+                <div class="col-span-full text-center py-12">
                     <div
                         class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 dark:bg-navy-700 mb-4">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-slate-400" fill="none"
@@ -98,8 +97,9 @@ mount(function () {
                         </svg>
                     </div>
                     <h3 class="text-lg font-medium text-slate-900 dark:text-white">Belum ada jadwal</h3>
-                    <p class="mt-2 text-slate-500 dark:text-slate-400 max-w-sm mx-auto">Jadwal kegiatan belajar belum
-                        tersedia saat ini. Silakan cek kembali nanti.</p>
+                    <p class="mt-2 text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
+                        Jadwal kegiatan belajar belum tersedia saat ini. Silakan cek kembali nanti.
+                    </p>
                 </div>
             @endforelse
         </div>

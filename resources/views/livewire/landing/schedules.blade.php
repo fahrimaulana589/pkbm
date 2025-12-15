@@ -77,15 +77,20 @@ mount(function () {
                     @endforeach
                 </div>
             @else
-                <div class="text-center py-12 bg-white dark:bg-navy-800 rounded-lg shadow-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-slate-400" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                    <h3 class="mt-2 text-sm font-medium text-slate-900 dark:text-white">Belum ada jadwal</h3>
-                    <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Jadwal kegiatan belajar belum tersedia untuk
-                        hari ini.</p>
+            @else
+                <div class="col-span-full text-center py-12">
+                    <div
+                        class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 dark:bg-navy-700 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-slate-400" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-medium text-slate-900 dark:text-white">Belum ada jadwal</h3>
+                    <p class="mt-2 text-slate-500 dark:text-slate-400">
+                        Jadwal kegiatan belajar belum tersedia untuk hari ini.
+                    </p>
                 </div>
             @endif
         </div>
