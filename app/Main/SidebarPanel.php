@@ -118,6 +118,10 @@ class SidebarPanel
                         'title' => 'Info PPDB',
                         'route_name' => 'ppdb.info.index'
                     ],
+                    'ppdb_contact' => [
+                        'title' => 'Kontak',
+                        'route_name' => 'ppdb.contact.index'
+                    ],
                     'ppdb_setting' => [
                         'title' => 'Pengaturan',
                         'route_name' => 'ppdb.setting'
