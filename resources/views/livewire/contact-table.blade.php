@@ -202,8 +202,9 @@ $delete = function () {
                         'cursor-grabbing select-none': isDragging,
                         'cursor-default': isInteractive && !isDragging,
                         'cursor-grab select-none': !isDragging && !isTextHover && !isInteractive
-                    }" @mousedown="startDrag($event)" @mousemove.window="handleDrag($event)" @mouseup.window="stopDrag()"
-                    @mousemove="checkHoverStatus($event)" @mouseleave="isTextHover = false; isInteractive = false;">
+                    }" @mousedown="startDrag($event)" @mousemove.window="handleDrag($event)"
+                    @mouseup.window="stopDrag()" @mousemove="checkHoverStatus($event)"
+                    @mouseleave="isTextHover = false; isInteractive = false;">
                     <table class="is-hoverable w-full text-left">
                         <thead>
                             <tr>
@@ -248,7 +249,7 @@ $delete = function () {
                                     </td>
                                     <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                                         <span class="badge rounded-full bg-info/10 text-info dark:bg-info/15">
-                                            {{ $contact->type }}
+                                            {{ $contact->type->label() }}
                                         </span>
                                     </td>
                                     <td class="whitespace-nowrap px-4 py-3 sm:px-5 action-col">

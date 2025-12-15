@@ -95,11 +95,10 @@ $save = function () {
                         <span class="text-xs text-slate-400 block mb-1">Pilih tipe untuk format tampilan yang
                             sesuai</span>
                         <x-select-input wire:model="type" id="type" class="mt-1 w-full" :error="$errors->has('type')">
-                            <option value="text">Text (Biasa)</option>
-                            <option value="link">Link (URL)</option>
-                            <option value="map">Map (Link Peta)</option>
-                            <option value="tel">Telepon (Tel/WA)</option>
-                            <option value="email">Email</option>
+                            <option value="">Pilih Tipe</option>
+                            @foreach(\App\Enums\ContactType::cases() as $type)
+                                <option value="{{ $type->value }}">{{ $type->label() }}</option>
+                            @endforeach
                         </x-select-input>
                         <x-input-error :messages="$errors->get('type')" />
                     </x-input-label>

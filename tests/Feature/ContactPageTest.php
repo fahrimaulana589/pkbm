@@ -14,12 +14,20 @@ class ContactPageTest extends TestCase
 
     public function test_contact_page_is_accessible()
     {
-        // Should map to /kontak via Folio
+        // Create data for dynamic map test
+        Contact::create([
+            'kategori' => 'peta',
+            'label' => 'Map',
+            'value' => '<iframe src="https://www.google.com/maps/embed" width="600" height="450"></iframe>',
+            'type' => \App\Enums\ContactType::MAP,
+        ]);
+        
         $response = $this->get('/kontak');
 
         $response->assertStatus(200);
         $response->assertSee('Kontak');
         $response->assertSee('Hubungi Kami');
+        $response->assertSee('google.com/maps/embed'); // Verify Map from DB
     }
 
     public function test_contact_page_displays_contact_info()
@@ -28,7 +36,7 @@ class ContactPageTest extends TestCase
             'kategori' => 'kantor',
             'label' => 'Email',
             'value' => 'info@sekolah.com',
-            'type' => 'email',
+            'type' => \App\Enums\ContactType::EMAIL,
         ]);
 
         $response = $this->get('/kontak');

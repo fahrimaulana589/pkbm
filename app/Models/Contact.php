@@ -15,4 +15,8 @@ class Contact extends Model
         'value',
         'type',
     ];
+
+    protected $casts = [
+        'type' => \App\Enums\ContactType::class,
+    ];
 }
