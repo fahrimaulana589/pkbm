@@ -52,7 +52,7 @@ with(fn() => [
             <div class="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
                 wire:loading.class="opacity-50 pointer-events-none">
                 @forelse($galleries as $gallery)
-                    <a href="/galeri/{{ $gallery->id }}"
+                    <a href="/galeri/{{ $gallery->id }}" wire:navigate.hover
                         class="group block bg-white dark:bg-navy-800 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-slate-100 dark:border-navy-700">
                         {{-- Grid Foto Preview (2x2) --}}
                         <div class="aspect-[4/3] grid grid-cols-2 gap-0.5 bg-slate-100 dark:bg-navy-900">

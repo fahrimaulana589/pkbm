@@ -86,7 +86,7 @@
 
                                 <div class="is-scrollbar-hidden overflow-y-auto overscroll-contain pb-2">
                                     <div class="is-scrollbar-hidden mt-3 flex space-x-4 overflow-x-auto px-3">
-                                        <a href="{{ route('admin.dashboard') }}" class="w-14 text-center">
+                                         <a wire:navigate href="{{ route('admin.dashboard') }}" class="w-14 text-center">
                                             <div class="avatar size-12">
                                                 <div class="is-initial rounded-full bg-success text-white">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="size-5"
@@ -102,7 +102,7 @@
                                                 Kanban
                                             </p>
                                         </a>
-                                        <a href="{{ route('admin.dashboard') }}"
+                                         <a wire:navigate href="{{ route('admin.dashboard') }}"
                                             class="w-14 text-center">
                                             <div class="avatar size-12">
                                                 <div class="is-initial rounded-full bg-secondary text-white">
@@ -118,7 +118,7 @@
                                                 class="mt-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-slate-700 dark:text-navy-100">
                                                 Analytics
                                             </p>
-                                        </a> <a href="{{ route('admin.dashboard') }}" class="w-14 text-center">
+                                        </a>  <a wire:navigate href="{{ route('admin.dashboard') }}" class="w-14 text-center">
                                             <div class="avatar size-12">
                                                 <div class="is-initial rounded-full bg-info text-white">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="size-5"
@@ -134,7 +134,7 @@
                                                 Chat
                                             </p>
                                         </a>
-                                        <a href="{{ route('admin.dashboard') }}" class="w-14 text-center">
+                                         <a wire:navigate href="{{ route('admin.dashboard') }}" class="w-14 text-center">
                                             <div class="avatar size-12">
                                                 <div class="is-initial rounded-full bg-error text-white">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="size-5"
@@ -151,7 +151,7 @@
                                                 Files
                                             </p>
                                         </a>
-                                        <a href="{{ route('admin.dashboard') }}" class="w-14 text-center">
+                                         <a wire:navigate href="{{ route('admin.dashboard') }}" class="w-14 text-center">
                                             <div class="avatar size-12">
                                                 <div class="is-initial rounded-full bg-secondary text-white">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="size-5"
@@ -167,7 +167,7 @@
                                                 Crypto
                                             </p>
                                         </a>
-                                        <a href="{{ route('admin.dashboard') }}" class="w-14 text-center">
+                                         <a wire:navigate href="{{ route('admin.dashboard') }}" class="w-14 text-center">
                                             <div class="avatar size-12">
                                                 <div
                                                     class="is-initial rounded-full bg-primary text-white dark:bg-accent">
@@ -184,7 +184,7 @@
                                                 Banking
                                             </p>
                                         </a>
-                                        <a href="{{ route('admin.dashboard') }}" class="w-14 text-center">
+                                         <a wire:navigate href="{{ route('admin.dashboard') }}" class="w-14 text-center">
                                             <div class="avatar size-12">
                                                 <div class="is-initial rounded-full bg-info text-white">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="size-5"
@@ -202,7 +202,7 @@
                                                 Todo
                                             </p>
                                         </a>
-                                        <a href="{{ route('admin.dashboard') }}" class="w-14 text-center">
+                                         <a wire:navigate href="{{ route('admin.dashboard') }}" class="w-14 text-center">
                                             <div class="avatar size-12">
                                                 <div class="is-initial rounded-full bg-secondary text-white">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="size-5"
@@ -218,7 +218,7 @@
                                                 CMS Analytics
                                             </p>
                                         </a>
-                                        <a href="{{ route('admin.dashboard') }}" class="w-14 text-center">
+                                         <a wire:navigate href="{{ route('admin.dashboard') }}" class="w-14 text-center">
                                             <div class="avatar size-12">
                                                 <div class="is-initial rounded-full bg-warning text-white">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="size-5"
@@ -249,7 +249,7 @@
 
                                     <div class="mt-1 font-inter font-medium">
                                         <a class="group flex items-center space-x-2 px-2.5 py-2 tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100"
-                                            href="{{ route('admin.dashboard') }}">
+                                            wire:navigate href="{{ route('admin.dashboard') }}">
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                 class="size-4.5 text-slate-400 transition-colors group-hover:text-slate-500 group-focus:text-slate-500 dark:text-navy-300 dark:group-hover:text-navy-200 dark:group-focus:text-navy-200"
                                                 fill="none" viewBox="0 0 24 24" stroke="currentColor"
@@ -260,7 +260,7 @@
                                             <span>Chat App</span>
                                         </a>
                                         <a class="group flex items-center space-x-2 px-2.5 py-2 tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100"
-                                            href="{{ route('admin.dashboard') }}">
+                                            wire:navigate href="{{ route('admin.dashboard') }}">
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                 class="size-4.5 text-slate-400 transition-colors group-hover:text-slate-500 group-focus:text-slate-500 dark:text-navy-300 dark:group-hover:text-navy-200 dark:group-focus:text-navy-200"
                                                 fill="none" viewBox="0 0 24 24" stroke="currentColor"
@@ -271,7 +271,7 @@
                                             <span>File Manager App</span>
                                         </a>
                                         <a class="group flex items-center space-x-2 px-2.5 py-2 tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100"
-                                            href="{{ route('admin.dashboard') }}">
+                                            wire:navigate href="{{ route('admin.dashboard') }}">
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                 class="size-4.5 text-slate-400 transition-colors group-hover:text-slate-500 group-focus:text-slate-500 dark:text-navy-300 dark:group-hover:text-navy-200 dark:group-focus:text-navy-200"
                                                 fill="none" viewBox="0 0 24 24" stroke="currentColor"
@@ -282,7 +282,7 @@
                                             <span>Email App</span>
                                         </a>
                                         <a class="group flex items-center space-x-2 px-2.5 py-2 tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100"
-                                            href="{{ route('admin.dashboard') }}">
+                                            wire:navigate href="{{ route('admin.dashboard') }}">
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                 class="size-4.5 text-slate-400 transition-colors group-hover:text-slate-500 group-focus:text-slate-500 dark:text-navy-300 dark:group-hover:text-navy-200 dark:group-focus:text-navy-200"
                                                 fill="none" viewBox="0 0 24 24" stroke="currentColor"
@@ -293,7 +293,7 @@
                                             <span>Kanban Board</span>
                                         </a>
                                         <a class="group flex items-center space-x-2 px-2.5 py-2 tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100"
-                                            href="{{ route('admin.dashboard') }}">
+                                            wire:navigate href="{{ route('admin.dashboard') }}">
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                 class="size-4.5 text-slate-400 transition-colors group-hover:text-slate-500 group-focus:text-slate-500 dark:text-navy-300 dark:group-hover:text-navy-200 dark:group-focus:text-navy-200"
                                                 fill="none" viewBox="0 0 24 24" stroke="currentColor"
@@ -306,7 +306,7 @@
                                             <span>Todo App</span>
                                         </a>
                                         <a class="group flex items-center space-x-2 px-2.5 py-2 tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100"
-                                            href="{{ route('admin.dashboard') }}">
+                                            wire:navigate href="{{ route('admin.dashboard') }}">
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                 class="size-4.5 text-slate-400 transition-colors group-hover:text-slate-500 group-focus:text-slate-500 dark:text-navy-300 dark:group-hover:text-navy-200 dark:group-focus:text-navy-200"
                                                 fill="none" viewBox="0 0 24 24" stroke="currentColor"
@@ -318,7 +318,7 @@
                                             <span>Crypto Dashboard</span>
                                         </a>
                                         <a class="group flex items-center space-x-2 px-2.5 py-2 tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100"
-                                            href="{{ route('admin.dashboard') }}">
+                                            wire:navigate href="{{ route('admin.dashboard') }}">
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                 class="size-4.5 text-slate-400 transition-colors group-hover:text-slate-500 group-focus:text-slate-500 dark:text-navy-300 dark:group-hover:text-navy-200 dark:group-focus:text-navy-200"
                                                 fill="none" viewBox="0 0 24 24" stroke="currentColor"
@@ -330,7 +330,7 @@
                                             <span>Banking Dashboard</span>
                                         </a>
                                         <a class="group flex items-center space-x-2 px-2.5 py-2 tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100"
-                                            href="{{ route('admin.dashboard') }}">
+                                            wire:navigate href="{{ route('admin.dashboard') }}">
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                 class="size-4.5 text-slate-400 transition-colors group-hover:text-slate-500 group-focus:text-slate-500 dark:text-navy-300 dark:group-hover:text-navy-200 dark:group-focus:text-navy-200"
                                                 fill="none" viewBox="0 0 24 24" stroke="currentColor"
@@ -342,7 +342,7 @@
                                             <span>Analytics Dashboard</span>
                                         </a>
                                         <a class="group flex items-center space-x-2 px-2.5 py-2 tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100"
-                                            href="{{ route('admin.dashboard') }}">
+                                            wire:navigate href="{{ route('admin.dashboard') }}">
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                 class="size-4.5 text-slate-400 transition-colors group-hover:text-slate-500 group-focus:text-slate-500 dark:text-navy-300 dark:group-hover:text-navy-200 dark:group-focus:text-navy-200"
                                                 fill="none" viewBox="0 0 24 24" stroke="currentColor"

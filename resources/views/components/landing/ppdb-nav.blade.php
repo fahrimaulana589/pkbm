@@ -15,7 +15,7 @@
                 $isActive = true;
             }
         @endphp
-        <a href="{{ route($nav['route']) }}"
+        <a href="{{ route($nav['route']) }}" wire:navigate
             class="px-6 py-2 rounded-md text-sm font-medium transition-all duration-200 {{ $isActive ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-200' }}">
             {{ $nav['label'] }}
         </a>
