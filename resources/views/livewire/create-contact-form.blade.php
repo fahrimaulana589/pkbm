@@ -29,7 +29,7 @@ $save = function () {
 
     session()->flash('status', 'Berhasil');
     session()->flash('message', 'Kontak berhasil ditambahkan.');
-    $this->redirect(route('ppdb.contact.index'), navigate: true);
+    $this->redirectRoute('ppdb.contact.index', navigate: true);
 };
 
 ?>
