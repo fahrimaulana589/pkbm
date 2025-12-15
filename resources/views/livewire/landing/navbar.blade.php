@@ -182,6 +182,8 @@ mount(function () {
                 class="{{ $mobileNavClass }} {{ request()->is('profil') ? $mobileActiveClass : $mobileInactiveClass }}">Profil</a>
             <a href="/program" wire:navigate.hover
                 class="{{ $mobileNavClass }} {{ request()->is('program') ? $mobileActiveClass : $mobileInactiveClass }}">Program</a>
+            <a href="/kegiatan" wire:navigate.hover
+                class="{{ $mobileNavClass }} {{ request()->is('kegiatan') ? $mobileActiveClass : $mobileInactiveClass }}">Kegiatan</a>
             <a href="/tutor" wire:navigate.hover
                 class="{{ $mobileNavClass }} {{ request()->is('tutor') ? $mobileActiveClass : $mobileInactiveClass }}">Tutor</a>
             <a href="/jadwal" wire:navigate.hover
