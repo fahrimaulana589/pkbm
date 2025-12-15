@@ -25,7 +25,7 @@ $check = function () {
 ?>
 
 <div>
-    <div class="card p-4 sm:p-5">
+    <div class="card p-4 sm:p-5 bg-white dark:bg-navy-800 dark:text-navy-100">
         @if($activePpdb)
             {{-- Success Message from Registration --}}
             @if(session('success_registration'))
@@ -71,7 +71,8 @@ $check = function () {
             @endif
 
             {{-- Check Form --}}
-            <div class="card p-6 max-w-xl mx-auto">
+            <div
+                class="card p-6 max-w-xl mx-auto bg-white dark:bg-navy-700 shadow-sm border border-slate-200 dark:border-navy-600">
                 <h3 class="text-lg font-medium text-slate-700 dark:text-navy-100 mb-4 text-center">Cek Status Pendaftaran
                 </h3>
 
@@ -102,21 +103,22 @@ $check = function () {
                         <h4 class="font-medium text-slate-700 dark:text-navy-100 mb-3">Hasil Pencarian:</h4>
                         <div class="space-y-3">
                             <div class="flex justify-between border-b pb-2 border-slate-100 dark:border-navy-600">
-                                <span class="text-slate-500">Nama Lengkap</span>
+                                <span class="text-slate-500 dark:text-slate-400">Nama Lengkap</span>
                                 <span class="font-medium text-slate-700 dark:text-navy-100">{{ $result->name }}</span>
                             </div>
                             <div class="flex justify-between border-b pb-2 border-slate-100 dark:border-navy-600">
-                                <span class="text-slate-500">Program</span>
+                                <span class="text-slate-500 dark:text-slate-400">Program</span>
                                 <span
                                     class="font-medium text-slate-700 dark:text-navy-100">{{ $result->program->nama_program ?? '-' }}</span>
                             </div>
                             <div class="flex justify-between border-b pb-2 border-slate-100 dark:border-navy-600">
-                                <span class="text-slate-500">Status</span>
-                                <span class="badge rounded-full 
-                                                                        @if($result->status === \App\Enums\PendaftarStatus::DITERIMA) bg-success/10 text-success
-                                                                        @elseif($result->status === \App\Enums\PendaftarStatus::DITOLAK) bg-error/10 text-error
-                                                                        @elseif($result->status === \App\Enums\PendaftarStatus::DIPROSES) bg-info/10 text-info
-                                                                        @else bg-warning/10 text-warning @endif">
+                                <span class="text-slate-500 dark:text-slate-400">Status</span>
+                                <span
+                                    class="badge rounded-full 
+                                                                                        @if($result->status === \App\Enums\PendaftarStatus::DITERIMA) bg-success/10 text-success
+                                                                                        @elseif($result->status === \App\Enums\PendaftarStatus::DITOLAK) bg-error/10 text-error
+                                                                                        @elseif($result->status === \App\Enums\PendaftarStatus::DIPROSES) bg-info/10 text-info
+                                                                                        @else bg-warning/10 text-warning @endif">
                                     {{ $result->status->label() }}
                                 </span>
                             </div>

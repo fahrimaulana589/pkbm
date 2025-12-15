@@ -11,8 +11,8 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ config('app.name') }} @isset($title)
-            - {{ $title }}
-        @endisset
+        - {{ $title }}
+    @endisset
     </title>
 
     <!-- CSS & JS Assets -->
@@ -33,7 +33,7 @@
 
 <body x-data x-bind="$store.global.documentBody">
     <!-- Page Wrapper -->
-    <div id="root"  x-cloak>
+    <div id="root" x-cloak class="min-h-screen bg-slate-50 dark:bg-navy-900 text-slate-900 dark:text-slate-50">
         @livewire('landing.navbar')
         {{ $slot }}
         @livewire('landing.stats')
@@ -53,4 +53,3 @@
 </body>
 
 </html>
-

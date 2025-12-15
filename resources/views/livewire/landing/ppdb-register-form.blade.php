@@ -110,7 +110,7 @@ $save = function () {
 ?>
 
 <div>
-    <div class="card p-4 sm:p-5">
+    <div class="card p-4 sm:p-5 bg-white dark:bg-navy-800 dark:text-navy-100">
         @if($activePpdb)
             <div class="mb-6">
                 <h3 class="text-xl font-medium text-slate-700 dark:text-navy-100">

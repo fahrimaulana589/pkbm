@@ -1,4 +1,4 @@
-<div class="flex flex-wrap justify-center gap-2 mb-8 p-1 bg-gray-100 rounded-lg w-fit mx-auto">
+<div class="flex flex-wrap justify-center gap-2 mb-8 p-1 bg-gray-100 dark:bg-navy-800 rounded-lg w-fit mx-auto">
     @php
         $navs = [
             ['label' => 'Sambutan', 'route' => 'ppdb.pkbm'],
@@ -16,7 +16,7 @@
             }
         @endphp
         <a href="{{ route($nav['route']) }}" wire:navigate
-            class="px-6 py-2 rounded-md text-sm font-medium transition-all duration-200 {{ $isActive ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-200' }}">
+            class="px-6 py-2 rounded-md text-sm font-medium transition-all duration-200 {{ $isActive ? 'bg-white text-blue-600 shadow-sm dark:bg-navy-700 dark:text-accent-light' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-200 dark:text-navy-200 dark:hover:text-white dark:hover:bg-navy-600' }}">
             {{ $nav['label'] }}
         </a>
     @endforeach

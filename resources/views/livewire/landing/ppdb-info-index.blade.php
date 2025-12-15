@@ -29,9 +29,9 @@ $getDateDisplay = fn($date) => !$date ? '-' : \Carbon\Carbon::parse($date)->form
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @forelse ($this->infos as $info)
                 <div
-                    class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
+                    class="bg-white dark:bg-navy-700 rounded-xl shadow-sm border border-slate-200 dark:border-navy-600 overflow-hidden hover:shadow-md transition-shadow">
                     <div class="p-6">
-                        <div class="flex items-center space-x-2 text-sm text-slate-500 mb-3">
+                        <div class="flex items-center space-x-2 text-sm text-slate-500 dark:text-slate-400 mb-3">
                             <span class="flex items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor">
@@ -50,10 +50,11 @@ $getDateDisplay = fn($date) => !$date ? '-' : \Carbon\Carbon::parse($date)->form
                                 {{ $this->getDateDisplay($info->created_at) }}
                             </span>
                         </div>
-                        <h3 class="text-xl font-bold text-slate-800 mb-2 hover:text-primary transition-colors">
+                        <h3
+                            class="text-xl font-bold text-slate-800 dark:text-navy-100 mb-2 hover:text-primary transition-colors">
                             {{ $info->judul }}
                         </h3>
-                        <p class="text-slate-600 mb-4 line-clamp-3">
+                        <p class="text-slate-600 dark:text-slate-300 mb-4 line-clamp-3">
                             {{ $info->deskripsi }}
                         </p>
                     </div>
