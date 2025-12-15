@@ -29,6 +29,9 @@ class DatabaseSeeder extends Seeder
             NewsTagSeeder::class,
             NewsSeeder::class,
             GallerySeeder::class,
+            PpdbSeeder::class,
+            InfoPpdbSeeder::class,
+            PendaftarSeeder::class,
         ]);
 
         User::factory()->create([

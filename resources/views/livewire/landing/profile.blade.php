@@ -178,100 +178,255 @@ mount(function ($isFullPage = false) {
                     </div>
                 </section>
 
-                {{-- Details Grid --}}
-                <section class="py-12 bg-white dark:bg-navy-900">
-                    <div class="max-w-7xl mx-auto px-6 lg:px-8">
-                        <div class="mx-auto max-w-2xl lg:max-w-none">
-                            <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
-                                {{-- Identity Card --}}
-                                <div class="rounded-2xl bg-slate-50 dark:bg-navy-800 p-8">
-                                    <h3 class="text-lg font-semibold leading-8 text-primary">Identitas</h3>
-                                    <dl class="mt-4 space-y-4 text-base leading-7 text-slate-600 dark:text-slate-300">
-                                        <div class="flex gap-x-4">
-                                            <dt class="flex-none">
-                                                <span class="sr-only">Nama</span>
-                                                <svg class="h-6 w-5 text-slate-400" viewBox="0 0 20 20" fill="currentColor"
-                                                    aria-hidden="true">
-                                                    <path fill-rule="evenodd"
-                                                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                                                        clip-rule="evenodd" />
-                                                </svg>
-                                            </dt>
-                                            <dd>{{ $profile->nama_pkbm }}</dd>
-                                        </div>
-                                        <div class="flex gap-x-4">
-                                            <dt class="flex-none">
-                                                <span class="sr-only">NPSN</span>
-                                                <svg class="h-6 w-5 text-slate-400" viewBox="0 0 20 20" fill="currentColor"
-                                                    aria-hidden="true">
-                                                    <path fill-rule="evenodd"
-                                                        d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 3.414L15.586 7A2 2 0 0116 8.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"
-                                                        clip-rule="evenodd" />
-                                                </svg>
-                                            </dt>
-                                            <dd>NPSN: {{ $profile->npsn ?? '-' }}</dd>
-                                        </div>
-                                    </dl>
-                                </div>
-
-                                {{-- Contact Card --}}
-                                <div class="rounded-2xl bg-slate-50 dark:bg-navy-800 p-8">
-                                    <h3 class="text-lg font-semibold leading-8 text-primary">Kontak</h3>
-                                    <dl class="mt-4 space-y-4 text-base leading-7 text-slate-600 dark:text-slate-300">
-                                        <div class="flex gap-x-4">
-                                            <dt class="flex-none">
-                                                <span class="sr-only">Telepon</span>
-                                                <svg class="h-7 w-6 text-slate-400" fill="none" viewBox="0 0 24 24"
-                                                    stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
-                                                </svg>
-                                            </dt>
-                                            <dd><a class="hover:text-slate-900 dark:hover:text-white"
-                                                    href="tel:{{ $profile->telepon }}">{{ $profile->telepon ?? '-' }}</a></dd>
-                                        </div>
-                                        <div class="flex gap-x-4">
-                                            <dt class="flex-none">
-                                                <span class="sr-only">Email</span>
-                                                <svg class="h-7 w-6 text-slate-400" fill="none" viewBox="0 0 24 24"
-                                                    stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                                                </svg>
-                                            </dt>
-                                            <dd><a class="hover:text-slate-900 dark:hover:text-white"
-                                                    href="mailto:{{ $profile->email }}">{{ $profile->email ?? '-' }}</a></dd>
-                                        </div>
-                                    </dl>
-                                </div>
-
-                                {{-- Address Card --}}
-                                <div class="rounded-2xl bg-slate-50 dark:bg-navy-800 p-8">
-                                    <h3 class="text-lg font-semibold leading-8 text-primary">Lokasi</h3>
-                                    <dl class="mt-4 space-y-4 text-base leading-7 text-slate-600 dark:text-slate-300">
-                                        <div class="flex gap-x-4">
-                                            <dt class="flex-none">
-                                                <span class="sr-only">Alamat</span>
-                                                <svg class="h-7 w-6 text-slate-400" fill="none" viewBox="0 0 24 24"
-                                                    stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                                                </svg>
-                                            </dt>
-                                            <dd>
-                                                {{ $profile->alamat }}<br>
-                                                {{ $profile->desa ? 'Desa ' . $profile->desa . ',' : '' }}
-                                                {{ $profile->kecamatan ? 'Kec. ' . $profile->kecamatan . ',' : '' }}<br>
-                                                {{ $profile->kota ? $profile->kota . ',' : '' }}
-                                                {{ $profile->provinsi }}
-                                            </dd>
-                                        </div>
-                                    </dl>
+                {{-- Latar Belakang Section --}}
+                @if($profile->latar_belakang)
+                    <section class="py-12 bg-white dark:bg-navy-900">
+                        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                            <div class="mx-auto max-w-3xl">
+                                <h2 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl text-center mb-8">
+                                    Sejarah & Latar Belakang
+                                </h2>
+                                <div class="prose prose-lg prose-slate dark:prose-invert mx-auto">
+                                    {!! nl2br(e($profile->latar_belakang)) !!}
                                 </div>
                             </div>
                         </div>
+                    </section>
+                @endif
+
+                {{-- Struktur Organisasi Section --}}
+                @if($profile->foto_struktur_organisasi)
+                    <section class="py-12 bg-slate-50 dark:bg-navy-800">
+                        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                            <div class="mx-auto max-w-4xl text-center">
+                                <h2 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl mb-8">
+                                    Struktur Organisasi
+                                </h2>
+                                <img src="{{ asset('storage/' . $profile->foto_struktur_organisasi) }}" 
+                                     alt="Struktur Organisasi {{ $profile->nama_pkbm }}" 
+                                     class="w-full rounded-xl shadow-lg ring-1 ring-gray-400/10">
+                            </div>
+                        </div>
+                    </section>
+                @endif
+
+                {{-- Data Tables Section --}}
+                <section class="py-12 bg-white dark:bg-navy-900">
+                    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+
+                        {{-- Identitas --}}
+                        <div class="mb-10 overflow-hidden rounded-xl border border-slate-200 dark:border-navy-600">
+                            <div class="bg-slate-50 dark:bg-navy-800 px-6 py-4 border-b border-slate-200 dark:border-navy-600">
+                                <h3 class="text-lg font-semibold text-slate-800 dark:text-white">Identitas Satuan Pendidikan</h3>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-sm text-slate-600 dark:text-slate-300">
+                                    <tbody class="divide-y divide-slate-200 dark:divide-navy-600">
+                                        <tr class="bg-white dark:bg-navy-700">
+                                            <th class="px-6 py-3 font-medium w-1/3">Nama</th>
+                                            <td class="px-6 py-3">{{ $profile->nama_pkbm }}</td>
+                                        </tr>
+                                        <tr class="bg-slate-50 dark:bg-navy-800">
+                                            <th class="px-6 py-3 font-medium">NPSN</th>
+                                            <td class="px-6 py-3">{{ $profile->npsn }}</td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-navy-700">
+                                            <th class="px-6 py-3 font-medium">Jenjang Pendidikan</th>
+                                            <td class="px-6 py-3">{{ $profile->jenjang_pendidikan ?? '-' }}</td>
+                                        </tr>
+                                        <tr class="bg-slate-50 dark:bg-navy-800">
+                                            <th class="px-6 py-3 font-medium">Status Sekolah</th>
+                                            <td class="px-6 py-3">{{ $profile->status_sekolah ?? '-' }}</td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-navy-700">
+                                            <th class="px-6 py-3 font-medium">Alamat</th>
+                                            <td class="px-6 py-3">{{ $profile->alamat }}</td>
+                                        </tr>
+                                        <tr class="bg-slate-50 dark:bg-navy-800">
+                                            <th class="px-6 py-3 font-medium">RT / RW</th>
+                                            <td class="px-6 py-3">{{ $profile->rt_rw ?? '-' }}</td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-navy-700">
+                                            <th class="px-6 py-3 font-medium">Kode Pos</th>
+                                            <td class="px-6 py-3">{{ $profile->kode_pos ?? '-' }}</td>
+                                        </tr>
+                                        <tr class="bg-slate-50 dark:bg-navy-800">
+                                            <th class="px-6 py-3 font-medium">Kelurahan</th>
+                                            <td class="px-6 py-3">{{ $profile->desa ?? '-' }}</td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-navy-700">
+                                            <th class="px-6 py-3 font-medium">Kecamatan</th>
+                                            <td class="px-6 py-3">{{ $profile->kecamatan ?? '-' }}</td>
+                                        </tr>
+                                        <tr class="bg-slate-50 dark:bg-navy-800">
+                                            <th class="px-6 py-3 font-medium">Kabupaten / Kota</th>
+                                            <td class="px-6 py-3">{{ $profile->kota ?? '-' }}</td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-navy-700">
+                                            <th class="px-6 py-3 font-medium">Provinsi</th>
+                                            <td class="px-6 py-3">{{ $profile->provinsi ?? '-' }}</td>
+                                        </tr>
+                                        <tr class="bg-slate-50 dark:bg-navy-800">
+                                            <th class="px-6 py-3 font-medium">Negara</th>
+                                            <td class="px-6 py-3">{{ $profile->negara ?? '-' }}</td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-navy-700">
+                                            <th class="px-6 py-3 font-medium">Posisi Geografis</th>
+                                            <td class="px-6 py-3">
+                                                @if($profile->lintang && $profile->bujur)
+                                                    Lintang: {{ $profile->lintang }}, Bujur: {{ $profile->bujur }}
+                                                    <a href="https://www.google.com/maps/search/?api=1&query={{ $profile->lintang }},{{ $profile->bujur }}" target="_blank" class="ml-2 text-primary hover:underline">(Lihat Peta)</a>
+                                                @else
+                                                    -
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        {{-- Data Pelengkap --}}
+                        <div class="mb-10 overflow-hidden rounded-xl border border-slate-200 dark:border-navy-600">
+                            <div class="bg-slate-50 dark:bg-navy-800 px-6 py-4 border-b border-slate-200 dark:border-navy-600">
+                                <h3 class="text-lg font-semibold text-slate-800 dark:text-white">Data Pelengkap</h3>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-sm text-slate-600 dark:text-slate-300">
+                                    <tbody class="divide-y divide-slate-200 dark:divide-navy-600">
+                                        <tr class="bg-white dark:bg-navy-700">
+                                            <th class="px-6 py-3 font-medium w-1/3">SK Pendirian</th>
+                                            <td class="px-6 py-3">{{ $profile->sk_pendirian ?? '-' }}</td>
+                                        </tr>
+                                        <tr class="bg-slate-50 dark:bg-navy-800">
+                                            <th class="px-6 py-3 font-medium">Tanggal SK Pendirian</th>
+                                            <td class="px-6 py-3">{{ $profile->tanggal_sk_pendirian ? $profile->tanggal_sk_pendirian->format('d M Y') : '-' }}</td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-navy-700">
+                                            <th class="px-6 py-3 font-medium">Status Kepemilikan</th>
+                                            <td class="px-6 py-3">{{ $profile->status_kepemilikan ?? '-' }}</td>
+                                        </tr>
+                                        <tr class="bg-slate-50 dark:bg-navy-800">
+                                            <th class="px-6 py-3 font-medium">SK Izin Operasional</th>
+                                            <td class="px-6 py-3">{{ $profile->sk_izin_operasional ?? '-' }}</td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-navy-700">
+                                            <th class="px-6 py-3 font-medium">Tgl SK Izin Operasional</th>
+                                            <td class="px-6 py-3">{{ $profile->tanggal_sk_izin_operasional ? $profile->tanggal_sk_izin_operasional->format('d M Y') : '-' }}</td>
+                                        </tr>
+                                        <tr class="bg-slate-50 dark:bg-navy-800">
+                                            <th class="px-6 py-3 font-medium">Kebutuhan Khusus Dilayani</th>
+                                            <td class="px-6 py-3">{{ $profile->kebutuhan_khusus_dilayani ?? '-' }}</td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-navy-700">
+                                            <th class="px-6 py-3 font-medium">Nomor Rekening</th>
+                                            <td class="px-6 py-3">{{ $profile->nomor_rekening ?? '-' }}</td>
+                                        </tr>
+                                        <tr class="bg-slate-50 dark:bg-navy-800">
+                                            <th class="px-6 py-3 font-medium">Nama Bank</th>
+                                            <td class="px-6 py-3">{{ $profile->nama_bank ?? '-' }} ({{ $profile->cabang_kcp_unit ?? '-' }})</td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-navy-700">
+                                            <th class="px-6 py-3 font-medium">Rekening Atas Nama</th>
+                                            <td class="px-6 py-3">{{ $profile->rekening_atas_nama ?? '-' }}</td>
+                                        </tr>
+                                        <tr class="bg-slate-50 dark:bg-navy-800">
+                                            <th class="px-6 py-3 font-medium">MBS</th>
+                                            <td class="px-6 py-3">{{ $profile->mbs ?? '-' }}</td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-navy-700">
+                                            <th class="px-6 py-3 font-medium">Memungut Iuran</th>
+                                            <td class="px-6 py-3">{{ $profile->memungut_iuran ? 'Ya' : 'Tidak' }} @if($profile->memungut_iuran && $profile->nominal_iuran) (Rp {{ number_format($profile->nominal_iuran, 0, ',', '.') }}) @endif</td>
+                                        </tr>
+                                        <tr class="bg-slate-50 dark:bg-navy-800">
+                                            <th class="px-6 py-3 font-medium">Nama Wajib Pajak</th>
+                                            <td class="px-6 py-3">{{ $profile->nama_wajib_pajak ?? '-' }}</td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-navy-700">
+                                            <th class="px-6 py-3 font-medium">NPWP</th>
+                                            <td class="px-6 py-3">{{ $profile->npwp ?? '-' }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        {{-- Kontak --}}
+                        <div class="mb-10 overflow-hidden rounded-xl border border-slate-200 dark:border-navy-600">
+                            <div class="bg-slate-50 dark:bg-navy-800 px-6 py-4 border-b border-slate-200 dark:border-navy-600">
+                                <h3 class="text-lg font-semibold text-slate-800 dark:text-white">Kontak Utama</h3>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-sm text-slate-600 dark:text-slate-300">
+                                    <tbody class="divide-y divide-slate-200 dark:divide-navy-600">
+                                        <tr class="bg-white dark:bg-navy-700">
+                                            <th class="px-6 py-3 font-medium w-1/3">Nomor Telepon</th>
+                                            <td class="px-6 py-3">{{ $profile->telepon ?? '-' }}</td>
+                                        </tr>
+                                        <tr class="bg-slate-50 dark:bg-navy-800">
+                                            <th class="px-6 py-3 font-medium">Nomor Fax</th>
+                                            <td class="px-6 py-3">{{ $profile->fax ?? '-' }}</td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-navy-700">
+                                            <th class="px-6 py-3 font-medium">Email</th>
+                                            <td class="px-6 py-3">{{ $profile->email ?? '-' }}</td>
+                                        </tr>
+                                        <tr class="bg-slate-50 dark:bg-navy-800">
+                                            <th class="px-6 py-3 font-medium">Website</th>
+                                            <td class="px-6 py-3">
+                                                @if($profile->website)
+                                                    <a href="{{ $profile->website }}" target="_blank" class="text-primary hover:underline">{{ $profile->website }}</a>
+                                                @else
+                                                    -
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        {{-- Data Periodik --}}
+                        <div class="overflow-hidden rounded-xl border border-slate-200 dark:border-navy-600">
+                            <div class="bg-slate-50 dark:bg-navy-800 px-6 py-4 border-b border-slate-200 dark:border-navy-600">
+                                <h3 class="text-lg font-semibold text-slate-800 dark:text-white">Data Periodik</h3>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-sm text-slate-600 dark:text-slate-300">
+                                    <tbody class="divide-y divide-slate-200 dark:divide-navy-600">
+                                        <tr class="bg-white dark:bg-navy-700">
+                                            <th class="px-6 py-3 font-medium w-1/3">Waktu Penyelenggaraan</th>
+                                            <td class="px-6 py-3">{{ $profile->waktu_penyelenggaraan ?? '-' }}</td>
+                                        </tr>
+                                        <tr class="bg-slate-50 dark:bg-navy-800">
+                                            <th class="px-6 py-3 font-medium">Bersedia Menerima BOS?</th>
+                                            <td class="px-6 py-3">{{ $profile->bersedia_menerima_bos ? 'Ya' : 'Tidak' }}</td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-navy-700">
+                                            <th class="px-6 py-3 font-medium">Sertifikasi ISO</th>
+                                            <td class="px-6 py-3">Belum Bersertifikat</td> {{-- Placeholder as no field --}}
+                                        </tr>
+                                        <tr class="bg-slate-50 dark:bg-navy-800">
+                                            <th class="px-6 py-3 font-medium">Sumber Listrik</th>
+                                            <td class="px-6 py-3">{{ $profile->sumber_listrik ?? '-' }}</td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-navy-700">
+                                            <th class="px-6 py-3 font-medium">Daya Listrik</th>
+                                            <td class="px-6 py-3">{{ $profile->daya_listrik ? $profile->daya_listrik . ' Watt' : '-' }}</td>
+                                        </tr>
+                                        <tr class="bg-slate-50 dark:bg-navy-800">
+                                            <th class="px-6 py-3 font-medium">Akses Internet</th>
+                                            <td class="px-6 py-3">{{ $profile->akses_internet ?? '-' }}</td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-navy-700">
+                                            <th class="px-6 py-3 font-medium">Akreditasi</th>
+                                            <td class="px-6 py-3">{{ $profile->akreditasi ?? '-' }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
                     </div>
                 </section>
             @else
