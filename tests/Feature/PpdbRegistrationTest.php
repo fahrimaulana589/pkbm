@@ -41,7 +41,9 @@ class PpdbRegistrationTest extends TestCase
 
         Volt::test('landing.ppdb-register-form')
              ->assertSee('Hobi') // Label
-             ->assertSeeHtml('name="Hobi"'); // Field name in FormBuilder usually matches attribute name
+             ->assertSee('Hobi') // Label
+             ->assertSeeHtml('name="hobi"'); // Field name is slugified
+
     }
 
     public function test_can_submit_registration()
@@ -60,12 +62,16 @@ class PpdbRegistrationTest extends TestCase
             ->set('email', 'john@example.com')
             ->set('phone', '08123456789')
             ->set('address', 'Jl. Merdeka No. 1')
+            ->set('nik', '1234567890123456')
+            ->set('nisn', '1234567890')
+            ->set('jenis_kelamin', 'L')
+            ->set('program_id', \App\Models\Program::factory()->create()->id)
             ->set('birth_place', 'Jakarta')
             ->set('birth_date', '2000-01-01')
             ->set('extra_attributes.asal_sekolah', 'SMA 1 Jakarta')
             ->call('save')
             ->assertHasNoErrors()
-            ->assertSee('Pendaftaran Berhasil');
+            ->assertRedirect(route('ppdb.check'));
 
         $this->assertDatabaseHas('pendaftars', [
             'name' => 'John Doe',

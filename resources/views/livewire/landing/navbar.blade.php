@@ -33,7 +33,7 @@ mount(function () {
                 <a href="/" wire:navigate.hover
                     class="font-bold text-xl text-slate-800 dark:text-white tracking-tight hover:text-primary">
                     {{ $profile->nama_pkbm ?? 'SekolahKita' }}
-                    </span>
+                </a>
             </div>
 
 
@@ -46,6 +46,8 @@ mount(function () {
                     $inactiveClass = 'text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary';
                 @endphp
 
+                <a href="/" wire:navigate.hover
+                    class="{{ $navClass }} {{ request()->is('/') ? $activeClass : $inactiveClass }}">Beranda</a>
                 <a href="{{ route('ppdb.pkbm') }}" wire:navigate.hover
                     class="{{ $navClass }} {{ request()->routeIs('ppdb.*') ? $activeClass : $inactiveClass }}">PPDB</a>
                 <a href="/profil" wire:navigate.hover
@@ -138,6 +140,8 @@ mount(function () {
                 $inactiveClass = 'text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary';
             @endphp
 
+            <a href="/" wire:navigate.hover
+                class="{{ $navClass }} {{ request()->is('/') ? $activeClass : $inactiveClass }}">Beranda</a>
             <a href="{{ route('ppdb.pkbm') }}" wire:navigate.hover
                 class="{{ $navClass }} {{ request()->routeIs('ppdb.*') ? $activeClass : $inactiveClass }}">PPDB</a>
             <a href="/profil" wire:navigate.hover
@@ -170,6 +174,8 @@ mount(function () {
                 $mobileInactiveClass = 'text-slate-700 dark:text-slate-300 hover:text-primary dark:hover:text-primary hover:bg-slate-50 dark:hover:bg-navy-700';
             @endphp
 
+            <a href="/" wire:navigate.hover
+                class="{{ $mobileNavClass }} {{ request()->is('/') ? $mobileActiveClass : $mobileInactiveClass }}">Beranda</a>
             <a href="{{ route('ppdb.pkbm') }}" wire:navigate.hover
                 class="{{ $mobileNavClass }} {{ request()->routeIs('ppdb.*') ? $mobileActiveClass : $mobileInactiveClass }}">PPDB</a>
             <a href="/profil" wire:navigate.hover

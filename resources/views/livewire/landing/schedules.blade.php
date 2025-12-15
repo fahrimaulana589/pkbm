@@ -77,7 +77,7 @@ mount(function () {
                     @endforeach
                 </div>
             @else
-            @else
+
                 <div class="col-span-full text-center py-12">
                     <div
                         class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 dark:bg-navy-700 mb-4">
