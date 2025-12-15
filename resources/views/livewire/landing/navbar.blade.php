@@ -60,6 +60,10 @@ mount(function () {
                     class="{{ $navClass }} {{ request()->is('pengumuman*') ? $activeClass : $inactiveClass }}">Pengumuman</a>
                 <a href="/berita" wire:navigate.hover
                     class="{{ $navClass }} {{ request()->is('berita*') ? $activeClass : $inactiveClass }}">Berita</a>
+                <a href="/kontak" wire:navigate.hover
+                    class="{{ $navClass }} {{ request()->is('kontak*') ? $activeClass : $inactiveClass }}">Kontak</a>
+                <a href="/ppdb/pendaftar" wire:navigate.hover
+                    class="{{ $navClass }} {{ request()->is('ppdb/pendaftar*') ? $activeClass : $inactiveClass }}">Daftar</a>
                 <a href="/galeri" wire:navigate.hover
                     class="{{ $navClass }} {{ request()->is('galeri*') ? $activeClass : $inactiveClass }}">Galeri</a>
             </div>
@@ -186,6 +190,10 @@ mount(function () {
                 class="{{ $mobileNavClass }} {{ request()->is('pengumuman*') ? $mobileActiveClass : $mobileInactiveClass }}">Pengumuman</a>
             <a href="/berita" wire:navigate.hover
                 class="{{ $mobileNavClass }} {{ request()->is('berita*') ? $mobileActiveClass : $mobileInactiveClass }}">Berita</a>
+            <a href="/kontak" wire:navigate.hover
+                class="{{ $mobileNavClass }} {{ request()->is('kontak*') ? $mobileActiveClass : $mobileInactiveClass }}">Kontak</a>
+            <a href="/ppdb/pendaftar" wire:navigate.hover
+                class="{{ $mobileNavClass }} {{ request()->is('ppdb/pendaftar*') ? $mobileActiveClass : $mobileInactiveClass }}">Daftar</a>
             <a href="/galeri" wire:navigate.hover
                 class="{{ $mobileNavClass }} {{ request()->is('galeri*') ? $mobileActiveClass : $mobileInactiveClass }}">Galeri</a>
             <div class="pt-4 mt-4 border-t border-slate-100 dark:border-navy-700">
