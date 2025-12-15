@@ -69,7 +69,6 @@ class PkbmProfile extends Model
         'tanggal_sk_izin_operasional' => 'date',
         'memungut_iuran' => 'boolean',
         'bersedia_menerima_bos' => 'boolean',
-        'nominal_iuran' => 'decimal:2',
     ];
 
     protected static function booted(): void
