@@ -293,7 +293,8 @@ $delete = function () {
                                     </td>
                                     <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                                         <div class="font-medium text-slate-700 dark:text-navy-100">
-                                            {{ $item->ppdb->name ?? '-' }}</div>
+                                            {{ $item->ppdb->name ?? '-' }}
+                                        </div>
                                         <div class="text-xs text-slate-500">{{ $item->program->nama_program ?? '-' }}</div>
                                     </td>
                                     <td class="whitespace-nowrap px-4 py-3 sm:px-5">
@@ -362,4 +363,8 @@ $delete = function () {
     --}}
     {{-- The code uses dispatch('notification'), assuming a listener exists --}}
     <x-notification />
+
+    @if (session()->has('message'))
+        <x-success-modal :title="session('status') ?? 'Berhasil'" :message="session('message')" />
+    @endif
 </div>
