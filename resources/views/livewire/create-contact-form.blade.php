@@ -27,7 +27,8 @@ $save = function () {
         'type' => $this->type,
     ]);
 
-    session()->flash('status', 'Kontak Berhasil Ditambahkan');
+    session()->flash('status', 'Berhasil');
+    session()->flash('message', 'Kontak berhasil ditambahkan.');
     $this->redirect(route('ppdb.contact.index'), navigate: true);
 };
 
