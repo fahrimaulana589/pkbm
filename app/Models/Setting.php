@@ -11,5 +11,8 @@ class Setting extends Model
         'email_port',
         'email_username',
         'email_password',
+        'ppdb_foto',
+        'ppdb_sambutan',
+        'ppdb_alur',
     ];
 }
