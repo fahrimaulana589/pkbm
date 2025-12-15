@@ -161,7 +161,7 @@ $save = function () {
                     <x-input-label>
                         <span>Gambar Utama</span>
                         @if($existing_gambar)
-                            <div class="grid grid-cols-3">
+                            <div class="grid grid-cols-1">
                                 <div
                                     class="mt-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500 relative">
                                     <img src="{{ asset('storage/' . $existing_gambar) }}" alt="Current"
@@ -181,7 +181,7 @@ $save = function () {
 
                         <x-input-error :messages="$errors->get('gambar')" />
                         @if ($gambar && method_exists($gambar, 'temporaryUrl'))
-                            <div class="grid grid-cols-3">
+                            <div class="grid grid-cols-1">
                                 <div
                                     class="mt-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500 relative">
                                     <img src="{{ $gambar->temporaryUrl() }}" alt="Preview"

@@ -148,7 +148,7 @@ $save = function () {
                         </div>
                         <x-input-error :messages="$errors->get('gambar')" />
                         @if ($gambar && method_exists($gambar, 'temporaryUrl'))
-                            <div class="grid grid-cols-3">
+                            <div class="grid grid-cols-1">
                                 <div
                                     class="mt-2 flex justify-center rounded-lg border border-slate-200 p-2 dark:border-navy-500 relative">
                                     <div
