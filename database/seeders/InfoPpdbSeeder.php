@@ -13,33 +13,33 @@ class InfoPpdbSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = User::first(); 
-        
-        // Ensure at least one user exists; if valid UserSeeder runs first, this should be fine.
-        // Fallback or just skip if no user.
-        if (!$user) {
-            $user = User::factory()->create([
-                'name' => 'Admin PPDB',
-                'email' => 'ppdb@example.com', 
+        $user = User::first() ?? User::factory()->create();
+
+        $infos = [
+            [
+                'judul' => 'Alur Pendaftaran Peserta Didik Baru',
+                'deskripsi' => '<p>1. Calon peserta didik mengisi formulir pendaftaran online.<br>2. Melakukan pembayaran biaya pendaftaran.<br>3. Menyerahkan berkas fisik ke sekretariat.<br>4. Mengikuti wawancara dan tes penempatan.</p>',
+            ],
+            [
+                'judul' => 'Persyaratan Berkas Paket C (Setara SMA)',
+                'deskripsi' => '<ul><li>Fotokopi Ijazah SMP/MTs (Legalisir) - 3 Lembar</li><li>Fotokopi SKHUN SMP/MTs - 3 Lembar</li><li>Fotokopi KK dan KTP Orang Tua</li><li>Pas Foto 3x4 (Warna Merah) - 5 Lembar</li></ul>',
+            ],
+            [
+                'judul' => 'Beasiswa Pendidikan',
+                'deskripsi' => '<p>PKBM Harapan Bangsa menyediakan beasiswa <strong>"Indonesia Pintar"</strong> bagi siswa berprestasi dan kurang mampu. Hubungi panitia untuk persyaratan lebih lanjut.</p>',
+            ],
+            [
+                'judul' => 'Biaya Pendidikan',
+                'deskripsi' => '<p>Biaya pendaftaran: Rp 150.000<br>SPP Bulanan: Rp 100.000 (Paket B), Rp 150.000 (Paket C)<br><em>*Bebas biaya gedung untuk 50 pendaftar pertama.</em></p>',
+            ],
+        ];
+
+        foreach ($infos as $info) {
+            InfoPpdb::create([
+                'judul' => $info['judul'],
+                'deskripsi' => $info['deskripsi'],
+                'penulis_id' => $user->id,
             ]);
         }
-
-        InfoPpdb::create([
-            'judul' => 'Panduan Pendaftaran Tahun 2025/2026',
-            'deskripsi' => 'Berikut adalah panduan lengkap cara mendaftar di PKBM Harapan Bangsa untuk tahun ajaran baru. Pastikan Anda menyiapkan dokumen-dokumen yang diperlukan seperti KK, Akta Kelahiran, dan Ijazah Terakhir.',
-            'penulis_id' => $user->id,
-        ]);
-
-        InfoPpdb::create([
-            'judul' => 'Jadwal Gelombang 1',
-            'deskripsi' => 'Pendaftaran Gelombang 1 dibuka mulai tanggal 1 Januari 2025 sampai dengan 31 Maret 2025. Dapatkan potongan biaya pendaftaran bagi 50 pendaftar pertama.',
-            'penulis_id' => $user->id,
-        ]);
-
-        InfoPpdb::create([
-            'judul' => 'Syarat dan Ketentuan',
-            'deskripsi' => 'Calon siswa harus berusia minimal 7 tahun untuk Paket A, 13 tahun untuk Paket B, dan 16 tahun untuk Paket C. Tidak ada batasan usia maksimal.',
-            'penulis_id' => $user->id,
-        ]);
     }
 }

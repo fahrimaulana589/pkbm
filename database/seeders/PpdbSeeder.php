@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Ppdb;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class PpdbSeeder extends Seeder
@@ -13,12 +12,22 @@ class PpdbSeeder extends Seeder
      */
     public function run(): void
     {
-        Ppdb::factory()->count(1)->create([
-            'name' => 'PPDB',
+        // Batch Tahun Lalu (Closed)
+        Ppdb::create([
+            'name' => 'PPDB Gelombang 1',
+            'tahun' => 2024,
+            'status' => 'closed',
+            'start_date' => now()->subYear()->startOfYear(),
+            'end_date' => now()->subYear()->endOfYear(),
+        ]);
+
+        // Batch Tahun Ini (Open)
+        Ppdb::create([
+            'name' => 'PPDB Gelombang 2',
             'tahun' => 2025,
             'status' => 'open',
-            'start_date' => now(),
-            'end_date' => now()->addMonths(1),
+            'start_date' => now()->startOfMonth(),
+            'end_date' => now()->addMonths(2)->endOfMonth(),
         ]);
     }
 }

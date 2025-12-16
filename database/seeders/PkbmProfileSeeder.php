@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\PkbmProfile;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 
 class PkbmProfileSeeder extends Seeder
 {
@@ -12,31 +13,26 @@ class PkbmProfileSeeder extends Seeder
      */
     public function run(): void
     {
+        // Pastikan Direktori
+        Storage::disk('public')->makeDirectory('pkbm/logo');
+        Storage::disk('public')->makeDirectory('pkbm/sambutan');
+        Storage::disk('public')->makeDirectory('pkbm/struktur');
+
+        // Generate Dummy Images
+        $logoName = 'pkbm/logo/logo-pkbm.jpg';
+        $sambutanName = 'pkbm/sambutan/kepala-pkbm.jpg';
+        $strukturName = 'pkbm/struktur/struktur-organisasi.jpg';
+
+        $this->createDummyImage($logoName, 'LOGO PKBM', 400, 400);
+        $this->createDummyImage($sambutanName, 'FOTO KEPALA', 600, 800);
+        $this->createDummyImage($strukturName, 'STRUKTUR ORGANISASI', 1000, 600);
+
         if (PkbmProfile::count() === 0) {
-            $imageFaker = new \Alirezasedghi\LaravelImageFaker\ImageFaker(new \Alirezasedghi\LaravelImageFaker\Services\LoremFlickr());
-            $path = storage_path('app/public/pkbm/logo');
-            if (!file_exists($path)) {
-                mkdir($path, 0755, true);
-            }
-            $filename = $imageFaker->image($path, 640, 480, false);
-
-            $pathSambutan = storage_path('app/public/pkbm/sambutan');
-            if (!file_exists($pathSambutan)) {
-                mkdir($pathSambutan, 0755, true);
-            }
-            $filenameSambutan = $imageFaker->image($pathSambutan, 640, 480, false);
-
-            $pathStruktur = storage_path('app/public/pkbm/struktur');
-            if (!file_exists($pathStruktur)) {
-                mkdir($pathStruktur, 0755, true);
-            }
-            $filenameStruktur = $imageFaker->image($pathStruktur, 800, 600, false);
-
             PkbmProfile::create([
                 'nama_pkbm' => 'PKBM Harapan Bangsa',
                 'npsn' => 'P9876543',
                 // Address & Location
-                'alamat' => 'Jl. Pendidikan No. 45',
+                'alamat' => 'Jl. Pendidikan No. 45, RT 05/RW 02',
                 'rt_rw' => '05/02',
                 'desa' => 'Mekarsari',
                 'kecamatan' => 'Cimahi Tengah',
@@ -86,12 +82,39 @@ class PkbmProfileSeeder extends Seeder
                 // Content
                 'visi' => 'Terwujudnya masyarakat pembelajar yang cerdas, terampil, dan berakhlak mulia.',
                 'misi' => "1. Menyelenggarakan pendidikan kesetaraan yang bermutu.\n2. Mengembangkan keterampilan vokasional sesuai kebutuhan pasar kerja.\n3. Menanamkan nilai-nilai karakter dan budi pekerti luhur.",
-                'logo' => 'pkbm/logo/' . $filename,
-                'foto_sambutan' => 'pkbm/sambutan/' . $filenameSambutan,
-                'kata_sambutan' => "Assalamu'alaikum Warahmatullahi Wabarakatuh.\n\nSelamat datang di website resmi PKBM Harapan Bangsa. Kami hadir sebagai solusi pendidikan alternatif yang berkualitas bagi masyarakat.\n\nMelalui berbagai program pendidikan kesetaraan dan pelatihan keterampilan, kami berkomitmen untuk mencetak generasi yang kompeten dan mandiri. Mari bergabung bersama kami untuk meraih masa depan yang gemilang.\n\nWassalamu'alaikum Warahmatullahi Wabarakatuh.",
-                'latar_belakang' => "PKBM Harapan Bangsa didirikan pada tahun 2010 atas inisiatif tokoh masyarakat setempat yang peduli akan pendidikan. Berawal dari kegiatan belajar mengajar sederhana di garasi rumah, kini kami telah berkembang memiliki gedung sendiri yang representatif.\n\nPerjalanan panjang kami diwarnai dengan berbagai prestasi dan pengakuan dari pemerintah maupun masyarakat. Kami terus berinovasi untuk memberikan layanan pendidikan terbaik yang relevan dengan perkembangan zaman.",
-                'foto_struktur_organisasi' => 'pkbm/struktur/' . $filenameStruktur,
+                'logo' => $logoName,
+                'foto_sambutan' => $sambutanName,
+                'kata_sambutan' => "Assalamu'alaikum Warahmatullahi Wabarakatuh.\n\nSelamat datang di website resmi PKBM Harapan Bangsa. Kami berkomitmen untuk memberikan layanan pendidikan terbaik bagi seluruh lapisan masyarakat. Pendidikan adalah hak segala bangsa, dan kami hadir untuk memastikan tidak ada yang tertinggal.\n\nMari bergabung bersama kami untuk mewujudkan masa depan yang lebih cerah.\n\nWassalamu'alaikum Warahmatullahi Wabarakatuh.",
+                'latar_belakang' => "PKBM Harapan Bangsa berdiri sejak tahun 2010 sebagai respons terhadap kebutuhan masyarakat akan akses pendidikan yang fleksibel namun berkualitas. Dimulai dari satu kelas kecil, kini kami melayani ratusan warga belajar dari berbagai latar belakang.",
+                'foto_struktur_organisasi' => $strukturName,
             ]);
         }
+    }
+
+    private function createDummyImage($path, $text, $width, $height)
+    {
+        if (!extension_loaded('gd')) {
+            Storage::disk('public')->put($path, '');
+            return;
+        }
+
+        $image = imagecreatetruecolor($width, $height);
+        $bg = imagecolorallocate($image, 240, 240, 240); // Light Grey
+        imagefilledrectangle($image, 0, 0, $width, $height, $bg);
+        
+        $textColor = imagecolorallocate($image, 0, 50, 100); // Dark Blue
+        $fontSize = 5;
+        $textWidth = imagefontwidth($fontSize) * strlen($text);
+        $textHeight = imagefontheight($fontSize);
+        
+        // Center
+        imagestring($image, $fontSize, ($width - $textWidth) / 2, ($height - $textHeight) / 2, $text, $textColor);
+
+        ob_start();
+        imagejpeg($image);
+        $contents = ob_get_clean();
+        imagedestroy($image);
+
+        Storage::disk('public')->put($path, $contents);
     }
 }

@@ -3,9 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\Certificate;
-use App\Models\Program;
 use App\Models\Student;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class CertificateSeeder extends Seeder
 {
@@ -14,16 +14,21 @@ class CertificateSeeder extends Seeder
      */
     public function run(): void
     {
-        if (Student::count() === 0) {
-            Student::factory()->count(5)->create();
-        }
-
+        // Ambil Siswa yang ada (yang dibuat dari StudentSeeder)
         $students = Student::all();
 
-        foreach ($students as $student) {
-            Certificate::factory()->create([
+        if ($students->isEmpty()) {
+            return;
+        }
+
+        // Berikan sertifikat hanya ke sebagian siswa (misal yang kelas 12 / lulus)
+        foreach ($students->take(5) as $student) {
+            Certificate::create([
                 'student_id' => $student->id,
                 'program_id' => $student->program_id,
+                'nomor_sertifikat' => 'DN-02/Pk.C/' . date('Y') . '/' . rand(1000, 9999),
+                'tanggal' => now()->subMonths(rand(1, 6)),
+                'file_pdf' => 'certificates/' . Str::slug($student->nama_lengkap) . '.pdf',
             ]);
         }
     }
