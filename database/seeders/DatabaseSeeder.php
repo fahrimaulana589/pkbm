@@ -31,12 +31,16 @@ class DatabaseSeeder extends Seeder
             GallerySeeder::class,
             PpdbSeeder::class,
             InfoPpdbSeeder::class,
+            DataPpdbSeeder::class,
             PendaftarSeeder::class,
+            ContactSeeder::class,
+            SettingSeeder::class,
         ]);
 
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Admin Sekolah',
+            'email' => 'admin@example.com',
+            'password' => bcrypt('password'),
         ]);
     }
 }
