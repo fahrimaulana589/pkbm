@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\PkbmProfile;
 use App\Models\Setting;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades;
 
@@ -38,5 +39,13 @@ class AppServiceProvider extends ServiceProvider
         } catch (\Exception $e) {
             // Ignore database errors during boot (e.g. migrations not run yet)
         }
+
+        // Paksa HTTPS jika aplikasi diakses lewat Cloudflare atau Production
+        if (config('app.env') !== 'local') { 
+            URL::forceScheme('https');
+        }
+        
+        // ATAU, jika Anda ingin memaksanya bahkan di local env saat pakai tunnel:
+        // URL::forceScheme('https');
     }
 }
