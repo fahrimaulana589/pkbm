@@ -43,7 +43,7 @@ mount(function ($slug) {
                         </div>
                     </div>
 
-                    <div class="p-8">
+                    <div class="p-6">
                         <div
                             class="flex items-center text-sm text-slate-500 dark:text-slate-400 mb-8 pb-8 border-b border-slate-100 dark:border-navy-700">
                             <div class="flex items-center mr-6">
