@@ -11,7 +11,7 @@ state('id', null);
 state('search', '');
 
 $schedules = computed(function () {
-    return Schedule::with('classGroup')
+    return Schedule::with(['classGroup', 'tutor'])
         ->where('materi', 'like', '%' . $this->search . '%')
         ->orWhere('hari', 'like', '%' . $this->search . '%')
         ->orWhereHas('classGroup', function ($query) {
@@ -238,6 +238,9 @@ $delete = function () {
                                     Materi</th>
                                 <th
                                     class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                                    Pengajar</th>
+                                <th
+                                    class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                                     Rombel</th>
                                 <th
                                     class="whitespace-nowrap rounded-tr-lg bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
@@ -262,6 +265,11 @@ $delete = function () {
                                     <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                                         <div class="text-slate-700 dark:text-navy-100">
                                             {{ $schedule->materi }}
+                                        </div>
+                                    </td>
+                                    <td class="whitespace-nowrap px-4 py-3 sm:px-5">
+                                        <div class="text-slate-700 dark:text-navy-100">
+                                            {{ $schedule->teacher->nama ?? '-' }}
                                         </div>
                                     </td>
                                     <td class="whitespace-nowrap px-4 py-3 sm:px-5">

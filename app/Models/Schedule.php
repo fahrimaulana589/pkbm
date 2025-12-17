@@ -13,6 +13,7 @@ class Schedule extends Model
 
     protected $fillable = [
         'rombel_id',
+        'tutor_id',
         'hari',
         'jam_mulai',
         'jam_selesai',
@@ -22,5 +23,18 @@ class Schedule extends Model
     public function classGroup(): BelongsTo
     {
         return $this->belongsTo(ClassGroup::class, 'rombel_id');
+    }
+
+    public function tutor(): BelongsTo
+    {
+        return $this->belongsTo(Tutor::class);
+    }
+
+    /**
+     * Get the teacher for this schedule (Specific Tutor or fallback to Class Group's Tutor)
+     */
+    public function getTeacherAttribute()
+    {
+        return $this->tutor ?? $this->classGroup->tutor;
     }
 }

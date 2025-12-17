@@ -2,23 +2,28 @@
 
 use App\Models\Schedule;
 use App\Models\ClassGroup;
+use App\Models\Tutor;
 use function Livewire\Volt\{state, rules, mount};
 
 state([
     'schedule' => null,
     'rombel_id' => '',
+    'tutor_id' => '',
     'hari' => '',
     'jam_mulai' => '',
     'jam_selesai' => '',
     'materi' => '',
     'classGroups' => [],
+    'tutors' => [],
 ]);
 
 mount(function ($id) {
     $this->schedule = Schedule::findOrFail($id);
     $this->classGroups = ClassGroup::all();
+    $this->tutors = Tutor::all();
 
     $this->rombel_id = $this->schedule->rombel_id;
+    $this->tutor_id = $this->schedule->tutor_id;
     $this->hari = $this->schedule->hari;
     $this->jam_mulai = \Carbon\Carbon::parse($this->schedule->jam_mulai)->format('H:i');
     $this->jam_selesai = \Carbon\Carbon::parse($this->schedule->jam_selesai)->format('H:i');
@@ -27,6 +32,7 @@ mount(function ($id) {
 
 rules([
     'rombel_id' => 'required|exists:class_groups,id',
+    'tutor_id' => 'nullable|exists:tutors,id',
     'hari' => 'required|in:Senin,Selasa,Rabu,Kamis,Jumat,Sabtu',
     'jam_mulai' => 'required|date_format:H:i',
     'jam_selesai' => 'required|date_format:H:i|after:jam_mulai',
@@ -38,6 +44,7 @@ $save = function () {
 
     $this->schedule->update([
         'rombel_id' => $this->rombel_id,
+        'tutor_id' => $this->tutor_id ?: null, // Ensure empty string becomes null
         'hari' => $this->hari,
         'jam_mulai' => $this->jam_mulai,
         'jam_selesai' => $this->jam_selesai,
@@ -103,6 +110,19 @@ $save = function () {
                             @endforeach
                         </x-select-input>
                         <x-input-error :messages="$errors->get('rombel_id')" />
+                    </x-input-label>
+
+                    <x-input-label>
+                        <span>Pengajar (Opsional)</span>
+                        <x-select-input wire:model="tutor_id" :error="$errors->has('tutor_id')">
+                            <option value="">-- Pilih Pengajar (Opsional) --</option>
+                            @foreach($tutors as $tutor)
+                                <option value="{{ $tutor->id }}">{{ $tutor->nama }}</option>
+                            @endforeach
+                        </x-select-input>
+                        <div class="text-xs text-slate-400 mt-1">Jika kosong, akan menggunakan Wali Kelas dari Rombel.
+                        </div>
+                        <x-input-error :messages="$errors->get('tutor_id')" />
                     </x-input-label>
 
                     <x-input-label>
