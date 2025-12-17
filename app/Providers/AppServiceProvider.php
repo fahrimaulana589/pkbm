@@ -33,6 +33,8 @@ class AppServiceProvider extends ServiceProvider
                     'mail.mailers.smtp.host' => $setting->email_server,
                     'mail.mailers.smtp.port' => $setting->email_port,
                     'mail.mailers.smtp.username' => $setting->email_username,
+                    'mail.from.address' => $setting->email_username,
+                    'mail.from.name' => $setting->email_username,
                     'mail.mailers.smtp.password' => $setting->email_password,
                 ]);
             }
