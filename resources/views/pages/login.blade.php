@@ -1,5 +1,5 @@
 <?php
-use function Laravel\Folio\{name,middleware};
+use function Laravel\Folio\{name, middleware};
 
 name('login');
 middleware('guest')
@@ -8,9 +8,14 @@ middleware('guest')
 <x-guest-layout title="login">
     <div class="fixed top-0 hidden p-6 lg:block lg:px-12">
         <a href="#" class="flex items-center space-x-2">
-            <img class="size-12" src="{{ asset('images/app-logo.svg') }}" alt="logo" />
+            @if($profile && $profile->logo)
+                <img class="size-12 rounded-lg" src="{{ \Illuminate\Support\Facades\Storage::url($profile->logo) }}"
+                    alt="logo" />
+            @else
+                <img class="size-12" src="{{ asset('images/app-logo.svg') }}" alt="logo" />
+            @endif
             <p class="text-xl font-semibold uppercase text-slate-700 dark:text-navy-100">
-                {{ config('app.name') }}
+                {{ $profile->nama_pkbm ?? config('app.name') }}
             </p>
         </a>
     </div>

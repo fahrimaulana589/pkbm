@@ -31,8 +31,9 @@ class RegistrationSuccess extends Mailable
      */
     public function envelope(): Envelope
     {
+        $pkbmName = \App\Models\PkbmProfile::value('nama_pkbm') ?? config('app.name');
         return new Envelope(
-            subject: 'Pendaftaran Berhasil - ' . config('app.name'),
+            subject: 'Pendaftaran Berhasil - ' . $pkbmName,
         );
     }
 

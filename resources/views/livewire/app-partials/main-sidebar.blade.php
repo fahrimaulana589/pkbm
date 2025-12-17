@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Facades\Storage;
 use function Livewire\Volt\{state, mount};
 
 state('routePrefix');
@@ -14,9 +15,14 @@ $changeRoutePrefix = function ($newPrefix) {
         class="flex h-full w-full flex-col items-center border-r border-slate-150 bg-white dark:border-navy-700 dark:bg-navy-800">
         <!-- Application Logo -->
         <div class="flex pt-4">
-            <a href="/" wire:navigate>
-                <img class="size-11 transition-transform duration-500 ease-in-out hover:rotate-[360deg]"
-                    src="{{ asset('images/app-logo.svg') }}" alt="logo" />
+            <a href="/" wire:navigate x-tooltip.placement.right="'{{ $profile->nama_pkbm ?? config('app.name') }}'">
+                @if(isset($profile) && $profile && $profile->logo)
+                    <img class="size-11 transition-transform duration-500 ease-in-out hover:rotate-[360deg] rounded-lg"
+                        src="{{ Storage::url($profile->logo) }}" alt="logo" />
+                @else
+                    <img class="size-11 transition-transform duration-500 ease-in-out hover:rotate-[360deg]"
+                        src="{{ asset('images/app-logo.svg') }}" alt="logo" />
+                @endif
             </a>
         </div>
 

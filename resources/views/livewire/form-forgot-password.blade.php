@@ -1,12 +1,14 @@
 <?php
 
+use App\Models\PkbmProfile;
+use Illuminate\Support\Facades\Storage;
 use function Livewire\Volt\{state, rules};
 use Illuminate\Support\Facades\Password;
 
 state('email');
 
 rules(fn() => [
-    'email'    => 'required|string|email|exists:users,email',
+    'email' => 'required|string|email|exists:users,email',
 ]);
 
 $submit = function () {
@@ -16,11 +18,9 @@ $submit = function () {
     );
     if ($status == Password::RESET_LINK_SENT) {
         $this->dispatch('password-reset-link-sent');
-    }
-    else if($status == Password::RESET_THROTTLED){
+    } else if ($status == Password::RESET_THROTTLED) {
         $this->dispatch('password-reset-link-throttled', ['status' => __($status)]);
-    } 
-    else {
+    } else {
         $this->dispatch('password-reset-link-failed', ['status' => __($status)]);
     }
 };
@@ -30,7 +30,11 @@ $submit = function () {
 <main class="flex w-full flex-col items-center bg-white dark:bg-navy-700 lg:max-w-md">
     <div class="flex w-full max-w-sm grow flex-col justify-center p-5">
         <div class="text-center">
-            <img class="mx-auto size-16 lg:hidden" src="{{ asset('images/app-logo.svg') }}" alt="logo" />
+            @if(isset($profile) && $profile && $profile->logo)
+                <img class="mx-auto size-16 lg:hidden rounded-lg" src="{{ Storage::url($profile->logo) }}" alt="logo" />
+            @else
+                <img class="mx-auto size-16 lg:hidden" src="{{ asset('images/app-logo.svg') }}" alt="logo" />
+            @endif
             <div class="mt-4">
                 <h2 class="text-2xl font-semibold text-slate-600 dark:text-navy-100">
                     Welcome Back
@@ -45,8 +49,7 @@ $submit = function () {
                 <label class="relative flex">
                     <input
                         class="form-input peer w-full rounded-lg bg-slate-150 px-3 py-2 pl-9 ring-primary/50 placeholder:text-slate-400 hover:bg-slate-200 focus:ring dark:bg-navy-900/90 dark:ring-accent/50 dark:placeholder:text-navy-300 dark:hover:bg-navy-900 dark:focus:bg-navy-900"
-                        placeholder="Username or email" type="text" name="email"
-                        wire:model="email"
+                        placeholder="Username or email" type="text" name="email" wire:model="email"
                         value="{{ old('email')}}" />
                     <span
                         class="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400 peer-focus:text-primary dark:text-navy-300 dark:peer-focus:text-accent">
@@ -74,21 +77,12 @@ $submit = function () {
         <a href="#">Term of service</a>
     </div>
 
-    <x-success-modal 
-        trigger="password-reset-link-sent" 
-        title="Password Reset Link Sent Successfully" 
-        message="A password reset link has been sent to your email address." 
-    />
+    <x-success-modal trigger="password-reset-link-sent" title="Password Reset Link Sent Successfully"
+        message="A password reset link has been sent to your email address." />
 
-    <x-error-modal 
-        trigger="password-reset-link-failed" 
-        title="Password Reset Link Failed" 
-        message="Failed to send a password reset link to your email address." 
-    />
+    <x-error-modal trigger="password-reset-link-failed" title="Password Reset Link Failed"
+        message="Failed to send a password reset link to your email address." />
 
-    <x-warning-modal 
-        trigger="password-reset-link-throttled" 
-        title="Password Reset Link Throttled" 
-        message="You have requested a password reset link too many times. Please try again later." 
-    />
+    <x-warning-modal trigger="password-reset-link-throttled" title="Password Reset Link Throttled"
+        message="You have requested a password reset link too many times. Please try again later." />
 </main>

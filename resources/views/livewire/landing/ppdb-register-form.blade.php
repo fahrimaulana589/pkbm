@@ -8,6 +8,7 @@ use App\Enums\PendaftarStatus;
 use App\Enums\DataPpdbType;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
 use function Livewire\Volt\{state, mount, rules};
 
 state([
