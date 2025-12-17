@@ -34,7 +34,7 @@ rules([
     'judul' => 'required|string|max:255',
     'slug' => 'required|string|max:255|unique:news,slug',
     'konten' => 'required|string',
-    'gambar' => 'nullable|image|max:2048', // 2MB Max
+    'gambar' => 'required|image|max:2048', // 2MB Max
     'status' => 'required|in:draft,published',
     'selected_tags' => 'array',
     'selected_tags.*' => 'exists:news_tags,id',
